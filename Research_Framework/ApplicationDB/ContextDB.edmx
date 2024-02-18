@@ -1,0 +1,652 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="ResearchDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="branch">
+          <Key>
+            <PropertyRef Name="branch_id" />
+          </Key>
+          <Property Name="branch_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="branch_name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="faculty_id" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="faculty">
+          <Key>
+            <PropertyRef Name="faculty_id" />
+          </Key>
+          <Property Name="faculty_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="faculty_name" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="log">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="user_id" Type="int" />
+          <Property Name="log_name" Type="nvarchar" MaxLength="50" />
+          <Property Name="log_time" Type="datetime" />
+        </EntityType>
+        <EntityType Name="process">
+          <Key>
+            <PropertyRef Name="process_id" />
+          </Key>
+          <Property Name="process_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="processResearch" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="process_path">
+          <Key>
+            <PropertyRef Name="path_id" />
+          </Key>
+          <Property Name="path_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="process_id" Type="int" Nullable="false" />
+          <Property Name="research_id" Type="int" Nullable="false" />
+          <Property Name="path_student" Type="varbinary(max)" />
+          <Property Name="path_teacher" Type="varbinary(max)" />
+          <Property Name="status" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="research">
+          <Key>
+            <PropertyRef Name="research_id" />
+          </Key>
+          <Property Name="research_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="research_name" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="teacher_id" Type="int" Nullable="false" />
+          <Property Name="approve" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="research_member">
+          <Key>
+            <PropertyRef Name="member_id" />
+          </Key>
+          <Property Name="member_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="user_id" Type="int" Nullable="false" />
+          <Property Name="research_id" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="user">
+          <Key>
+            <PropertyRef Name="user_id" />
+          </Key>
+          <Property Name="user_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="username" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="password" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="lname" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="faculty_id" Type="int" Nullable="false" />
+          <Property Name="branch_id" Type="int" Nullable="false" />
+          <Property Name="permission" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'ResearchDB.dbo.View_process' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="View_process">
+          <Key>
+            <PropertyRef Name="path_id" />
+            <PropertyRef Name="process_id" />
+            <PropertyRef Name="processResearch" />
+            <PropertyRef Name="research_id" />
+            <PropertyRef Name="research_name" />
+            <PropertyRef Name="teacher_id" />
+            <PropertyRef Name="approve" />
+            <PropertyRef Name="status" />
+          </Key>
+          <Property Name="path_id" Type="int" Nullable="false" />
+          <Property Name="process_id" Type="int" Nullable="false" />
+          <Property Name="processResearch" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="research_id" Type="int" Nullable="false" />
+          <Property Name="research_name" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="teacher_id" Type="int" Nullable="false" />
+          <Property Name="approve" Type="bit" Nullable="false" />
+          <Property Name="path_student" Type="varbinary(max)" />
+          <Property Name="path_teacher" Type="varbinary(max)" />
+          <Property Name="status" Type="bit" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'ResearchDB.dbo.View_research' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="View_research">
+          <Key>
+            <PropertyRef Name="research_id" />
+            <PropertyRef Name="research_name" />
+            <PropertyRef Name="teacher_id" />
+            <PropertyRef Name="username" />
+            <PropertyRef Name="password" />
+            <PropertyRef Name="name" />
+            <PropertyRef Name="lname" />
+            <PropertyRef Name="permission" />
+            <PropertyRef Name="faculty_id" />
+            <PropertyRef Name="faculty_name" />
+            <PropertyRef Name="branch_id" />
+            <PropertyRef Name="branch_name" />
+            <PropertyRef Name="approve" />
+          </Key>
+          <Property Name="research_id" Type="int" Nullable="false" />
+          <Property Name="research_name" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="teacher_id" Type="int" Nullable="false" />
+          <Property Name="username" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="password" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="lname" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="permission" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="faculty_id" Type="int" Nullable="false" />
+          <Property Name="faculty_name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="branch_id" Type="int" Nullable="false" />
+          <Property Name="branch_name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="approve" Type="bit" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'ResearchDB.dbo.View_research_member' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="View_research_member">
+          <Key>
+            <PropertyRef Name="member_id" />
+            <PropertyRef Name="user_id" />
+            <PropertyRef Name="username" />
+            <PropertyRef Name="password" />
+            <PropertyRef Name="name" />
+            <PropertyRef Name="lname" />
+            <PropertyRef Name="faculty_id" />
+            <PropertyRef Name="permission" />
+            <PropertyRef Name="faculty_name" />
+            <PropertyRef Name="branch_id" />
+            <PropertyRef Name="branch_name" />
+            <PropertyRef Name="research_id" />
+            <PropertyRef Name="research_name" />
+            <PropertyRef Name="teacher_id" />
+            <PropertyRef Name="approve" />
+          </Key>
+          <Property Name="member_id" Type="int" Nullable="false" />
+          <Property Name="user_id" Type="int" Nullable="false" />
+          <Property Name="username" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="password" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="lname" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="faculty_id" Type="int" Nullable="false" />
+          <Property Name="permission" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="faculty_name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="branch_id" Type="int" Nullable="false" />
+          <Property Name="branch_name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="research_id" Type="int" Nullable="false" />
+          <Property Name="research_name" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="teacher_id" Type="int" Nullable="false" />
+          <Property Name="approve" Type="bit" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'ResearchDB.dbo.View_user' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="View_user">
+          <Key>
+            <PropertyRef Name="user_id" />
+            <PropertyRef Name="username" />
+            <PropertyRef Name="password" />
+            <PropertyRef Name="name" />
+            <PropertyRef Name="lname" />
+            <PropertyRef Name="faculty_id" />
+            <PropertyRef Name="permission" />
+            <PropertyRef Name="faculty_name" />
+            <PropertyRef Name="branch_id" />
+            <PropertyRef Name="branch_name" />
+          </Key>
+          <Property Name="user_id" Type="int" Nullable="false" />
+          <Property Name="username" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="password" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="lname" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="faculty_id" Type="int" Nullable="false" />
+          <Property Name="permission" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="faculty_name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="branch_id" Type="int" Nullable="false" />
+          <Property Name="branch_name" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityContainer Name="ResearchDBModelStoreContainer">
+          <EntitySet Name="branch" EntityType="Self.branch" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="faculty" EntityType="Self.faculty" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="log" EntityType="Self.log" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="process" EntityType="Self.process" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="process_path" EntityType="Self.process_path" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="research" EntityType="Self.research" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="research_member" EntityType="Self.research_member" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="user" EntityType="Self.user" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="View_process" EntityType="Self.View_process" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [View_process].[path_id] AS [path_id], 
+    [View_process].[process_id] AS [process_id], 
+    [View_process].[processResearch] AS [processResearch], 
+    [View_process].[research_id] AS [research_id], 
+    [View_process].[research_name] AS [research_name], 
+    [View_process].[teacher_id] AS [teacher_id], 
+    [View_process].[approve] AS [approve], 
+    [View_process].[path_student] AS [path_student], 
+    [View_process].[path_teacher] AS [path_teacher], 
+    [View_process].[status] AS [status]
+    FROM [dbo].[View_process] AS [View_process]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="View_research" EntityType="Self.View_research" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [View_research].[research_id] AS [research_id], 
+    [View_research].[research_name] AS [research_name], 
+    [View_research].[teacher_id] AS [teacher_id], 
+    [View_research].[username] AS [username], 
+    [View_research].[password] AS [password], 
+    [View_research].[name] AS [name], 
+    [View_research].[lname] AS [lname], 
+    [View_research].[permission] AS [permission], 
+    [View_research].[faculty_id] AS [faculty_id], 
+    [View_research].[faculty_name] AS [faculty_name], 
+    [View_research].[branch_id] AS [branch_id], 
+    [View_research].[branch_name] AS [branch_name], 
+    [View_research].[approve] AS [approve]
+    FROM [dbo].[View_research] AS [View_research]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="View_research_member" EntityType="Self.View_research_member" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [View_research_member].[member_id] AS [member_id], 
+    [View_research_member].[user_id] AS [user_id], 
+    [View_research_member].[username] AS [username], 
+    [View_research_member].[password] AS [password], 
+    [View_research_member].[name] AS [name], 
+    [View_research_member].[lname] AS [lname], 
+    [View_research_member].[faculty_id] AS [faculty_id], 
+    [View_research_member].[permission] AS [permission], 
+    [View_research_member].[faculty_name] AS [faculty_name], 
+    [View_research_member].[branch_id] AS [branch_id], 
+    [View_research_member].[branch_name] AS [branch_name], 
+    [View_research_member].[research_id] AS [research_id], 
+    [View_research_member].[research_name] AS [research_name], 
+    [View_research_member].[teacher_id] AS [teacher_id], 
+    [View_research_member].[approve] AS [approve]
+    FROM [dbo].[View_research_member] AS [View_research_member]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="View_user" EntityType="Self.View_user" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [View_user].[user_id] AS [user_id], 
+    [View_user].[username] AS [username], 
+    [View_user].[password] AS [password], 
+    [View_user].[name] AS [name], 
+    [View_user].[lname] AS [lname], 
+    [View_user].[faculty_id] AS [faculty_id], 
+    [View_user].[permission] AS [permission], 
+    [View_user].[faculty_name] AS [faculty_name], 
+    [View_user].[branch_id] AS [branch_id], 
+    [View_user].[branch_name] AS [branch_name]
+    FROM [dbo].[View_user] AS [View_user]</DefiningQuery>
+          </EntitySet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="ResearchDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="ResearchDBEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="branches" EntityType="ResearchDBModel.branch" />
+          <EntitySet Name="faculties" EntityType="ResearchDBModel.faculty" />
+          <EntitySet Name="logs" EntityType="ResearchDBModel.log" />
+          <EntitySet Name="processes" EntityType="ResearchDBModel.process" />
+          <EntitySet Name="process_path" EntityType="ResearchDBModel.process_path" />
+          <EntitySet Name="researches" EntityType="ResearchDBModel.research" />
+          <EntitySet Name="research_member" EntityType="ResearchDBModel.research_member" />
+          <EntitySet Name="users" EntityType="ResearchDBModel.user" />
+          <EntitySet Name="View_process" EntityType="ResearchDBModel.View_process" />
+          <EntitySet Name="View_research" EntityType="ResearchDBModel.View_research" />
+          <EntitySet Name="View_research_member" EntityType="ResearchDBModel.View_research_member" />
+          <EntitySet Name="View_user" EntityType="ResearchDBModel.View_user" />
+        </EntityContainer>
+        <EntityType Name="branch">
+          <Key>
+            <PropertyRef Name="branch_id" />
+          </Key>
+          <Property Name="branch_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="branch_name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="faculty_id" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="faculty">
+          <Key>
+            <PropertyRef Name="faculty_id" />
+          </Key>
+          <Property Name="faculty_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="faculty_name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="log">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="user_id" Type="Int32" />
+          <Property Name="log_name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="log_time" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="process">
+          <Key>
+            <PropertyRef Name="process_id" />
+          </Key>
+          <Property Name="process_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="processResearch" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="process_path">
+          <Key>
+            <PropertyRef Name="path_id" />
+          </Key>
+          <Property Name="path_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="process_id" Type="Int32" Nullable="false" />
+          <Property Name="research_id" Type="Int32" Nullable="false" />
+          <Property Name="path_student" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <Property Name="path_teacher" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <Property Name="status" Type="Boolean" Nullable="false" />
+        </EntityType>
+        <EntityType Name="research">
+          <Key>
+            <PropertyRef Name="research_id" />
+          </Key>
+          <Property Name="research_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="research_name" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="teacher_id" Type="Int32" Nullable="false" />
+          <Property Name="approve" Type="Boolean" Nullable="false" />
+        </EntityType>
+        <EntityType Name="research_member">
+          <Key>
+            <PropertyRef Name="member_id" />
+          </Key>
+          <Property Name="member_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="user_id" Type="Int32" Nullable="false" />
+          <Property Name="research_id" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="user">
+          <Key>
+            <PropertyRef Name="user_id" />
+          </Key>
+          <Property Name="user_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="username" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="password" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="lname" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="faculty_id" Type="Int32" Nullable="false" />
+          <Property Name="branch_id" Type="Int32" Nullable="false" />
+          <Property Name="permission" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="View_process">
+          <Key>
+            <PropertyRef Name="path_id" />
+            <PropertyRef Name="process_id" />
+            <PropertyRef Name="processResearch" />
+            <PropertyRef Name="research_id" />
+            <PropertyRef Name="research_name" />
+            <PropertyRef Name="teacher_id" />
+            <PropertyRef Name="approve" />
+            <PropertyRef Name="status" />
+          </Key>
+          <Property Name="path_id" Type="Int32" Nullable="false" />
+          <Property Name="process_id" Type="Int32" Nullable="false" />
+          <Property Name="processResearch" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="research_id" Type="Int32" Nullable="false" />
+          <Property Name="research_name" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="teacher_id" Type="Int32" Nullable="false" />
+          <Property Name="approve" Type="Boolean" Nullable="false" />
+          <Property Name="path_student" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <Property Name="path_teacher" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <Property Name="status" Type="Boolean" Nullable="false" />
+        </EntityType>
+        <EntityType Name="View_research">
+          <Key>
+            <PropertyRef Name="research_id" />
+            <PropertyRef Name="research_name" />
+            <PropertyRef Name="teacher_id" />
+            <PropertyRef Name="username" />
+            <PropertyRef Name="password" />
+            <PropertyRef Name="name" />
+            <PropertyRef Name="lname" />
+            <PropertyRef Name="permission" />
+            <PropertyRef Name="faculty_id" />
+            <PropertyRef Name="faculty_name" />
+            <PropertyRef Name="branch_id" />
+            <PropertyRef Name="branch_name" />
+            <PropertyRef Name="approve" />
+          </Key>
+          <Property Name="research_id" Type="Int32" Nullable="false" />
+          <Property Name="research_name" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="teacher_id" Type="Int32" Nullable="false" />
+          <Property Name="username" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="password" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="lname" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="permission" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="faculty_id" Type="Int32" Nullable="false" />
+          <Property Name="faculty_name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="branch_id" Type="Int32" Nullable="false" />
+          <Property Name="branch_name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="approve" Type="Boolean" Nullable="false" />
+        </EntityType>
+        <EntityType Name="View_research_member">
+          <Key>
+            <PropertyRef Name="member_id" />
+            <PropertyRef Name="user_id" />
+            <PropertyRef Name="username" />
+            <PropertyRef Name="password" />
+            <PropertyRef Name="name" />
+            <PropertyRef Name="lname" />
+            <PropertyRef Name="faculty_id" />
+            <PropertyRef Name="permission" />
+            <PropertyRef Name="faculty_name" />
+            <PropertyRef Name="branch_id" />
+            <PropertyRef Name="branch_name" />
+            <PropertyRef Name="research_id" />
+            <PropertyRef Name="research_name" />
+            <PropertyRef Name="teacher_id" />
+            <PropertyRef Name="approve" />
+          </Key>
+          <Property Name="member_id" Type="Int32" Nullable="false" />
+          <Property Name="user_id" Type="Int32" Nullable="false" />
+          <Property Name="username" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="password" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="lname" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="faculty_id" Type="Int32" Nullable="false" />
+          <Property Name="permission" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="faculty_name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="branch_id" Type="Int32" Nullable="false" />
+          <Property Name="branch_name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="research_id" Type="Int32" Nullable="false" />
+          <Property Name="research_name" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="teacher_id" Type="Int32" Nullable="false" />
+          <Property Name="approve" Type="Boolean" Nullable="false" />
+        </EntityType>
+        <EntityType Name="View_user">
+          <Key>
+            <PropertyRef Name="user_id" />
+            <PropertyRef Name="username" />
+            <PropertyRef Name="password" />
+            <PropertyRef Name="name" />
+            <PropertyRef Name="lname" />
+            <PropertyRef Name="faculty_id" />
+            <PropertyRef Name="permission" />
+            <PropertyRef Name="faculty_name" />
+            <PropertyRef Name="branch_id" />
+            <PropertyRef Name="branch_name" />
+          </Key>
+          <Property Name="user_id" Type="Int32" Nullable="false" />
+          <Property Name="username" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="password" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="lname" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="faculty_id" Type="Int32" Nullable="false" />
+          <Property Name="permission" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="faculty_name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="branch_id" Type="Int32" Nullable="false" />
+          <Property Name="branch_name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
+        </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+    <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="ResearchDBModelStoreContainer" CdmEntityContainer="ResearchDBEntities">
+          <EntitySetMapping Name="branches">
+            <EntityTypeMapping TypeName="ResearchDBModel.branch">
+              <MappingFragment StoreEntitySet="branch">
+                <ScalarProperty Name="faculty_id" ColumnName="faculty_id" />
+                <ScalarProperty Name="branch_name" ColumnName="branch_name" />
+                <ScalarProperty Name="branch_id" ColumnName="branch_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="faculties">
+            <EntityTypeMapping TypeName="ResearchDBModel.faculty">
+              <MappingFragment StoreEntitySet="faculty">
+                <ScalarProperty Name="faculty_name" ColumnName="faculty_name" />
+                <ScalarProperty Name="faculty_id" ColumnName="faculty_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="logs">
+            <EntityTypeMapping TypeName="ResearchDBModel.log">
+              <MappingFragment StoreEntitySet="log">
+                <ScalarProperty Name="log_time" ColumnName="log_time" />
+                <ScalarProperty Name="log_name" ColumnName="log_name" />
+                <ScalarProperty Name="user_id" ColumnName="user_id" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="processes">
+            <EntityTypeMapping TypeName="ResearchDBModel.process">
+              <MappingFragment StoreEntitySet="process">
+                <ScalarProperty Name="processResearch" ColumnName="processResearch" />
+                <ScalarProperty Name="process_id" ColumnName="process_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="process_path">
+            <EntityTypeMapping TypeName="ResearchDBModel.process_path">
+              <MappingFragment StoreEntitySet="process_path">
+                <ScalarProperty Name="status" ColumnName="status" />
+                <ScalarProperty Name="path_teacher" ColumnName="path_teacher" />
+                <ScalarProperty Name="path_student" ColumnName="path_student" />
+                <ScalarProperty Name="research_id" ColumnName="research_id" />
+                <ScalarProperty Name="process_id" ColumnName="process_id" />
+                <ScalarProperty Name="path_id" ColumnName="path_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="researches">
+            <EntityTypeMapping TypeName="ResearchDBModel.research">
+              <MappingFragment StoreEntitySet="research">
+                <ScalarProperty Name="approve" ColumnName="approve" />
+                <ScalarProperty Name="teacher_id" ColumnName="teacher_id" />
+                <ScalarProperty Name="research_name" ColumnName="research_name" />
+                <ScalarProperty Name="research_id" ColumnName="research_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="research_member">
+            <EntityTypeMapping TypeName="ResearchDBModel.research_member">
+              <MappingFragment StoreEntitySet="research_member">
+                <ScalarProperty Name="research_id" ColumnName="research_id" />
+                <ScalarProperty Name="user_id" ColumnName="user_id" />
+                <ScalarProperty Name="member_id" ColumnName="member_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="users">
+            <EntityTypeMapping TypeName="ResearchDBModel.user">
+              <MappingFragment StoreEntitySet="user">
+                <ScalarProperty Name="permission" ColumnName="permission" />
+                <ScalarProperty Name="branch_id" ColumnName="branch_id" />
+                <ScalarProperty Name="faculty_id" ColumnName="faculty_id" />
+                <ScalarProperty Name="lname" ColumnName="lname" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="password" ColumnName="password" />
+                <ScalarProperty Name="username" ColumnName="username" />
+                <ScalarProperty Name="user_id" ColumnName="user_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="View_process">
+            <EntityTypeMapping TypeName="ResearchDBModel.View_process">
+              <MappingFragment StoreEntitySet="View_process">
+                <ScalarProperty Name="status" ColumnName="status" />
+                <ScalarProperty Name="path_teacher" ColumnName="path_teacher" />
+                <ScalarProperty Name="path_student" ColumnName="path_student" />
+                <ScalarProperty Name="approve" ColumnName="approve" />
+                <ScalarProperty Name="teacher_id" ColumnName="teacher_id" />
+                <ScalarProperty Name="research_name" ColumnName="research_name" />
+                <ScalarProperty Name="research_id" ColumnName="research_id" />
+                <ScalarProperty Name="processResearch" ColumnName="processResearch" />
+                <ScalarProperty Name="process_id" ColumnName="process_id" />
+                <ScalarProperty Name="path_id" ColumnName="path_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="View_research">
+            <EntityTypeMapping TypeName="ResearchDBModel.View_research">
+              <MappingFragment StoreEntitySet="View_research">
+                <ScalarProperty Name="approve" ColumnName="approve" />
+                <ScalarProperty Name="branch_name" ColumnName="branch_name" />
+                <ScalarProperty Name="branch_id" ColumnName="branch_id" />
+                <ScalarProperty Name="faculty_name" ColumnName="faculty_name" />
+                <ScalarProperty Name="faculty_id" ColumnName="faculty_id" />
+                <ScalarProperty Name="permission" ColumnName="permission" />
+                <ScalarProperty Name="lname" ColumnName="lname" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="password" ColumnName="password" />
+                <ScalarProperty Name="username" ColumnName="username" />
+                <ScalarProperty Name="teacher_id" ColumnName="teacher_id" />
+                <ScalarProperty Name="research_name" ColumnName="research_name" />
+                <ScalarProperty Name="research_id" ColumnName="research_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="View_research_member">
+            <EntityTypeMapping TypeName="ResearchDBModel.View_research_member">
+              <MappingFragment StoreEntitySet="View_research_member">
+                <ScalarProperty Name="approve" ColumnName="approve" />
+                <ScalarProperty Name="teacher_id" ColumnName="teacher_id" />
+                <ScalarProperty Name="research_name" ColumnName="research_name" />
+                <ScalarProperty Name="research_id" ColumnName="research_id" />
+                <ScalarProperty Name="branch_name" ColumnName="branch_name" />
+                <ScalarProperty Name="branch_id" ColumnName="branch_id" />
+                <ScalarProperty Name="faculty_name" ColumnName="faculty_name" />
+                <ScalarProperty Name="permission" ColumnName="permission" />
+                <ScalarProperty Name="faculty_id" ColumnName="faculty_id" />
+                <ScalarProperty Name="lname" ColumnName="lname" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="password" ColumnName="password" />
+                <ScalarProperty Name="username" ColumnName="username" />
+                <ScalarProperty Name="user_id" ColumnName="user_id" />
+                <ScalarProperty Name="member_id" ColumnName="member_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="View_user">
+            <EntityTypeMapping TypeName="ResearchDBModel.View_user">
+              <MappingFragment StoreEntitySet="View_user">
+                <ScalarProperty Name="branch_name" ColumnName="branch_name" />
+                <ScalarProperty Name="branch_id" ColumnName="branch_id" />
+                <ScalarProperty Name="faculty_name" ColumnName="faculty_name" />
+                <ScalarProperty Name="permission" ColumnName="permission" />
+                <ScalarProperty Name="faculty_id" ColumnName="faculty_id" />
+                <ScalarProperty Name="lname" ColumnName="lname" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="password" ColumnName="password" />
+                <ScalarProperty Name="username" ColumnName="username" />
+                <ScalarProperty Name="user_id" ColumnName="user_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+</Mapping></edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="True" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="False" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

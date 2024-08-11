@@ -10,18 +10,10 @@
 namespace Research_Framework.ApplicationDB
 {
     using System;
-    using System.Collections.Generic;
     
-    public partial class process_path
+    public partial class sp_helpdiagramdefinition_Result
     {
-        public int path_id { get; set; }
-        public int process_id { get; set; }
-        public int research_id { get; set; }
-        public byte[] path_student { get; set; }
-        public byte[] path_teacher { get; set; }
-        public string status { get; set; }
-    
-        public virtual process process { get; set; }
-        public virtual research research { get; set; }
+        public Nullable<int> version { get; set; }
+        public byte[] definition { get; set; }
     }
 }

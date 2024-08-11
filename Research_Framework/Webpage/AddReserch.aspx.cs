@@ -23,35 +23,35 @@ namespace Research_Framework.Webpage
         {
             if (!IsPostBack)
             {
-                if (Application["userID"] == null)
+                if (Session["userID"] == null)
                 {
                     Response.Redirect("Login.aspx");
                     return;
                 }
 
-                if (Application["userNew"] != null)
-                    Application["userNew"] = null;
+                if (Session["userNew"] != null)
+                    Session["userNew"] = null;
 
-                if (Application["researchNew"] != null)
-                    Application["researchNew"] = null;
+                if (Session["researchNew"] != null)
+                    Session["researchNew"] = null;
 
-                if (Application["userID"] is null)
+                if (Session["userID"] == null)
                     return;
 
-                View_user username = (View_user)Application["userID"];
+                user username = (user)Session["userID"];
 
                 using (var _db = new ResearchDBEntities())
                 {
-                    View_research_member userFirst = _db.View_research_member.FirstOrDefault(c => c.username == username.username);
+                    research_member userFirst = _db.research_member.FirstOrDefault(c => c.user.username == username.username);
 
                     if (userFirst == null)
                         return;
 
-                    List<int> viewUser_list = _db.View_research_member.Where(c => c.research_id == userFirst.research_id)
+                    List<int> viewUser_list = _db.research_member.Where(c => c.research_id == userFirst.research_id)
                                                                       .Select(c => c.user_id)
                                                                       .ToList();
 
-                    List<View_user> user_list = _db.View_user.Where(c => viewUser_list.Contains(c.user_id)).ToList();
+                    List<user> user_list = _db.users.Where(c => viewUser_list.Contains(c.user_id)).ToList();
 
 
 
@@ -60,17 +60,17 @@ namespace Research_Framework.Webpage
 
                     getStudent(user_list);
 
-                    var research = _db.View_research.Where(c => c.research_id == userFirst.research_id)
+                    var research = _db.researches.Where(c => c.research_id == userFirst.research_id)
                                                     .FirstOrDefault();
 
                     if (research == null)
                         return;
 
-                    Application["researchNew"] = research;
+                    Session["researchNew"] = research;
 
                     Tb_reserch.Text = research.research_name;
 
-                    var teacher = _db.View_user.FirstOrDefault(c => c.user_id == research.teacher_id);
+                    var teacher = _db.users.FirstOrDefault(c => c.user_id == research.teacher_id);
 
                     if (teacher == null)
                         return;
@@ -107,7 +107,7 @@ namespace Research_Framework.Webpage
                 string name = usernameSpilt[0];
                 string lname = usernameSpilt[1];
 
-                View_user user = _db.View_user.FirstOrDefault(c => c.name == name && c.lname == lname);
+                user user = _db.users.FirstOrDefault(c => c.name == name && c.lname == lname);
 
                 if(user == null)
                 {
@@ -116,11 +116,11 @@ namespace Research_Framework.Webpage
                     return;
                 }
 
-                List<View_user> user_list;
-                if (Application["userNew"] == null)
-                    user_list = new List<View_user>();
+                List<user> user_list;
+                if (Session["userNew"] == null)
+                    user_list = new List<user>();
                 else
-                    user_list = (List<View_user>)Application["userNew"];
+                    user_list = (List<user>)Session["userNew"];
 
                 if(user_list.Count(c => c.user_id == user.user_id) > 0)
                 {
@@ -140,7 +140,7 @@ namespace Research_Framework.Webpage
             if (string.IsNullOrEmpty(Tb_teacher.Text.Trim()) || string.IsNullOrEmpty(Tb_reserch.Text.Trim()))
                 return;
 
-            if (Application["userNew"] == null)
+            if (Session["userNew"] == null)
                 return;
 
             string teacher = Tb_teacher.Text.Trim();
@@ -156,15 +156,15 @@ namespace Research_Framework.Webpage
 
             using (var _db = new ResearchDBEntities())
             {
-                View_user user = _db.View_user.FirstOrDefault(c => c.name == name && c.lname == lname && c.permission == "teacher");
+                user user = _db.users.FirstOrDefault(c => c.name == name && c.lname == lname && c.permission == "teacher");
 
                 if (user == null)
                     return;
 
                 research researchNew;
-                View_research researchNew_view;
+                research researchNew_view;
 
-                if (Application["researchNew"] == null)
+                if (Session["researchNew"] == null)
                 {
                     researchNew = new research()
                     {
@@ -176,7 +176,7 @@ namespace Research_Framework.Webpage
                 }
                 else
                 {
-                    researchNew_view = (View_research)Application["researchNew"];
+                    researchNew_view = (research)Session["researchNew"];
 
                     research researchOld = _db.researches.FirstOrDefault(c => c.research_id == researchNew_view.research_id);
 
@@ -190,73 +190,77 @@ namespace Research_Framework.Webpage
 
                 _db.SaveChanges();
 
-                researchNew_view = _db.View_research.FirstOrDefault(c => c.research_name == researchName);
-
-                if (researchNew_view == null)
-                    return;
-
-                Application["researchNew"] = researchNew_view;
-
-                List<View_user> user_list = (List<View_user>)Application["userNew"];
-
-                user_list.ForEach(c =>
+                using(var _db2 = new ResearchDBEntities())
                 {
-                    research_member member = _db.research_member.FirstOrDefault(x => x.user_id == c.user_id);
-                    if (member == null)
+
+                    researchNew_view = _db2.researches.FirstOrDefault(c => c.research_name == researchName);
+
+                    if (researchNew_view == null)
+                        return;
+
+                    Session["researchNew"] = researchNew_view;
+
+                    List<user> user_list = (List<user>)Session["userNew"];
+
+                    foreach (var item in user_list)
                     {
-                        var memberNew = new research_member()
+                        research_member member = _db2.research_member.FirstOrDefault(x => x.user_id == item.user_id);
+                        if (member == null)
                         {
-                            research_id = researchNew_view.research_id,
-                            user_id = c.user_id
-                        };
+                            var memberNew = new research_member()
+                            {
+                                research_id = researchNew_view.research_id,
+                                user_id = item.user_id
+                            };
 
-                        _db.research_member.Add(memberNew);
+                            _db2.research_member.Add(memberNew);
+                        }
                     }
-                });
 
-                var list_process = _db.processes.ToList();
+                    var list_process = _db2.processes.ToList();
 
-                list_process.ForEach(c =>
-                {
-                    process_path newProcess_path = _db.process_path.FirstOrDefault(x => x.process_id == c.process_id && x.research_id == researchNew_view.research_id);
-
-                    if (newProcess_path == null)
+                    foreach (var item in list_process)
                     {
-                        _db.process_path.Add(new process_path()
+                        process_path newProcess_path = _db2.process_path.FirstOrDefault(x => x.process_id == item.process_id && x.research_id == researchNew_view.research_id);
+
+                        if (newProcess_path == null)
                         {
-                            process_id = c.process_id,
-                            research_id = researchNew_view.research_id,
-                        });
+                            process_path process_Path = new process_path()
+                            {
+                                process_id = item.process_id,
+                                research_id = researchNew_view.research_id,
+                                status = "ยังไม่อนุมัติ"
+                            };
+
+                            _db2.process_path.Add(process_Path);
+                        }
                     }
-                });
 
-                _db.SaveChanges();
+                    _db2.SaveChanges();
 
-                Response.Redirect(Request.RawUrl);
+                    Response.Redirect(Request.RawUrl);
+                }
             }
         }
 
-        private void getStudent(List<View_user> user_list)
+        private void getStudent(List<user> user_list)
         {
-            user_list = user_list.Select(c => new View_user
+            user_list = user_list.Select(c => new user
                                  {
                                      user_id = c.user_id,
                                      username = c.username,
                                      password = c.password,
                                      name = c.name,
                                      lname = c.lname,
-                                     faculty_id = c.faculty_id,
-                                     faculty_name = c.faculty_name,
                                      branch_id = c.branch_id,
-                                     branch_name = c.branch_name,
                                      permission = c.permission,
                                  })
                                  .ToList();
 
-            Application["userNew"] = user_list;
+            Session["userNew"] = user_list;
 
 
-            var ss = (List<View_user>)Application["userNew"];
+            var ss = (List<user>)Session["userNew"];
 
             DataTable dt = new DataTable();
             dt.Columns.Add("stdID", typeof(string));
@@ -265,13 +269,18 @@ namespace Research_Framework.Webpage
             dt.Columns.Add("faculty", typeof(string));
             dt.Columns.Add("branch", typeof(string));
 
-            user_list.ForEach(c =>
+            using (var _db = new ResearchDBEntities())
             {
-                dt.Rows.Add(c.username, c.name, c.lname, c.faculty_name, c.branch_name);
-            });
+                user_list.ForEach(c =>
+                {
+                    user user = _db.users.FirstOrDefault(x => x.user_id == c.user_id);
+                    dt.Rows.Add(user.username, user.name, user.lname, user.branch.faculty.faculty_name, user.branch.branch_name);
+                });
 
-            Dgv_std.DataSource = dt;
-            Dgv_std.DataBind();
+                Dgv_std.DataSource = dt;
+                Dgv_std.DataBind();
+            }
+
         }
 
         [WebMethod]

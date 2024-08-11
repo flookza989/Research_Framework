@@ -14,8 +14,18 @@ namespace Research_Framework.ApplicationDB
     
     public partial class branch
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public branch()
+        {
+            this.users = new HashSet<user>();
+        }
+    
         public int branch_id { get; set; }
         public string branch_name { get; set; }
         public int faculty_id { get; set; }
+    
+        public virtual faculty faculty { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<user> users { get; set; }
     }
 }

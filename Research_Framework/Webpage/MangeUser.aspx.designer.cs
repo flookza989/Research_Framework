@@ -11,7 +11,7 @@ namespace Research_Framework.Webpage
 {
 
 
-    public partial class Profile
+    public partial class MangeUser
     {
 
         /// <summary>
@@ -24,84 +24,111 @@ namespace Research_Framework.Webpage
         protected global::System.Web.UI.ScriptManager ScriptManager1;
 
         /// <summary>
-        /// ProfileImage control.
+        /// UpdatePanel1 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Image ProfileImage;
+        protected global::System.Web.UI.UpdatePanel UpdatePanel1;
 
         /// <summary>
-        /// Btn_uploadImage control.
+        /// Gv_User control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton Btn_uploadImage;
+        protected global::System.Web.UI.WebControls.GridView Gv_User;
 
         /// <summary>
-        /// Tb_name control.
+        /// UserIdHiddenField control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputText Tb_name;
+        protected global::System.Web.UI.WebControls.HiddenField UserIdHiddenField;
 
         /// <summary>
-        /// Tb_lname control.
+        /// HiddenEditBranchDropDownList control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputText Tb_lname;
+        protected global::System.Web.UI.WebControls.HiddenField HiddenEditBranchDropDownList;
 
         /// <summary>
-        /// Tb_username control.
+        /// EditNameTextBox control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox Tb_username;
+        protected global::System.Web.UI.WebControls.TextBox EditNameTextBox;
 
         /// <summary>
-        /// Tb_password control.
+        /// EditLastNameTextBox control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputPassword Tb_password;
+        protected global::System.Web.UI.WebControls.TextBox EditLastNameTextBox;
 
         /// <summary>
-        /// Tb_faculty control.
+        /// EditUsernameTextBox control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox Tb_faculty;
+        protected global::System.Web.UI.WebControls.TextBox EditUsernameTextBox;
 
         /// <summary>
-        /// Tb_branch control.
+        /// EditPasswordTextBox control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox Tb_branch;
+        protected global::System.Web.UI.WebControls.TextBox EditPasswordTextBox;
 
         /// <summary>
-        /// Btn_save control.
+        /// EditFacultyDropDownList control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton Btn_save;
+        protected global::System.Web.UI.HtmlControls.HtmlSelect EditFacultyDropDownList;
+
+        /// <summary>
+        /// EditBranchDropDownList control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlSelect EditBranchDropDownList;
+
+        /// <summary>
+        /// EditPermissionDropDownList control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlSelect EditPermissionDropDownList;
+
+        /// <summary>
+        /// btn_save control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton btn_save;
     }
 }

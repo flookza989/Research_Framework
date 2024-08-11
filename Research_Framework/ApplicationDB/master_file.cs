@@ -12,17 +12,9 @@ namespace Research_Framework.ApplicationDB
     using System;
     using System.Collections.Generic;
     
-    public partial class View_process
+    public partial class master_file
     {
-        public int path_id { get; set; }
-        public int process_id { get; set; }
-        public string processResearch { get; set; }
-        public int research_id { get; set; }
-        public string research_name { get; set; }
-        public int teacher_id { get; set; }
-        public bool approve { get; set; }
-        public byte[] path_student { get; set; }
-        public byte[] path_teacher { get; set; }
-        public bool status { get; set; }
+        public string fileName { get; set; }
+        public byte[] fileData { get; set; }
     }
 }

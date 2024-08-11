@@ -17,5 +17,8 @@ namespace Research_Framework.ApplicationDB
         public int member_id { get; set; }
         public int user_id { get; set; }
         public int research_id { get; set; }
+    
+        public virtual research research { get; set; }
+        public virtual user user { get; set; }
     }
 }

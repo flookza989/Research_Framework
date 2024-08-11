@@ -11,88 +11,70 @@ namespace Research_Framework.Webpage
 {
 
 
-    public partial class Layout
+    public partial class AddnewUser
     {
 
         /// <summary>
-        /// form1 control.
+        /// ScriptManager1 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlForm form1;
+        protected global::System.Web.UI.ScriptManager ScriptManager1;
 
         /// <summary>
-        /// Lb_name control.
+        /// Btn_Download control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label Lb_name;
+        protected global::System.Web.UI.WebControls.LinkButton Btn_Download;
 
         /// <summary>
-        /// imgContent control.
+        /// FileUploadControl control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Image imgContent;
+        protected global::System.Web.UI.WebControls.FileUpload FileUploadControl;
 
         /// <summary>
-        /// navAddReserch control.
+        /// Btn_upload control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl navAddReserch;
+        protected global::System.Web.UI.WebControls.LinkButton Btn_upload;
 
         /// <summary>
-        /// navApprove control.
+        /// div_Btn_save control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl navApprove;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl div_Btn_save;
 
         /// <summary>
-        /// navAddNewUser control.
+        /// Btn_save control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl navAddNewUser;
+        protected global::System.Web.UI.WebControls.LinkButton Btn_save;
 
         /// <summary>
-        /// navMangeUserBy1 control.
+        /// Gv_newSTD control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl navMangeUserBy1;
-
-        /// <summary>
-        /// navMangeUser control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl navMangeUser;
-
-        /// <summary>
-        /// ContentPlaceHolder1 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.ContentPlaceHolder ContentPlaceHolder1;
+        protected global::System.Web.UI.WebControls.GridView Gv_newSTD;
     }
 }

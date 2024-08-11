@@ -14,7 +14,16 @@ namespace Research_Framework.ApplicationDB
     
     public partial class process
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public process()
+        {
+            this.process_path = new HashSet<process_path>();
+        }
+    
         public int process_id { get; set; }
         public string processResearch { get; set; }
+    
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<process_path> process_path { get; set; }
     }
 }

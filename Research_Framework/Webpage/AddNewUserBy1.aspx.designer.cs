@@ -11,88 +11,70 @@ namespace Research_Framework.Webpage
 {
 
 
-    public partial class Layout
+    public partial class AddNewUserBy1
     {
 
         /// <summary>
-        /// form1 control.
+        /// Tb_username control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlForm form1;
+        protected global::System.Web.UI.WebControls.TextBox Tb_username;
 
         /// <summary>
-        /// Lb_name control.
+        /// Tb_password control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label Lb_name;
+        protected global::System.Web.UI.WebControls.TextBox Tb_password;
 
         /// <summary>
-        /// imgContent control.
+        /// Tb_name control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Image imgContent;
+        protected global::System.Web.UI.WebControls.TextBox Tb_name;
 
         /// <summary>
-        /// navAddReserch control.
+        /// Tb_lname control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl navAddReserch;
+        protected global::System.Web.UI.WebControls.TextBox Tb_lname;
 
         /// <summary>
-        /// navApprove control.
+        /// Ddl_faculty control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl navApprove;
+        protected global::System.Web.UI.HtmlControls.HtmlSelect Ddl_faculty;
 
         /// <summary>
-        /// navAddNewUser control.
+        /// Ddl_branch control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl navAddNewUser;
+        protected global::System.Web.UI.HtmlControls.HtmlSelect Ddl_branch;
 
         /// <summary>
-        /// navMangeUserBy1 control.
+        /// Ddl_permission control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl navMangeUserBy1;
-
-        /// <summary>
-        /// navMangeUser control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl navMangeUser;
-
-        /// <summary>
-        /// ContentPlaceHolder1 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.ContentPlaceHolder ContentPlaceHolder1;
+        protected global::System.Web.UI.HtmlControls.HtmlSelect Ddl_permission;
     }
 }

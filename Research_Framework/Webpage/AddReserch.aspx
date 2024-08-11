@@ -33,8 +33,8 @@
             </Columns>
         </asp:GridView>
         <div class="col-6 mt-2">
-            <asp:Label runat="server" CssClass="labelContent" Text="รหัสนักศึกษา"></asp:Label>
-            <asp:TextBox ID="Tb_student" runat="server" CssClass="form-control textboxContent" placeholder="รหัสนักศึกษา"></asp:TextBox>
+            <asp:Label runat="server" CssClass="labelContent" Text="ชื่อนักศึกษา"></asp:Label>
+            <asp:TextBox ID="Tb_student" runat="server" CssClass="form-control textboxContent" placeholder="ชื่อนักศึกษา"></asp:TextBox>
         </div>
         <div class="col-6 mt-2">
             <asp:LinkButton ID="Btn_add" CssClass="buttonNormal btn mt-4" runat="server" OnClick="Btn_add_Click">

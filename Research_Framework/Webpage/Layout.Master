@@ -21,6 +21,8 @@
     <script src="../Content/jquery/jquery.min.js"></script>
     <script src="../Content/jqueryui/jquery-ui.min.js"></script>
     <script src="../Content/script/myScript.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 
 </head>
 <body>
@@ -30,7 +32,7 @@
             <div class="container-fluid d-flex justify-content-end">
                 <asp:Label ID="Lb_name" runat="server" class="text-white fw-bold fs-4 me-3" Text=""></asp:Label>
                 <a href="Profile.aspx">
-                    <img class="imgContent" src="../Images/NewUser.png" style="width: 50px; border-radius: 50px;" />
+                    <asp:Image ID="imgContent" runat="server" Style="width: 50px; border-radius: 50px;" />
                 </a>
                 <a href="Login.aspx" class="logoutContent">
                     <span class="fa-solid fa-right-from-bracket fa-xl ms-4 text-white logoutContent"></span>
@@ -43,14 +45,27 @@
                 <li class="nav-item">
                     <img class="w-100 p-3" src="../Images/LOGO-RMUTR.png" style="margin-top: -50px; margin-bottom: -50px;" />
                 </li>
-                <li id="navAdd" runat="server" class="nav-item">
+                <li id="navAddReserch" runat="server" class="nav-item">
                     <a class="nav-link sidebarItem" onclick="activateButton(this)" href="AddReserch.aspx">วิทยานิพนธ์</a>
                     <hr />
                 </li>
-                <li class="nav-item">
+                <li id="navApprove" runat="server" class="nav-item">
                     <a class="nav-link sidebarItem" onclick="activateButton(this)" href="Approve.aspx">อนุมัติ</a>
                     <hr />
                 </li>
+                <li id="navAddNewUser" runat="server" class="nav-item">
+                    <a class="nav-link sidebarItem" onclick="activateButton(this)" href="AddNewUser.aspx">เพิ่มผู้ใช้</a>
+                    <hr />
+                </li>
+                <li id="navMangeUserBy1" runat="server" class="nav-item">
+                    <a class="nav-link sidebarItem" onclick="activateButton(this)" href="AddNewUserBy1.aspx">เพิ่มผู้ใช้ทีละ 1</a>
+                    <hr />
+                </li>
+                <li id="navMangeUser" runat="server" class="nav-item">
+                    <a class="nav-link sidebarItem" onclick="activateButton(this)" href="MangeUser.aspx">จัดการผู้ใช้</a>
+                    <hr />
+                </li>
+
             </ul>
         </div>
 

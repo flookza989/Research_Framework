@@ -14,13 +14,26 @@ namespace Research_Framework.ApplicationDB
     
     public partial class user
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public user()
+        {
+            this.researches = new HashSet<research>();
+            this.research_member = new HashSet<research_member>();
+        }
+    
         public int user_id { get; set; }
         public string username { get; set; }
         public string password { get; set; }
         public string name { get; set; }
         public string lname { get; set; }
-        public int faculty_id { get; set; }
         public int branch_id { get; set; }
         public string permission { get; set; }
+        public byte[] img { get; set; }
+    
+        public virtual branch branch { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<research> researches { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<research_member> research_member { get; set; }
     }
 }

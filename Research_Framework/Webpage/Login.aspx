@@ -18,7 +18,7 @@
     <form id="form1" runat="server">
         <div class="containerLogin">
             <div class="contentHead">
-                <label>ระบบจัดการวิจัย</label>
+                <label>ระบบจัดการวิทยานิพนธ์</label>
             </div>
             <div class="contentBody">
                 <div class="text-start">

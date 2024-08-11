@@ -22,7 +22,7 @@ namespace Research_Framework.Webpage
                 string user = Tb_user.Text.Trim();
                 string pass = Tb_pass.Text.Trim();
 
-                View_user getUser = _db.View_user.FirstOrDefault(c => c.username == user && c.password == pass);
+                user getUser = _db.users.FirstOrDefault(c => c.username == user && c.password == pass);
 
                 if(getUser == null)
                 {
@@ -32,8 +32,8 @@ namespace Research_Framework.Webpage
                     return;
                 }
 
-                Application["fullName"] = $"{getUser.name} {getUser.lname}";
-                Application["userID"] = getUser;
+                Session["fullName"] = $"{getUser.name} {getUser.lname}";
+                Session["userID"] = getUser;
 
                 Response.Redirect("Profile.aspx");
             }

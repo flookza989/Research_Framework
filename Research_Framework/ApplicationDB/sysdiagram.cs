@@ -12,17 +12,12 @@ namespace Research_Framework.ApplicationDB
     using System;
     using System.Collections.Generic;
     
-    public partial class View_user
+    public partial class sysdiagram
     {
-        public int user_id { get; set; }
-        public string username { get; set; }
-        public string password { get; set; }
         public string name { get; set; }
-        public string lname { get; set; }
-        public int faculty_id { get; set; }
-        public string permission { get; set; }
-        public string faculty_name { get; set; }
-        public int branch_id { get; set; }
-        public string branch_name { get; set; }
+        public int principal_id { get; set; }
+        public int diagram_id { get; set; }
+        public Nullable<int> version { get; set; }
+        public byte[] definition { get; set; }
     }
 }

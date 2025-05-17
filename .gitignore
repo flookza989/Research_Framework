@@ -361,3 +361,7 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+
+# Uploads folder containing user uploaded files
+**/Uploads/
+Uploads/

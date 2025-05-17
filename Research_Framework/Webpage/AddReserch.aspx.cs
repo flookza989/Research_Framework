@@ -135,6 +135,40 @@ namespace Research_Framework.Webpage
             }
         }
 
+        protected void Dgv_std_RowDataBound(object sender, GridViewRowEventArgs e)
+        {
+            if (e.Row.RowType == DataControlRowType.DataRow)
+            {
+                LinkButton deleteButton = (LinkButton)e.Row.FindControl("DeleteButton");
+                deleteButton.Attributes.Add("onclick", "return confirmDelete();");
+            }
+        }
+
+        protected void Dgv_std_RowDeleting(object sender, GridViewDeleteEventArgs e)
+        {
+            // ดึงรหัสสมาชิกจากแถวที่เลือก
+            string memberId = Dgv_std.DataKeys[e.RowIndex].Value.ToString();
+
+            // ลบสมาชิกจากฐานข้อมูล
+            // ตัวอย่างการลบสมาชิก (คุณต้องเขียนโค้ดลบที่เหมาะสมตามฐานข้อมูลของคุณ)
+
+            // รีเฟรชข้อมูลใน GridView
+            BindGridView(); // ฟังก์ชันที่ใช้ในการบันทึกข้อมูลใหม่ใน GridView
+        }
+
+        private void BindGridView()
+        {
+            // ตัวอย่างการโหลดข้อมูลจากฐานข้อมูล
+            // using (SqlConnection conn = new SqlConnection(connectionString))
+            // {
+            //     SqlDataAdapter da = new SqlDataAdapter("SELECT * FROM Members", conn);
+            //     DataTable dt = new DataTable();
+            //     da.Fill(dt);
+            //     Dgv_std.DataSource = dt;
+            //     Dgv_std.DataBind();
+            // }
+        }
+
         protected void Btn_save_Click(object sender, EventArgs e)
         {
             if (string.IsNullOrEmpty(Tb_teacher.Text.Trim()) || string.IsNullOrEmpty(Tb_reserch.Text.Trim()))

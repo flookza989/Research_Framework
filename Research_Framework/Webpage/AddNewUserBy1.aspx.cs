@@ -94,8 +94,6 @@ namespace Research_Framework.Webpage
                     lname = userData.lname,
                     branch_id = userData.branch_id,
                     permission = userData.permission
-                    // ไม่ต้องกำหนดค่า user_id เพราะ database จะสร้างให้อัตโนมัติ
-                    // ไม่ต้องกำหนดค่า img เพราะยังไม่มีการอัพโหลดรูปภาพ
                 };
                 _db.users.Add(newUser);
                 _db.SaveChanges();

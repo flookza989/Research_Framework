@@ -96,6 +96,15 @@ namespace Research_Framework.Webpage
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl navAddReserch;
 
         /// <summary>
+        /// navAddReserchLink control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlAnchor navAddReserchLink;
+
+        /// <summary>
         /// navApprove control.
         /// </summary>
         /// <remarks>
@@ -103,6 +112,15 @@ namespace Research_Framework.Webpage
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl navApprove;
+
+        /// <summary>
+        /// navApproveLink control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlAnchor navApproveLink;
 
         /// <summary>
         /// navAddNewUser control.
@@ -114,6 +132,15 @@ namespace Research_Framework.Webpage
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl navAddNewUser;
 
         /// <summary>
+        /// navAddNewUserLink control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlAnchor navAddNewUserLink;
+
+        /// <summary>
         /// navMangeUser control.
         /// </summary>
         /// <remarks>
@@ -121,6 +148,15 @@ namespace Research_Framework.Webpage
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl navMangeUser;
+
+        /// <summary>
+        /// navMangeUserLink control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlAnchor navMangeUserLink;
 
         /// <summary>
         /// mainContent control.

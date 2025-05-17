@@ -29,18 +29,15 @@
                             <asp:LinkButton ID="Btn_upload" CssClass="buttonNormal btn" runat="server" OnClick="Btn_upload_Click">
                                 <span class="fa-solid fa-upload"></span> อัพโหลด
                             </asp:LinkButton>
-                                                                        <!-- ปุ่มบันทึก -->
-                    <div id="div_Btn_save" runat="server" class="d-flex align-items-center ms-2">
-                        <asp:LinkButton ID="Btn_save" runat="server" CssClass="buttonNormal btn" 
-                            OnClick="Btn_save_Click">
-                            <span class="fa-solid fa-save"></span> บันทึก
-                        </asp:LinkButton>
-                    </div>
+                            <!-- ปุ่มบันทึก -->
+                            <div id="div_Btn_save" runat="server" class="ms-2">
+                                <asp:LinkButton ID="Btn_save" runat="server" CssClass="buttonNormal btn" 
+                                    OnClick="Btn_save_Click">
+                                    <span class="fa-solid fa-save"></span> บันทึก
+                                </asp:LinkButton>
+                            </div>
                         </div>
-
                     </div>
-                    
-
                 </div>
 
                 <!-- ตารางแสดงข้อมูล -->

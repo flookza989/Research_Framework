@@ -306,7 +306,7 @@ namespace Research_Framework.Webpage
                     };
                 }
             }
-            catch (Exception ex)
+            catch
             {
                 return new
                 {

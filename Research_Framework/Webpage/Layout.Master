@@ -53,19 +53,19 @@
                         <img class="w-100 p-3" src="../Images/LOGO-RMUTR.png" style="margin-top: -50px; margin-bottom: -50px;" />
                     </li>
                     <li id="navAddReserch" runat="server" class="nav-item">
-                        <a class="nav-link sidebarItem" onclick="activateButton(this)" href="AddReserch.aspx">วิทยานิพนธ์</a>
+                        <a id="navAddReserchLink" runat="server" class="nav-link sidebarItem" onclick="activateButton(this)" href="AddReserch.aspx">วิทยานิพนธ์</a>
                         <hr />
                     </li>
                     <li id="navApprove" runat="server" class="nav-item">
-                        <a class="nav-link sidebarItem" onclick="activateButton(this)" href="ResearchProcess.aspx">อนุมัติ</a>
+                        <a id="navApproveLink" runat="server" class="nav-link sidebarItem" onclick="activateButton(this)" href="ResearchProcess.aspx">อนุมัติ</a>
                         <hr />
                     </li>
                     <li id="navAddNewUser" runat="server" class="nav-item">
-                        <a class="nav-link sidebarItem" onclick="activateButton(this)" href="AddNewUser.aspx">เพิ่มผู้ใช้</a>
+                        <a id="navAddNewUserLink" runat="server" class="nav-link sidebarItem" onclick="activateButton(this)" href="AddNewUser.aspx">เพิ่มผู้ใช้</a>
                         <hr />
                     </li>
                     <li id="navMangeUser" runat="server" class="nav-item">
-                        <a class="nav-link sidebarItem" onclick="activateButton(this)" href="MangeUser.aspx">จัดการผู้ใช้</a>
+                        <a id="navMangeUserLink" runat="server" class="nav-link sidebarItem" onclick="activateButton(this)" href="MangeUser.aspx">จัดการผู้ใช้</a>
                         <hr />
                     </li>
                 </ul>

@@ -24,7 +24,26 @@ namespace Research_Framework.Webpage
                 BtnLogout.Visible = !isLoginPage;
                 navProfile.Visible = !isLoginPage;
 
-                mainContent.Attributes["class"] = isLoginPage ? "content-full" : "content";
+                // กำหนด CSS class ให้กับ content container
+                if (isLoginPage)
+                {
+                    // หน้า Login
+                    mainContent.Attributes["class"] = "content-login";
+                }
+                else if (Session["UserID"] == null)
+                {
+                    // ยังไม่ได้ login แต่ไม่ใช่หน้า Login
+                    mainContent.Attributes["class"] = "content-no-sidebar";
+                }
+                else
+                {
+                    // login แล้ว มี sidebar
+                    mainContent.Attributes["class"] = "content";
+                }
+                
+                // ซ่อน sidebar และ navbar เมื่อยังไม่ได้ login หรือเป็นหน้า Login
+                sidebarContainer.Visible = !isLoginPage && Session["UserID"] != null;
+                navbarContainer.Visible = !isLoginPage && Session["UserID"] != null;
 
                 if (!isLoginPage && Session["UserID"] == null)
                 {
@@ -34,6 +53,9 @@ namespace Research_Framework.Webpage
                 if (Session["UserID"] != null)
                 {
                     LoadUserInfo();
+                    
+                    // ไฮไลท์เมนูปัจจุบัน
+                    HighlightCurrentMenu();
                 }
             }
         }
@@ -74,6 +96,47 @@ namespace Research_Framework.Webpage
             {
                 // จัดการข้อผิดพลาด
                 Console.WriteLine($"Error loading user info: {ex.Message}");
+            }
+        }
+
+        private void HighlightCurrentMenu()
+        {
+            try
+            {
+                // หาชื่อไฟล์ของหน้าปัจจุบัน
+                string currentPage = System.IO.Path.GetFileName(Request.Url.AbsolutePath).ToLower();
+
+                // ลบ class active จากเมนูทั้งหมดก่อน
+                navAddReserchLink.Attributes["class"] = "nav-link sidebarItem";
+                navApproveLink.Attributes["class"] = "nav-link sidebarItem";
+                navAddNewUserLink.Attributes["class"] = "nav-link sidebarItem";
+                navMangeUserLink.Attributes["class"] = "nav-link sidebarItem";
+
+                // กำหนด class active ให้กับเมนูที่ตรงกับหน้าปัจจุบัน
+                if (currentPage == "addreserch.aspx" && navAddReserch.Visible)
+                {
+                    navAddReserchLink.Attributes["class"] = "nav-link sidebarItem active";
+                }
+                else if ((currentPage == "researchprocess.aspx" || currentPage == "approve.aspx") && navApprove.Visible)
+                {
+                    navApproveLink.Attributes["class"] = "nav-link sidebarItem active";
+                }
+                else if (currentPage == "addnewuser.aspx" && navAddNewUser.Visible)
+                {
+                    navAddNewUserLink.Attributes["class"] = "nav-link sidebarItem active";
+                }
+                else if (currentPage == "mangeuser.aspx" && navMangeUser.Visible)
+                {
+                    navMangeUserLink.Attributes["class"] = "nav-link sidebarItem active";
+                }
+
+                // เพิ่มสคริปต์ JavaScript เพื่อเรียกใช้ฟังก์ชัน highlightCurrentMenu จาก myScript.js
+                ScriptManager.RegisterStartupScript(this, GetType(), "highlightMenu", "highlightCurrentMenu();", true);
+            }
+            catch (Exception ex)
+            {
+                // จัดการข้อผิดพลาด
+                Console.WriteLine($"Error highlighting current menu: {ex.Message}");
             }
         }
 

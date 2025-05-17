@@ -629,8 +629,9 @@
     <Content Include="index.aspx" />
     <Content Include="Web.config" />
     <Content Include="Webpage\AddNewUser.aspx" />
-    <Content Include="Webpage\AddReserch.aspx" />
+    <Content Include="Webpage\AddResearch.aspx" />
     <Content Include="Webpage\Approve.aspx" />
+    <Content Include="Webpage\Contact.aspx" />
     <Content Include="Webpage\Login.aspx" />
     <Content Include="Webpage\MangeUser.aspx" />
     <Content Include="Webpage\Profile.aspx" />
@@ -700,12 +701,12 @@
     <Compile Include="Webpage\AddNewUser.aspx.designer.cs">
       <DependentUpon>AddNewUser.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Webpage\AddReserch.aspx.cs">
-      <DependentUpon>AddReserch.aspx</DependentUpon>
+    <Compile Include="Webpage\AddResearch.aspx.cs">
+      <DependentUpon>AddResearch.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Webpage\AddReserch.aspx.designer.cs">
-      <DependentUpon>AddReserch.aspx</DependentUpon>
+    <Compile Include="Webpage\AddResearch.aspx.designer.cs">
+      <DependentUpon>AddResearch.aspx</DependentUpon>
     </Compile>
     <Compile Include="Webpage\Approve.aspx.cs">
       <DependentUpon>Approve.aspx</DependentUpon>
@@ -713,6 +714,13 @@
     </Compile>
     <Compile Include="Webpage\Approve.aspx.designer.cs">
       <DependentUpon>Approve.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Webpage\Contact.aspx.cs">
+      <DependentUpon>Contact.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Webpage\Contact.aspx.designer.cs">
+      <DependentUpon>Contact.aspx</DependentUpon>
     </Compile>
     <Compile Include="Webpage\Layout.Master.cs">
       <DependentUpon>Layout.Master</DependentUpon>

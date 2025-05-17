@@ -168,6 +168,24 @@ namespace Research_Framework.Webpage
         protected global::System.Web.UI.HtmlControls.HtmlAnchor navMangeUserLink;
 
         /// <summary>
+        /// navContact control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl navContact;
+
+        /// <summary>
+        /// navContactLink control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlAnchor navContactLink;
+
+        /// <summary>
         /// mainContent control.
         /// </summary>
         /// <remarks>

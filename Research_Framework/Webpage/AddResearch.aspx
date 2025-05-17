@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Webpage/Layout.Master" AutoEventWireup="true" EnableEventValidation="false" CodeBehind="AddReserch.aspx.cs" Inherits="Research_Framework.Webpage.AddReserch" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Webpage/Layout.Master" AutoEventWireup="true" EnableEventValidation="false" CodeBehind="AddResearch.aspx.cs" Inherits="Research_Framework.Webpage.AddReserch" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
     <asp:ScriptManager ID="ScriptManager1" runat="server" EnablePageMethods="true">
@@ -264,7 +264,7 @@
             showLoading('#teacherList');
             $.ajax({
                 type: 'POST',
-                url: 'AddReserch.aspx/SearchTeachers',
+                url: 'AddResearch.aspx/SearchTeachers',
                 data: JSON.stringify({ searchText: keyword }),
                 contentType: 'application/json; charset=utf-8',
                 dataType: 'json',
@@ -290,7 +290,7 @@
             showLoading('#studentList');
             $.ajax({
                 type: 'POST',
-                url: 'AddReserch.aspx/SearchStudents',
+                url: 'AddResearch.aspx/SearchStudents',
                 data: JSON.stringify({ searchText: keyword }),
                 contentType: 'application/json; charset=utf-8',
                 dataType: 'json',
@@ -362,7 +362,7 @@
             showLoadingOverlay();
             $.ajax({
                 type: 'POST',
-                url: 'AddReserch.aspx/SelectTeacher',
+                url: 'AddResearch.aspx/SelectTeacher',
                 data: JSON.stringify({ teacherId: teacherId }),
                 contentType: 'application/json; charset=utf-8',
                 dataType: 'json',
@@ -393,7 +393,7 @@
             showLoadingOverlay();
             $.ajax({
                 type: 'POST',
-                url: 'AddReserch.aspx/AddStudent',
+                url: 'AddResearch.aspx/AddStudent',
                 data: JSON.stringify({ studentId: studentId }),
                 contentType: 'application/json; charset=utf-8',
                 dataType: 'json',
@@ -440,7 +440,7 @@
         function loadTeachers() {
             $.ajax({
                 type: 'POST',
-                url: 'AddReserch.aspx/LoadAdvisors',
+                url: 'AddResearch.aspx/LoadAdvisors',
                 contentType: 'application/json; charset=utf-8',
                 dataType: 'json',
                 success: function (response) {
@@ -488,7 +488,7 @@
 
             $.ajax({
                 type: 'POST',
-                url: 'AddReserch.aspx/CreateInitialResearch',
+                url: 'AddResearch.aspx/CreateInitialResearch',
                 data: JSON.stringify({
                     researchName: researchName,
                     advisorId: parseInt(advisorId)

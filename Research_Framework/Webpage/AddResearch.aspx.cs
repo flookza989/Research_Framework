@@ -758,58 +758,58 @@ namespace Research_Framework.Webpage
 
 
 
-        //[WebMethod]
-        //public static object CreateInitialResearch(string researchName, int advisorId)
-        //{
-        //    //try
-        //    //{
-        //    //    int currentUserId = Convert.ToInt32(HttpContext.Current.Session["UserID"]);
+        [WebMethod]
+        public static object CreateInitialResearch(string researchName, int advisorId)
+        {
+            try
+            {
+                int currentUserId = Convert.ToInt32(HttpContext.Current.Session["UserID"]);
 
-        //    //    using (var db = new ResearchDBEntities())
-        //    //    {
-        //    //        // ค้นหาข้อมูลนักศึกษา
-        //    //        var student = db.students
-        //    //            .FirstOrDefault(s => s.user_id == currentUserId);
+                using (var db = new ResearchDBEntities())
+                {
+                    // ค้นหาข้อมูลนักศึกษา
+                    var student = db.students
+                        .FirstOrDefault(s => s.user_id == currentUserId);
 
-        //    //        if (student == null)
-        //    //        {
-        //    //            return new { success = false, message = "ไม่พบข้อมูลนักศึกษา" };
-        //    //        }
+                    if (student == null)
+                    {
+                        return new { success = false, message = "ไม่พบข้อมูลนักศึกษา" };
+                    }
 
-        //    //        // สร้างงานวิจัยใหม่
-        //    //        var newResearch = new research
-        //    //        {
-        //    //            name = researchName,
-        //    //            description = "งานวิจัยเริ่มแรก",
-        //    //            advisor_id = advisorId,
-        //    //            status = "IN_PROGRESS",
-        //    //            is_approved = false,
-        //    //            created_date = DateTime.Now
-        //    //        };
+                    // สร้างงานวิจัยใหม่
+                    var newResearch = new researches
+                    {
+                        name = researchName,
+                        description = "งานวิจัยเริ่มแรก",
+                        advisor_id = advisorId,
+                        status = "IN_PROGRESS",
+                        is_approved = false,
+                        created_date = DateTime.Now
+                    };
 
-        //    //        db.researches.Add(newResearch);
-        //    //        db.SaveChanges();
+                    db.researches.Add(newResearch);
+                    db.SaveChanges();
 
-        //    //        // เพิ่มนักศึกษาเป็นหัวหน้ากลุ่ม
-        //    //        var researchGroup = new research_groups
-        //    //        {
-        //    //            research_id = newResearch.id,
-        //    //            student_id = student.id,
-        //    //            created_date = DateTime.Now,
-        //    //            is_leader = true
-        //    //        };
+                    // เพิ่มนักศึกษาเป็นหัวหน้ากลุ่ม
+                    var researchGroup = new research_groups
+                    {
+                        research_id = newResearch.id,
+                        student_id = student.id,
+                        created_date = DateTime.Now,
+                        is_leader = true
+                    };
 
-        //    //        db.research_groups.Add(researchGroup);
-        //    //        db.SaveChanges();
+                    db.research_groups.Add(researchGroup);
+                    db.SaveChanges();
 
-        //    //        return new { success = true };
-        //    //    }
-        //    //}
-        //    //catch (Exception ex)
-        //    //{
-        //    //    return new { success = false, message = "เกิดข้อผิดพลาดในการสร้างงานวิจัย" };
-        //    //}
-        //}
+                    return new { success = true };
+                }
+            }
+            catch (Exception ex)
+            {
+                return new { success = false, message = "เกิดข้อผิดพลาดในการสร้างงานวิจัย :" + ex.Message };
+            }
+        }
     }
 
     [Serializable]

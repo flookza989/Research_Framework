@@ -23,6 +23,7 @@ namespace Research_Framework.Webpage
                 navApprove.Visible = !isLoginPage;
                 navAddNewUser.Visible = !isLoginPage;
                 navMangeUser.Visible = !isLoginPage;
+                navContact.Visible = !isLoginPage;
                 
                 // ตั้งค่าการมองเห็นปุ่มใน Navbar
                 BtnLogout.Visible = !isLoginPage;
@@ -81,6 +82,7 @@ namespace Research_Framework.Webpage
                         navApprove.Visible = userType != "ADMIN";
                         navAddNewUser.Visible = userType == "ADMIN";
                         navMangeUser.Visible = userType == "ADMIN";
+                        navContact.Visible = true; // เมนูติดต่อแสดงสำหรับทุกคน
 
                         // แสดงชื่อผู้ใช้
                         LbUsername.Text = $"{user.first_name} {user.last_name}";
@@ -113,17 +115,19 @@ namespace Research_Framework.Webpage
                 string currentPage = System.IO.Path.GetFileName(Request.Url.AbsolutePath).ToLower();
 
                 // ลบ class active จากเมนูทั้งหมดก่อน
+                navProfileLink.Attributes["class"] = "nav-link sidebarItem";
                 navAddReserchLink.Attributes["class"] = "nav-link sidebarItem";
                 navApproveLink.Attributes["class"] = "nav-link sidebarItem";
                 navAddNewUserLink.Attributes["class"] = "nav-link sidebarItem";
                 navMangeUserLink.Attributes["class"] = "nav-link sidebarItem";
+                navContactLink.Attributes["class"] = "nav-link sidebarItem";
 
                 // กำหนด class active ให้กับเมนูที่ตรงกับหน้าปัจจุบัน
                 if (currentPage == "profile.aspx" && navProfile.Visible)
                 {
                     navProfileLink.Attributes["class"] = "nav-link sidebarItem active";
                 }
-                else if (currentPage == "addreserch.aspx" && navAddReserch.Visible)
+                else if (currentPage == "addresearch.aspx" && navAddReserch.Visible)
                 {
                     navAddReserchLink.Attributes["class"] = "nav-link sidebarItem active";
                 }
@@ -138,6 +142,10 @@ namespace Research_Framework.Webpage
                 else if (currentPage == "mangeuser.aspx" && navMangeUser.Visible)
                 {
                     navMangeUserLink.Attributes["class"] = "nav-link sidebarItem active";
+                }
+                else if (currentPage == "contact.aspx" && navContact.Visible)
+                {
+                    navContactLink.Attributes["class"] = "nav-link sidebarItem active";
                 }
 
                 // เพิ่มสคริปต์ JavaScript เพื่อเรียกใช้ฟังก์ชัน highlightCurrentMenu จาก myScript.js

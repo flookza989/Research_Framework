@@ -57,7 +57,7 @@
                         <hr />
                     </li>
                     <li id="navAddReserch" runat="server" class="nav-item">
-                        <a id="navAddReserchLink" runat="server" class="nav-link sidebarItem" onclick="activateButton(this)" href="AddReserch.aspx">วิทยานิพนธ์</a>
+                        <a id="navAddReserchLink" runat="server" class="nav-link sidebarItem" onclick="activateButton(this)" href="AddResearch.aspx">วิทยานิพนธ์</a>
                         <hr />
                     </li>
                     <li id="navApprove" runat="server" class="nav-item">
@@ -70,6 +70,10 @@
                     </li>
                     <li id="navMangeUser" runat="server" class="nav-item">
                         <a id="navMangeUserLink" runat="server" class="nav-link sidebarItem" onclick="activateButton(this)" href="MangeUser.aspx">จัดการผู้ใช้</a>
+                        <hr />
+                    </li>
+                    <li id="navContact" runat="server" class="nav-item">
+                        <a id="navContactLink" runat="server" class="nav-link sidebarItem" onclick="activateButton(this)" href="Contact.aspx">ติดต่อ</a>
                         <hr />
                     </li>
                 </ul>

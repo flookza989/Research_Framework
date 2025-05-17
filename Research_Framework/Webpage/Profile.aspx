@@ -94,73 +94,119 @@
         function SaveProfile() {
             var profileData = {
                 Name: $("#<%= Tb_name.ClientID %>").val(),
-                LastName: $("#<%= Tb_lname.ClientID %>").val(),
-                Password: $("#<%= Tb_password.ClientID %>").val(),
-                Image: null // กำหนดให้ Image เป็น null ก่อน
-            };
+        LastName: $("#<%= Tb_lname.ClientID %>").val(),
+        Password: $("#<%= Tb_password.ClientID %>").val(),
+        Image: null
+    };
 
-            var fileInput = document.getElementById('fileUpload');
-            var file = fileInput.files[0];
+    // ตรวจสอบความถูกต้องของรหัสผ่าน
+    if (!isValidPassword(profileData.Password)) {
+        Swal.fire({
+            icon: 'error',
+            title: 'รหัสผ่านต้องมีความยาวอย่างน้อย 8 ตัวอักษร และประกอบด้วยตัวอักษรพิมพ์ใหญ่ ตัวอักษรพิมพ์เล็ก ตัวเลข และอักขระพิเศษ',
+            showConfirmButton: true
+        });
+        return;
+    }
 
-            // ตรวจสอบความถูกต้องของรหัสผ่าน
-            if (!isValidPassword(profileData.Password)) {
+    // สร้างฟังก์ชันสำหรับส่งข้อมูลไปยัง server
+    function sendDataToServer(profileData) {
+        $.ajax({
+            type: "POST",
+            url: "Profile.aspx/SaveProfile",
+            contentType: "application/json; charset=utf-8",
+            data: JSON.stringify({ profileData: profileData }),
+            dataType: "json",
+            success: function (response) {
+                if (response.d) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'บันทึกข้อมูลสำเร็จ',
+                        showConfirmButton: true,
+                        didClose: () => {
+                            location.reload();
+                        }
+                    });
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'เกิดข้อผิดพลาดในการบันทึกข้อมูล',
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                }
+            },
+            error: function (xhr, status, error) {
+                console.error("AJAX Error:", error);
+                console.log("Response Text:", xhr.responseText);
                 Swal.fire({
                     icon: 'error',
-                    title: 'รหัสผ่านต้องมีความยาวอย่างน้อย 8 ตัวอักษร และประกอบด้วยตัวอักษรพิมพ์ใหญ่ ตัวอักษรพิมพ์เล็ก ตัวเลข และอักขระพิเศษ',
+                    title: 'เกิดข้อผิดพลาดในการเชื่อมต่อ',
+                    text: 'กรุณาลองใหม่อีกครั้ง',
                     showConfirmButton: true
                 });
-                return;
             }
+        });
+    }
 
-            if (file) {
-                var reader = new FileReader();
-                reader.readAsArrayBuffer(file);
+    var fileInput = document.getElementById('fileUpload');
+    var file = fileInput.files[0];
 
-                reader.onload = function (event) {
-                    var arrayBuffer = event.target.result;
-                    var byteArray = new Uint8Array(arrayBuffer);
-                    var base64String = btoa(String.fromCharCode.apply(null, byteArray));
+    if (file) {
+        // ถ้ามีการเลือกไฟล์
+        var reader = new FileReader();
+        reader.onload = function (event) {
+            var arrayBuffer = event.target.result;
+            var byteArray = new Uint8Array(arrayBuffer);
+            var base64String = btoa(String.fromCharCode.apply(null, byteArray));
+            
+                    // อัพเดทค่า Image ใน profileData
                     profileData.Image = base64String;
 
-                    // ส่งข้อมูลไปยังเซิร์ฟเวอร์ด้วย Ajax ตามโค้ดที่มีอยู่
+                    console.log('Image converted to base64');
+                    console.log('Base64 length:', base64String.length);
+                    console.log('Sample:', base64String.substring(0, 50) + '...');
 
-                   
+                    // ส่งข้อมูลหลังจากแปลงรูปภาพเสร็จแล้ว
+                    sendDataToServer(profileData);
                 };
+
+                reader.onerror = function (error) {
+                    console.error('Error reading file:', error);
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'เกิดข้อผิดพลาดในการอ่านไฟล์',
+                        text: 'กรุณาลองใหม่อีกครั้ง',
+                        showConfirmButton: true
+                    });
+                };
+
+                // เริ่มอ่านไฟล์
+                reader.readAsArrayBuffer(file);
             } else {
-
+                // ถ้าไม่มีการเลือกไฟล์ใหม่ ส่งข้อมูลทันที
+                sendDataToServer(profileData);
             }
+        }
 
-            $.ajax({
-                type: "POST",
-                url: "Profile.aspx/SaveProfile",
-                contentType: "application/json; charset=utf-8",
-                data: JSON.stringify({ profileData: profileData }),
-                dataType: "json",
-                success: function (response) {
-                    if (response.d) {
-                        Swal.fire({
-                            icon: 'success',
-                            title: 'บันทึกข้อมูลสำเร็จ',
-                            showConfirmButton: true, // เปลี่ยนเป็น true เพื่อให้แสดงปุ่มยืนยัน
-                            didClose: () => {
-                                location.reload(); // โหลดหน้าเว็บใหม่หลังจากการบันทึกข้อมูลเรียบร้อยแล้วเมื่อผู้ใช้คลิกปิดเอง
-                            }
-                        });
-                    } else {
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'เกิดข้อผิดพลาดในการบันทึกข้อมูล',
-                            showConfirmButton: false,
-                            timer: 1500
-                        });
-                    }
-                },
+        // ฟังก์ชันตรวจสอบรหัสผ่าน (ถ้ายังไม่มี)
+        function isValidPassword(password) {
+            // ตรวจสอบความยาวอย่างน้อย 8 ตัวอักษร
+            if (password.length < 8) return false;
 
-                error: function (xhr, status, error) {
-                    alert("เกิดข้อผิดพลาดในการบันทึกข้อมูล: " + xhr.responseText);
-                    console.log(xhr.responseText);
-                }
-            });
+            // ตรวจสอบว่ามีตัวอักษรพิมพ์ใหญ่
+            if (!/[A-Z]/.test(password)) return false;
+
+            // ตรวจสอบว่ามีตัวอักษรพิมพ์เล็ก
+            if (!/[a-z]/.test(password)) return false;
+
+            // ตรวจสอบว่ามีตัวเลข
+            if (!/[0-9]/.test(password)) return false;
+
+            // ตรวจสอบว่ามีอักขระพิเศษ
+            if (!/[!@#$%^&*(),.?":{}|<>]/.test(password)) return false;
+
+            return true;
         }
 
 

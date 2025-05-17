@@ -1,0 +1,590 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="ResearchDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="branch">
+          <Key>
+            <PropertyRef Name="branch_id" />
+          </Key>
+          <Property Name="branch_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="branch_name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="faculty_id" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="faculty">
+          <Key>
+            <PropertyRef Name="faculty_id" />
+          </Key>
+          <Property Name="faculty_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="faculty_name" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="master_file">
+          <Key>
+            <PropertyRef Name="fileName" />
+          </Key>
+          <Property Name="fileName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="fileData" Type="varbinary(max)" />
+        </EntityType>
+        <EntityType Name="process">
+          <Key>
+            <PropertyRef Name="process_id" />
+          </Key>
+          <Property Name="process_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="processResearch" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="process_path">
+          <Key>
+            <PropertyRef Name="path_id" />
+          </Key>
+          <Property Name="path_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="process_id" Type="int" Nullable="false" />
+          <Property Name="research_id" Type="int" Nullable="false" />
+          <Property Name="path_student" Type="varbinary(max)" />
+          <Property Name="path_teacher" Type="varbinary(max)" />
+          <Property Name="status" Type="nvarchar" MaxLength="20" Nullable="false" />
+        </EntityType>
+        <EntityType Name="research">
+          <Key>
+            <PropertyRef Name="research_id" />
+          </Key>
+          <Property Name="research_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="research_name" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="teacher_id" Type="int" Nullable="false" />
+          <Property Name="approve" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="research_member">
+          <Key>
+            <PropertyRef Name="member_id" />
+          </Key>
+          <Property Name="member_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="user_id" Type="int" Nullable="false" />
+          <Property Name="research_id" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
+        <EntityType Name="user">
+          <Key>
+            <PropertyRef Name="user_id" />
+          </Key>
+          <Property Name="user_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="username" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="password" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="lname" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="branch_id" Type="int" Nullable="false" />
+          <Property Name="permission" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="img" Type="varbinary(max)" />
+        </EntityType>
+        <Association Name="FK_branch_faculty">
+          <End Role="faculty" Type="Self.faculty" Multiplicity="1" />
+          <End Role="branch" Type="Self.branch" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="faculty">
+              <PropertyRef Name="faculty_id" />
+            </Principal>
+            <Dependent Role="branch">
+              <PropertyRef Name="faculty_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_process_path_process">
+          <End Role="process" Type="Self.process" Multiplicity="1" />
+          <End Role="process_path" Type="Self.process_path" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="process">
+              <PropertyRef Name="process_id" />
+            </Principal>
+            <Dependent Role="process_path">
+              <PropertyRef Name="process_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_process_path_research">
+          <End Role="research" Type="Self.research" Multiplicity="1" />
+          <End Role="process_path" Type="Self.process_path" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="research">
+              <PropertyRef Name="research_id" />
+            </Principal>
+            <Dependent Role="process_path">
+              <PropertyRef Name="research_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_research_member_research">
+          <End Role="research" Type="Self.research" Multiplicity="1" />
+          <End Role="research_member" Type="Self.research_member" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="research">
+              <PropertyRef Name="research_id" />
+            </Principal>
+            <Dependent Role="research_member">
+              <PropertyRef Name="research_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_research_member_user1">
+          <End Role="user" Type="Self.user" Multiplicity="1" />
+          <End Role="research_member" Type="Self.research_member" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="user">
+              <PropertyRef Name="user_id" />
+            </Principal>
+            <Dependent Role="research_member">
+              <PropertyRef Name="user_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_research_user">
+          <End Role="user" Type="Self.user" Multiplicity="1" />
+          <End Role="research" Type="Self.research" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="user">
+              <PropertyRef Name="user_id" />
+            </Principal>
+            <Dependent Role="research">
+              <PropertyRef Name="teacher_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_user_branch">
+          <End Role="branch" Type="Self.branch" Multiplicity="1" />
+          <End Role="user" Type="Self.user" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="branch">
+              <PropertyRef Name="branch_id" />
+            </Principal>
+            <Dependent Role="user">
+              <PropertyRef Name="branch_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="ResearchDBModelStoreContainer">
+          <EntitySet Name="branch" EntityType="Self.branch" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="faculty" EntityType="Self.faculty" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="master_file" EntityType="Self.master_file" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="process" EntityType="Self.process" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="process_path" EntityType="Self.process_path" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="research" EntityType="Self.research" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="research_member" EntityType="Self.research_member" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="user" EntityType="Self.user" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_branch_faculty" Association="Self.FK_branch_faculty">
+            <End Role="faculty" EntitySet="faculty" />
+            <End Role="branch" EntitySet="branch" />
+          </AssociationSet>
+          <AssociationSet Name="FK_process_path_process" Association="Self.FK_process_path_process">
+            <End Role="process" EntitySet="process" />
+            <End Role="process_path" EntitySet="process_path" />
+          </AssociationSet>
+          <AssociationSet Name="FK_process_path_research" Association="Self.FK_process_path_research">
+            <End Role="research" EntitySet="research" />
+            <End Role="process_path" EntitySet="process_path" />
+          </AssociationSet>
+          <AssociationSet Name="FK_research_member_research" Association="Self.FK_research_member_research">
+            <End Role="research" EntitySet="research" />
+            <End Role="research_member" EntitySet="research_member" />
+          </AssociationSet>
+          <AssociationSet Name="FK_research_member_user1" Association="Self.FK_research_member_user1">
+            <End Role="user" EntitySet="user" />
+            <End Role="research_member" EntitySet="research_member" />
+          </AssociationSet>
+          <AssociationSet Name="FK_research_user" Association="Self.FK_research_user">
+            <End Role="user" EntitySet="user" />
+            <End Role="research" EntitySet="research" />
+          </AssociationSet>
+          <AssociationSet Name="FK_user_branch" Association="Self.FK_user_branch">
+            <End Role="branch" EntitySet="branch" />
+            <End Role="user" EntitySet="user" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="ResearchDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="ResearchDBEntities" annotation:LazyLoadingEnabled="true">
+          <FunctionImport Name="sp_alterdiagram">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+            <Parameter Name="version" Mode="In" Type="Int32" />
+            <Parameter Name="definition" Mode="In" Type="Binary" />
+          </FunctionImport>
+          <FunctionImport Name="sp_creatediagram">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+            <Parameter Name="version" Mode="In" Type="Int32" />
+            <Parameter Name="definition" Mode="In" Type="Binary" />
+          </FunctionImport>
+          <FunctionImport Name="sp_dropdiagram">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_helpdiagramdefinition" ReturnType="Collection(ResearchDBModel.sp_helpdiagramdefinition_Result)">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_helpdiagrams" ReturnType="Collection(ResearchDBModel.sp_helpdiagrams_Result)">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_renamediagram">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+            <Parameter Name="new_diagramname" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="sp_upgraddiagrams" />
+          <EntitySet Name="branches" EntityType="ResearchDBModel.branch" />
+          <EntitySet Name="faculties" EntityType="ResearchDBModel.faculty" />
+          <EntitySet Name="master_file" EntityType="ResearchDBModel.master_file" />
+          <EntitySet Name="processes" EntityType="ResearchDBModel.process" />
+          <EntitySet Name="process_path" EntityType="ResearchDBModel.process_path" />
+          <EntitySet Name="researches" EntityType="ResearchDBModel.research" />
+          <EntitySet Name="research_member" EntityType="ResearchDBModel.research_member" />
+          <EntitySet Name="sysdiagrams" EntityType="ResearchDBModel.sysdiagram" />
+          <EntitySet Name="users" EntityType="ResearchDBModel.user" />
+          <AssociationSet Name="FK_branch_faculty" Association="ResearchDBModel.FK_branch_faculty">
+            <End Role="faculty" EntitySet="faculties" />
+            <End Role="branch" EntitySet="branches" />
+          </AssociationSet>
+          <AssociationSet Name="FK_user_branch" Association="ResearchDBModel.FK_user_branch">
+            <End Role="branch" EntitySet="branches" />
+            <End Role="user" EntitySet="users" />
+          </AssociationSet>
+          <AssociationSet Name="FK_process_path_process" Association="ResearchDBModel.FK_process_path_process">
+            <End Role="process" EntitySet="processes" />
+            <End Role="process_path" EntitySet="process_path" />
+          </AssociationSet>
+          <AssociationSet Name="FK_process_path_research" Association="ResearchDBModel.FK_process_path_research">
+            <End Role="research" EntitySet="researches" />
+            <End Role="process_path" EntitySet="process_path" />
+          </AssociationSet>
+          <AssociationSet Name="FK_research_member_research" Association="ResearchDBModel.FK_research_member_research">
+            <End Role="research" EntitySet="researches" />
+            <End Role="research_member" EntitySet="research_member" />
+          </AssociationSet>
+          <AssociationSet Name="FK_research_user" Association="ResearchDBModel.FK_research_user">
+            <End Role="user" EntitySet="users" />
+            <End Role="research" EntitySet="researches" />
+          </AssociationSet>
+          <AssociationSet Name="FK_research_member_user1" Association="ResearchDBModel.FK_research_member_user1">
+            <End Role="user" EntitySet="users" />
+            <End Role="research_member" EntitySet="research_member" />
+          </AssociationSet>
+          </EntityContainer>
+        <ComplexType Name="sp_helpdiagramdefinition_Result">
+          <Property Type="Int32" Name="version" Nullable="true" />
+          <Property Type="Binary" Name="definition" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="sp_helpdiagrams_Result">
+          <Property Type="String" Name="Database" Nullable="true" MaxLength="128" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="128" />
+          <Property Type="Int32" Name="ID" Nullable="false" />
+          <Property Type="String" Name="Owner" Nullable="true" MaxLength="128" />
+          <Property Type="Int32" Name="OwnerID" Nullable="false" />
+        </ComplexType>
+        <EntityType Name="branch">
+          <Key>
+            <PropertyRef Name="branch_id" />
+          </Key>
+          <Property Name="branch_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="branch_name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="faculty_id" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="faculty" Relationship="ResearchDBModel.FK_branch_faculty" FromRole="branch" ToRole="faculty" />
+          <NavigationProperty Name="users" Relationship="ResearchDBModel.FK_user_branch" FromRole="branch" ToRole="user" />
+        </EntityType>
+        <EntityType Name="faculty">
+          <Key>
+            <PropertyRef Name="faculty_id" />
+          </Key>
+          <Property Name="faculty_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="faculty_name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="branches" Relationship="ResearchDBModel.FK_branch_faculty" FromRole="faculty" ToRole="branch" />
+        </EntityType>
+        <EntityType Name="master_file">
+          <Key>
+            <PropertyRef Name="fileName" />
+          </Key>
+          <Property Name="fileName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="fileData" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="process">
+          <Key>
+            <PropertyRef Name="process_id" />
+          </Key>
+          <Property Name="process_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="processResearch" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="process_path" Relationship="ResearchDBModel.FK_process_path_process" FromRole="process" ToRole="process_path" />
+        </EntityType>
+        <EntityType Name="process_path">
+          <Key>
+            <PropertyRef Name="path_id" />
+          </Key>
+          <Property Name="path_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="process_id" Type="Int32" Nullable="false" />
+          <Property Name="research_id" Type="Int32" Nullable="false" />
+          <Property Name="path_student" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <Property Name="path_teacher" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <Property Name="status" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="process" Relationship="ResearchDBModel.FK_process_path_process" FromRole="process_path" ToRole="process" />
+          <NavigationProperty Name="research" Relationship="ResearchDBModel.FK_process_path_research" FromRole="process_path" ToRole="research" />
+        </EntityType>
+        <EntityType Name="research">
+          <Key>
+            <PropertyRef Name="research_id" />
+          </Key>
+          <Property Name="research_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="research_name" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="teacher_id" Type="Int32" Nullable="false" />
+          <Property Name="approve" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="process_path" Relationship="ResearchDBModel.FK_process_path_research" FromRole="research" ToRole="process_path" />
+          <NavigationProperty Name="research_member" Relationship="ResearchDBModel.FK_research_member_research" FromRole="research" ToRole="research_member" />
+          <NavigationProperty Name="user" Relationship="ResearchDBModel.FK_research_user" FromRole="research" ToRole="user" />
+        </EntityType>
+        <EntityType Name="research_member">
+          <Key>
+            <PropertyRef Name="member_id" />
+          </Key>
+          <Property Name="member_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="user_id" Type="Int32" Nullable="false" />
+          <Property Name="research_id" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="research" Relationship="ResearchDBModel.FK_research_member_research" FromRole="research_member" ToRole="research" />
+          <NavigationProperty Name="user" Relationship="ResearchDBModel.FK_research_member_user1" FromRole="research_member" ToRole="user" />
+        </EntityType>
+        <EntityType Name="sysdiagram">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="user">
+          <Key>
+            <PropertyRef Name="user_id" />
+          </Key>
+          <Property Name="user_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="username" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="password" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="lname" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="branch_id" Type="Int32" Nullable="false" />
+          <Property Name="permission" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="img" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <NavigationProperty Name="branch" Relationship="ResearchDBModel.FK_user_branch" FromRole="user" ToRole="branch" />
+          <NavigationProperty Name="researches" Relationship="ResearchDBModel.FK_research_user" FromRole="user" ToRole="research" />
+          <NavigationProperty Name="research_member" Relationship="ResearchDBModel.FK_research_member_user1" FromRole="user" ToRole="research_member" />
+        </EntityType>
+        <Association Name="FK_branch_faculty">
+          <End Type="ResearchDBModel.faculty" Role="faculty" Multiplicity="1" />
+          <End Type="ResearchDBModel.branch" Role="branch" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="faculty">
+              <PropertyRef Name="faculty_id" />
+            </Principal>
+            <Dependent Role="branch">
+              <PropertyRef Name="faculty_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_user_branch">
+          <End Type="ResearchDBModel.branch" Role="branch" Multiplicity="1" />
+          <End Type="ResearchDBModel.user" Role="user" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="branch">
+              <PropertyRef Name="branch_id" />
+            </Principal>
+            <Dependent Role="user">
+              <PropertyRef Name="branch_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_process_path_process">
+          <End Type="ResearchDBModel.process" Role="process" Multiplicity="1" />
+          <End Type="ResearchDBModel.process_path" Role="process_path" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="process">
+              <PropertyRef Name="process_id" />
+            </Principal>
+            <Dependent Role="process_path">
+              <PropertyRef Name="process_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_process_path_research">
+          <End Type="ResearchDBModel.research" Role="research" Multiplicity="1" />
+          <End Type="ResearchDBModel.process_path" Role="process_path" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="research">
+              <PropertyRef Name="research_id" />
+            </Principal>
+            <Dependent Role="process_path">
+              <PropertyRef Name="research_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_research_member_research">
+          <End Type="ResearchDBModel.research" Role="research" Multiplicity="1" />
+          <End Type="ResearchDBModel.research_member" Role="research_member" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="research">
+              <PropertyRef Name="research_id" />
+            </Principal>
+            <Dependent Role="research_member">
+              <PropertyRef Name="research_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_research_user">
+          <End Type="ResearchDBModel.user" Role="user" Multiplicity="1" />
+          <End Type="ResearchDBModel.research" Role="research" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="user">
+              <PropertyRef Name="user_id" />
+            </Principal>
+            <Dependent Role="research">
+              <PropertyRef Name="teacher_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_research_member_user1">
+          <End Type="ResearchDBModel.user" Role="user" Multiplicity="1" />
+          <End Type="ResearchDBModel.research_member" Role="research_member" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="user">
+              <PropertyRef Name="user_id" />
+            </Principal>
+            <Dependent Role="research_member">
+              <PropertyRef Name="user_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+    <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="ResearchDBModelStoreContainer" CdmEntityContainer="ResearchDBEntities">
+          <EntitySetMapping Name="branches">
+            <EntityTypeMapping TypeName="ResearchDBModel.branch">
+              <MappingFragment StoreEntitySet="branch">
+                <ScalarProperty Name="faculty_id" ColumnName="faculty_id" />
+                <ScalarProperty Name="branch_name" ColumnName="branch_name" />
+                <ScalarProperty Name="branch_id" ColumnName="branch_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="faculties">
+            <EntityTypeMapping TypeName="ResearchDBModel.faculty">
+              <MappingFragment StoreEntitySet="faculty">
+                <ScalarProperty Name="faculty_name" ColumnName="faculty_name" />
+                <ScalarProperty Name="faculty_id" ColumnName="faculty_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="master_file">
+            <EntityTypeMapping TypeName="ResearchDBModel.master_file">
+              <MappingFragment StoreEntitySet="master_file">
+                <ScalarProperty Name="fileData" ColumnName="fileData" />
+                <ScalarProperty Name="fileName" ColumnName="fileName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="processes">
+            <EntityTypeMapping TypeName="ResearchDBModel.process">
+              <MappingFragment StoreEntitySet="process">
+                <ScalarProperty Name="processResearch" ColumnName="processResearch" />
+                <ScalarProperty Name="process_id" ColumnName="process_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="process_path">
+            <EntityTypeMapping TypeName="ResearchDBModel.process_path">
+              <MappingFragment StoreEntitySet="process_path">
+                <ScalarProperty Name="status" ColumnName="status" />
+                <ScalarProperty Name="path_teacher" ColumnName="path_teacher" />
+                <ScalarProperty Name="path_student" ColumnName="path_student" />
+                <ScalarProperty Name="research_id" ColumnName="research_id" />
+                <ScalarProperty Name="process_id" ColumnName="process_id" />
+                <ScalarProperty Name="path_id" ColumnName="path_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="researches">
+            <EntityTypeMapping TypeName="ResearchDBModel.research">
+              <MappingFragment StoreEntitySet="research">
+                <ScalarProperty Name="approve" ColumnName="approve" />
+                <ScalarProperty Name="teacher_id" ColumnName="teacher_id" />
+                <ScalarProperty Name="research_name" ColumnName="research_name" />
+                <ScalarProperty Name="research_id" ColumnName="research_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="research_member">
+            <EntityTypeMapping TypeName="ResearchDBModel.research_member">
+              <MappingFragment StoreEntitySet="research_member">
+                <ScalarProperty Name="research_id" ColumnName="research_id" />
+                <ScalarProperty Name="user_id" ColumnName="user_id" />
+                <ScalarProperty Name="member_id" ColumnName="member_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="ResearchDBModel.sysdiagram">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="definition" ColumnName="definition" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="users">
+            <EntityTypeMapping TypeName="ResearchDBModel.user">
+              <MappingFragment StoreEntitySet="user">
+                <ScalarProperty Name="img" ColumnName="img" />
+                <ScalarProperty Name="permission" ColumnName="permission" />
+                <ScalarProperty Name="branch_id" ColumnName="branch_id" />
+                <ScalarProperty Name="lname" ColumnName="lname" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="password" ColumnName="password" />
+                <ScalarProperty Name="username" ColumnName="username" />
+                <ScalarProperty Name="user_id" ColumnName="user_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+</Mapping></edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="True" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="False" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

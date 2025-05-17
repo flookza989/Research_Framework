@@ -63,41 +63,53 @@ namespace Research_Framework.Webpage
                 string base64String = profileData.Image;
 
                 user getUser = (user)HttpContext.Current.Session["userID"];
-
                 using (var _db = new ResearchDBEntities())
                 {
                     user userUpdate = _db.users.FirstOrDefault(c => c.user_id == getUser.user_id);
-
                     if (userUpdate != null)
                     {
                         userUpdate.name = name;
                         userUpdate.lname = lastName;
                         userUpdate.password = password;
+
                         if (!string.IsNullOrEmpty(base64String))
                         {
-                            int startIndex = base64String.IndexOf(',') + 1; // หาตำแหน่งที่เริ่มต้นของข้อมูล Base64
-                            string base64Data = base64String.Substring(startIndex);
-                            byte[] imageBase64 = Convert.FromBase64String(base64String);
-                            userUpdate.img = imageBase64;
+                            try
+                            {
+                                // ตัด data URI scheme ออก (เช่น "data:image/jpeg;base64,")
+                                string base64Data = base64String;
+                                if (base64String.Contains(","))
+                                {
+                                    base64Data = base64String.Split(',')[1];
+                                }
+
+                                // แปลง base64 เป็น byte array
+                                byte[] imageBytes = Convert.FromBase64String(base64Data);
+                                userUpdate.img = imageBytes;
+                            }
+                            catch (Exception ex)
+                            {
+                                // Log error
+                                System.Diagnostics.Debug.WriteLine($"Error processing image: {ex.Message}");
+                                return false;
+                            }
                         }
 
-                        _db.users.AddOrUpdate(userUpdate);
-                        int count = _db.SaveChanges();
+                        //_db.users.AddOrUpdate(userUpdate);
 
+
+                        int count = _db.SaveChanges();
                         status = true;
                         HttpContext.Current.Session["userID"] = userUpdate;
                     }
-                    else
-                    {
-                        status = false;
-                    }
                 }
             }
-            catch
+            catch (Exception ex)
             {
+                // Log error
+                System.Diagnostics.Debug.WriteLine($"Error saving profile: {ex.Message}");
                 status = false;
             }
-
             return status;
         }
     }

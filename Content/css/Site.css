@@ -1,0 +1,243 @@
+﻿@font-face {
+    font-family: 'sukhumvitset';
+    src: url('../../Font/SukhumvitSet.ttf') format('truetype');
+}
+
+* {
+    font-family: sukhumvitset;
+}
+
+body, html {
+    height: 100%;
+    background-color: #f6f7fc;
+}
+
+.bgMain {
+    background-color: #304F6D;
+}
+
+.foreMain {
+    color: #FFE1A0;
+}
+
+.bgLogin {
+    background-color: #E6E1DD;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    margin: 0;
+}
+
+.containerLogin {
+    width: 300px; /* You can adjust the width as needed */
+    text-align: center;
+}
+
+.sidebar {
+    height: 100vh;
+    width: 250px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: #E6E1DD;
+    padding-top: 1rem;
+    box-shadow: 0px 10px 10px 0px rgba(0, 0, 0, 0.25);
+}
+
+.sidebarItem {
+    color: #304F6D;
+    font-weight: 900;
+    font-size: 1.8rem;
+    background-color: #E6E1DD;
+    margin-left: 15px;
+    margin-right: 15px;
+    text-align: center;
+    border-radius: 5px;
+    padding: 0px;
+}
+
+    .sidebarItem:hover {
+        color: white;
+        background-color: #304F6D;
+    }
+
+    .sidebarItem.active {
+        background-color: #4CAF50;
+        color: white;
+    }
+
+.content {
+    background-color: #E6E1DD;
+    margin-left: 300px;
+    margin-right: 50px;
+    margin-top: 30px;
+    border-radius: 5px;
+    padding: 15px;
+    box-shadow: 5px 5px 20px 0px rgba(0, 0, 0, 0.25);
+}
+
+.contentHead {
+    background-color: #304F6D;
+    padding: 10px;
+    color: white;
+    font-weight: 600;
+    border-radius: 5px 5px 0px 0px;
+}
+
+.contentBody {
+    background-color: white;
+    padding: 20px 10px;
+    border-radius: 0px 0px 5px 5px;
+    margin-left: 0px;
+    margin-right: 0px;
+    border-color: #304F6D;
+}
+
+.buttonNormal {
+    background-color: #304F6D;
+    font-weight: 600;
+    color: white;
+    padding: 0.375rem;
+    border-radius: 5px;
+    border-color: #304F6D;
+    font-size: 1rem;
+}
+    .buttonNormal:hover {
+        background-color: white;
+        color: #304F6D;
+        border-color: #304F6D;
+    }
+
+.buttonRemove {
+    background-color: #D83A1D;
+    font-weight: 600;
+    color: white;
+    padding: 0.375rem;
+    border-radius: 5px;
+    border-color: #D83A1D;
+    font-size: 1rem;
+}
+
+    .buttonRemove:hover {
+        background-color: white;
+        color: #D83A1D;
+        border-color: #D83A1D;
+    }
+
+.buttonWarning {
+    background-color: #E7B415;
+    font-weight: 600;
+    color: white;
+    padding: 0.375rem;
+    border-radius: 5px;
+    border-color: #FFC300;
+    font-size: 1rem;
+}
+
+    .buttonWarning:hover {
+        background-color: white;
+        color: #FFC300;
+        border-color: #FFC300;
+    }
+
+.buttonUpload {
+    font-weight: 600;
+    border-radius: 5px;
+    font-size: 1rem;
+    padding: 0.19rem;
+    background-color: white;
+    border: 1px solid #304F6D;
+    width: 300px;
+}
+
+.dropdownlist {
+    font-weight: 600;
+    border-radius: 5px;
+    font-size: 1rem;
+    padding: 0.375rem;
+    background-color: white;
+    border: 1px solid #304F6D;
+    width: 100%;
+}
+
+.textboxContent {
+    box-shadow: 0px 0px 2px 0px rgba(0, 0, 0, 0.1);
+}
+
+.labelContent {
+    margin-left: 13px;
+    font-weight: 600;
+    font-size: 0.8rem;
+}
+
+.imgContent {
+    filter: none;
+    cursor: default;
+}
+    .imgContent:hover {
+        filter: invert(20%);
+        cursor: pointer;
+    }
+
+.custom-gridview {
+    width: 100%;
+    border-collapse: collapse;
+    overflow: hidden;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+    .custom-gridview th {
+        background-color: #304F6D;
+        text-align: center;
+        color: white;
+        filter: none;
+    }
+
+    .custom-gridview th, .custom-gridview td {
+        padding: 8px;
+    }
+
+/*    .custom-gridview tr:hover {
+        background-color: #E2F3FD;
+        filter: invert(20%);
+    }*/
+
+.custom-gridview tr:nth-child(odd) {
+    background-color: #E2F3FD;
+}
+
+/* Normal state styles */
+logoutContent {
+    text-decoration: none;
+}
+
+    /* Hover state styles */
+    logoutContent:hover {
+        background-color: #f0f0f0;
+    }
+
+.overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+}
+
+.editForm {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 15px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    z-index: 1000;
+    width: 50%;
+    background-color: #E6E1DD;
+}

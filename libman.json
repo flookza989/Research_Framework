@@ -1,0 +1,34 @@
+{
+  "version": "1.0",
+  "defaultProvider": "cdnjs",
+  "libraries": [
+    {
+      "library": "bootstrap@5.3.2",
+      "destination": "Content/bootstrap/"
+    },
+    {
+      "library": "sweetalert2@11.10.1",
+      "destination": "Content/sweetalert2/"
+    },
+    {
+      "library": "font-awesome@6.4.2",
+      "destination": "Content/font-awesome/"
+    },
+    {
+      "library": "sweetalert@2.1.2",
+      "destination": "Content/sweetalert/"
+    },
+    {
+      "library": "bootstrap-sweetalert@1.0.1",
+      "destination": "Content/bootstrap-sweetalert/"
+    },
+    {
+      "library": "jqueryui@1.13.2",
+      "destination": "Content/jqueryui/"
+    },
+    {
+      "library": "jquery@3.7.1",
+      "destination": "Content/jquery/"
+    }
+  ]
+}

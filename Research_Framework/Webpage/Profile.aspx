@@ -9,7 +9,7 @@
         <!-- โซนรูปโปรไฟล์ -->
         <div class="col-12 d-flex flex-column align-items-center text-center">
             <div>
-                <asp:Image ID="ProfileImage" runat="server" Style="width: 250px; border-radius: 50px;" />
+                <asp:Image ID="ProfileImage" runat="server" CssClass="profile-image" />
             </div>
             <div>
                 <input type="file" id="fileUpload" accept="image/*" class="d-none" onchange="uploadImage(this.files)" />
@@ -91,9 +91,23 @@
     <script type="text/javascript">
         // ฟังก์ชันสำหรับอัพโหลดรูปและแก้ไขข้อมูลส่วนตัว
         function SaveProfile() {
+            // ตรวจสอบข้อมูลให้ครบถ้วน
+            var name = $("#<%= Tb_name.ClientID %>").val().trim();
+            var lastName = $("#<%= Tb_lname.ClientID %>").val().trim();
+            
+            if (!name || !lastName) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'กรุณากรอกข้อมูลให้ครบถ้วน',
+                    text: 'กรุณากรอกชื่อและนามสกุล',
+                    showConfirmButton: true
+                });
+                return;
+            }
+            
             var profileData = {
-                Name: $("#<%= Tb_name.ClientID %>").val(),
-                LastName: $("#<%= Tb_lname.ClientID %>").val(),
+                Name: name,
+                LastName: lastName,
                 Image: null
             };
 
@@ -101,16 +115,63 @@
             var file = fileInput.files[0];
 
             if (file) {
+                // แสดงข้อความกำลังอัพโหลด
+                Swal.fire({
+                    title: 'กำลังประมวลผลรูปภาพ...',
+                    text: 'โปรดรอสักครู่',
+                    didOpen: () => {
+                        Swal.showLoading();
+                    },
+                    allowOutsideClick: false,
+                    allowEscapeKey: false,
+                    showConfirmButton: false
+                });
+                
                 var reader = new FileReader();
-                reader.readAsArrayBuffer(file);
                 reader.onload = function (event) {
-                    var arrayBuffer = event.target.result;
-                    var byteArray = new Uint8Array(arrayBuffer);
-                    var base64String = btoa(String.fromCharCode.apply(null, byteArray));
-                    profileData.Image = base64String;
-                    sendProfileData(profileData);
+                    try {
+                        var arrayBuffer = event.target.result;
+                        var byteArray = new Uint8Array(arrayBuffer);
+                        
+                        // แปลงข้อมูลเป็น base64 โดยไม่ใช้ String.fromCharCode.apply เพื่อหลีกเลี่ยง stack overflow
+                        // ใช้การแปลงเป็นชุดๆ แทน
+                        var base64String = '';
+                        var chunk = 8192; // ขนาด chunk ที่เหมาะสม
+                        
+                        for (var i = 0; i < byteArray.length; i += chunk) {
+                            var slice = byteArray.subarray(i, Math.min(i + chunk, byteArray.length));
+                            var tempArray = Array.from(slice);
+                            base64String += String.fromCharCode.apply(null, tempArray);
+                        }
+                        
+                        profileData.Image = btoa(base64String);
+                        sendProfileData(profileData);
+                    } catch (error) {
+                        console.error("Error processing image:", error);
+                        Swal.close(); // ปิด loading dialog
+                        
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'เกิดข้อผิดพลาดในการประมวลผลรูปภาพ',
+                            text: 'รูปภาพมีขนาดใหญ่เกินไป โปรดลองใช้รูปที่มีขนาดเล็กกว่านี้',
+                            showConfirmButton: true
+                        });
+                    }
                 };
+                reader.readAsArrayBuffer(file);
             } else {
+                // แสดงสถานะกำลังดำเนินการ
+                Swal.fire({
+                    title: 'กำลังบันทึกข้อมูล...',
+                    text: 'โปรดรอสักครู่',
+                    didOpen: () => {
+                        Swal.showLoading();
+                    },
+                    allowOutsideClick: false,
+                    allowEscapeKey: false,
+                    showConfirmButton: false
+                });
+                
                 sendProfileData(profileData);
             }
         }
@@ -123,6 +184,9 @@
                 data: JSON.stringify({ profileData: profileData }),
                 dataType: "json",
                 success: function (response) {
+                    // ปิด loading dialog
+                    Swal.close();
+                    
                     if (response.d) {
                         Swal.fire({
                             icon: 'success',
@@ -142,10 +206,14 @@
                 },
                 error: function (xhr, status, error) {
                     console.error("Error:", error);
+                    
+                    // ปิด loading dialog
+                    Swal.close();
+                    
                     Swal.fire({
                         icon: 'error',
-                        title: 'เกิดข้อผิดพลาด',
-                        text: error,
+                        title: 'เกิดข้อผิดพลาดในการบันทึกข้อมูล',
+                        text: 'กรุณาลองใหม่อีกครั้งหรือติดต่อผู้ดูแลระบบ',
                         showConfirmButton: true
                     });
                 }
@@ -186,6 +254,18 @@
                 return false;
             }
 
+            // แสดงสถานะกำลังดำเนินการ
+            Swal.fire({
+                title: 'กำลังเปลี่ยนรหัสผ่าน...',
+                text: 'โปรดรอสักครู่',
+                didOpen: () => {
+                    Swal.showLoading();
+                },
+                allowOutsideClick: false,
+                allowEscapeKey: false,
+                showConfirmButton: false
+            });
+
             $.ajax({
                 type: "POST",
                 url: "Profile.aspx/ChangePassword",
@@ -196,15 +276,18 @@
                 }),
                 dataType: "json",
                 success: function (response) {
+                    // ปิด loading dialog
+                    Swal.close();
+                    
                     if (response.d) {
                         Swal.fire({
                             icon: 'success',
                             title: 'เปลี่ยนรหัสผ่านสำเร็จ',
                             showConfirmButton: true,
-                            didClose: () => {
-                                $("#<%= Tb_currentPassword.ClientID %>").val('');
-                                $("#<%= Tb_newPassword.ClientID %>").val('');
-                                $("#<%= Tb_confirmPassword.ClientID %>").val('');
+                            didClose: function() {
+                                document.getElementById('<%= Tb_currentPassword.ClientID %>').value = '';
+                                document.getElementById('<%= Tb_newPassword.ClientID %>').value = '';
+                                document.getElementById('<%= Tb_confirmPassword.ClientID %>').value = '';
                             }
                         });
                     } else {
@@ -217,10 +300,14 @@
                 },
                 error: function (xhr, status, error) {
                     console.error("Error:", error);
+                    
+                    // ปิด loading dialog
+                    Swal.close();
+                    
                     Swal.fire({
                         icon: 'error',
-                        title: 'เกิดข้อผิดพลาด',
-                        text: error,
+                        title: 'เกิดข้อผิดพลาดในการเปลี่ยนรหัสผ่าน',
+                        text: 'กรุณาลองใหม่อีกครั้งหรือติดต่อผู้ดูแลระบบ',
                         showConfirmButton: true
                     });
                 }
@@ -266,13 +353,40 @@
                 });
                 return;
             }
+            
+            var file = files[0];
+            var maxSizeInMB = 2;
+            var maxSizeInBytes = maxSizeInMB * 1024 * 1024; // 2MB
+            
+            // ตรวจสอบขนาดไฟล์
+            if (file.size > maxSizeInBytes) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'ขนาดไฟล์ใหญ่เกินไป',
+                    text: 'ขนาดไฟล์ต้องไม่เกิน ' + maxSizeInMB + ' MB',
+                    showConfirmButton: true
+                });
+                return;
+            }
+            
+            // ตรวจสอบประเภทไฟล์
+            var allowedTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/jpg'];
+            if (!allowedTypes.includes(file.type)) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'ประเภทไฟล์ไม่ถูกต้อง',
+                    text: 'กรุณาอัพโหลดไฟล์ภาพเท่านั้น (JPEG, PNG, GIF)',
+                    showConfirmButton: true
+                });
+                return;
+            }
 
             var reader = new FileReader();
             reader.onload = function (e) {
                 var imageURL = e.target.result;
                 $("#<%= ProfileImage.ClientID %>").attr("src", imageURL);
             };
-            reader.readAsDataURL(files[0]);
+            reader.readAsDataURL(file);
         }
     </script>
 </asp:Content>

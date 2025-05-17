@@ -105,6 +105,24 @@ namespace Research_Framework.Webpage
         protected global::System.Web.UI.WebControls.TextBox Tb_branch;
 
         /// <summary>
+        /// LabelPhone control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label LabelPhone;
+
+        /// <summary>
+        /// Tb_phoneNumber control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox Tb_phoneNumber;
+
+        /// <summary>
         /// Btn_save control.
         /// </summary>
         /// <remarks>

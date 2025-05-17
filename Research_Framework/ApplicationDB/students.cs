@@ -18,5 +18,6 @@ namespace Research_Framework.ApplicationDB
         public int user_id { get; set; }
         public int faculty_id { get; set; }
         public int branch_id { get; set; }
+        public string phone_number { get; set; }
     }
 }

@@ -85,6 +85,7 @@
           <Property Name="user_id" Type="int" Nullable="false" />
           <Property Name="faculty_id" Type="int" Nullable="false" />
           <Property Name="branch_id" Type="int" Nullable="false" />
+          <Property Name="phone_number" Type="nvarchar" MaxLength="20" />
         </EntityType>
         <EntityType Name="teachers">
           <Key>
@@ -94,6 +95,7 @@
           <Property Name="user_id" Type="int" Nullable="false" />
           <Property Name="faculty_id" Type="int" Nullable="false" />
           <Property Name="branch_id" Type="int" Nullable="false" />
+          <Property Name="phone_number" Type="nvarchar" MaxLength="20" />
         </EntityType>
         <EntityType Name="users">
           <Key>
@@ -218,6 +220,7 @@
           <Property Name="user_id" Type="Int32" Nullable="false" />
           <Property Name="faculty_id" Type="Int32" Nullable="false" />
           <Property Name="branch_id" Type="Int32" Nullable="false" />
+          <Property Name="phone_number" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="teachers">
           <Key>
@@ -227,6 +230,7 @@
           <Property Name="user_id" Type="Int32" Nullable="false" />
           <Property Name="faculty_id" Type="Int32" Nullable="false" />
           <Property Name="branch_id" Type="Int32" Nullable="false" />
+          <Property Name="phone_number" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="users">
           <Key>
@@ -243,7 +247,7 @@
           <Property Name="last_login" Type="DateTime" Precision="3" />
           <Property Name="profile_img" Type="Binary" MaxLength="Max" FixedLength="false" />
         </EntityType>
-      </Schema>
+        </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
@@ -331,6 +335,7 @@
           <EntitySetMapping Name="students">
             <EntityTypeMapping TypeName="ResearchDBModel.students">
               <MappingFragment StoreEntitySet="students">
+                <ScalarProperty Name="phone_number" ColumnName="phone_number" />
                 <ScalarProperty Name="branch_id" ColumnName="branch_id" />
                 <ScalarProperty Name="faculty_id" ColumnName="faculty_id" />
                 <ScalarProperty Name="user_id" ColumnName="user_id" />
@@ -341,6 +346,7 @@
           <EntitySetMapping Name="teachers">
             <EntityTypeMapping TypeName="ResearchDBModel.teachers">
               <MappingFragment StoreEntitySet="teachers">
+                <ScalarProperty Name="phone_number" ColumnName="phone_number" />
                 <ScalarProperty Name="branch_id" ColumnName="branch_id" />
                 <ScalarProperty Name="faculty_id" ColumnName="faculty_id" />
                 <ScalarProperty Name="user_id" ColumnName="user_id" />

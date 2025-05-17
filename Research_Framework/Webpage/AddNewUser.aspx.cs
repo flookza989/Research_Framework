@@ -62,52 +62,56 @@ namespace Research_Framework.Webpage
                     return;
                 }
 
-                using (var package = new ExcelPackage(FileUploadControl.FileContent))
+                using (var stream = new MemoryStream())
                 {
-                    var worksheet = package.Workbook.Worksheets.FirstOrDefault();
-                    if (worksheet == null)
+                    FileUploadControl.FileContent.CopyTo(stream);
+                    using (var package = new ExcelPackage(stream))
                     {
-                        ScriptManager.RegisterStartupScript(this, GetType(), "alertMessage",
-                            "Swal.fire('Error!', 'ไม่พบข้อมูลในไฟล์ Excel', 'error');", true);
-                        return;
-                    }
-
-                    if (ValidateExcelData(worksheet))
-                    {
-                        // แปลงข้อมูลเป็น DataTable สำหรับแสดงใน GridView
-                        DataTable dt = new DataTable();
-                        dt.Columns.AddRange(new DataColumn[]
+                        var worksheet = package.Workbook.Worksheets.FirstOrDefault();
+                        if (worksheet == null)
                         {
-                    new DataColumn("UserName"),
-                    new DataColumn("Password"),
-                    new DataColumn("Name"),
-                    new DataColumn("SurName"),
-                    new DataColumn("UserType"),
-                    new DataColumn("Faculty"),
-                    new DataColumn("Branch")
-                        });
-
-                        // อ่านข้อมูลจาก Excel ใส่ใน DataTable
-                        for (int row = 2; row <= worksheet.Dimension.Rows; row++)
-                        {
-                            if (string.IsNullOrEmpty(worksheet.Cells[row, 1].Text))
-                                continue;
-
-                            dt.Rows.Add(
-                                worksheet.Cells[row, 1].Text, // UserName
-                                worksheet.Cells[row, 2].Text, // Password
-                                worksheet.Cells[row, 3].Text, // Name
-                                worksheet.Cells[row, 4].Text, // SurName
-                                worksheet.Cells[row, 5].Text, // UserType
-                                worksheet.Cells[row, 6].Text, // Faculty
-                                worksheet.Cells[row, 7].Text  // Branch
-                            );
+                            ScriptManager.RegisterStartupScript(this, GetType(), "alertMessage",
+                                "Swal.fire('Error!', 'ไม่พบข้อมูลในไฟล์ Excel', 'error');", true);
+                            return;
                         }
 
-                        Session["NewSTD"] = dt;
-                        Gv_newSTD.DataSource = dt;
-                        Gv_newSTD.DataBind();
-                        div_Btn_save.Visible = true;
+                        if (ValidateExcelData(worksheet))
+                        {
+                            // แปลงข้อมูลเป็น DataTable สำหรับแสดงใน GridView
+                            DataTable dt = new DataTable();
+                            dt.Columns.AddRange(new DataColumn[]
+                            {
+                            new DataColumn("UserName", typeof(string)),
+                            new DataColumn("Password", typeof(string)),
+                            new DataColumn("Name", typeof(string)),
+                            new DataColumn("SurName", typeof(string)),
+                            new DataColumn("UserType", typeof(string)),
+                            new DataColumn("Faculty", typeof(string)),
+                            new DataColumn("Branch", typeof(string)),
+                            new DataColumn("PhoneNumber", typeof(string))
+                            });
+                            int rowCount = worksheet.Dimension.Rows;
+                            for (int row = 2; row <= rowCount; row++)
+                            {
+                                // หยุดแถวว่าง
+                                if (string.IsNullOrEmpty(worksheet.Cells[row, 1].Text))
+                                    break;
+                                dt.Rows.Add(
+                                    worksheet.Cells[row, 1].Text, // UserName
+                                    worksheet.Cells[row, 2].Text, // Password
+                                    worksheet.Cells[row, 3].Text, // Name
+                                    worksheet.Cells[row, 4].Text, // SurName
+                                    worksheet.Cells[row, 5].Text, // UserType
+                                    worksheet.Cells[row, 6].Text, // Faculty
+                                    worksheet.Cells[row, 7].Text, // Branch
+                                    worksheet.Cells[row, 8].Text  // PhoneNumber
+                                );
+                            }
+                            Session["NewSTD"] = dt;
+                            Gv_newSTD.DataSource = dt;
+                            Gv_newSTD.DataBind();
+                            div_Btn_save.Visible = true;
+                        }
                     }
                 }
             }
@@ -120,94 +124,96 @@ namespace Research_Framework.Webpage
 
         protected void Btn_save_Click(object sender, EventArgs e)
         {
-            //try
-            //{
-            //    DataTable dt = Session["NewSTD"] as DataTable;
-            //    if (dt == null)
-            //    {
-            //        ScriptManager.RegisterStartupScript(this, GetType(), "alertMessage",
-            //            "Swal.fire('Error!', 'ไม่พบข้อมูลที่จะบันทึก กรุณาอัพโหลดไฟล์ใหม่', 'error');", true);
-            //        return;
-            //    }
+            try
+            {
+                DataTable dt = Session["NewSTD"] as DataTable;
+                if (dt == null)
+                {
+                    ScriptManager.RegisterStartupScript(this, GetType(), "alertMessage",
+                        "Swal.fire('Error!', 'ไม่พบข้อมูลที่จะบันทึก กรุณาอัพโหลดไฟล์ใหม่', 'error');", true);
+                    return;
+                }
 
-            //    using (var db = new ResearchDBEntities())
-            //    {
-            //        using (var transaction = db.Database.BeginTransaction())
-            //        {
-            //            try
-            //            {
-            //                var faculties = db.facultys.ToList();
-            //                var branches = db.branchs.ToList();
-            //                foreach (DataRow row in dt.Rows)
-            //                {
-            //                    // สร้าง user
-            //                    var user = new user
-            //                    {
-            //                        username = row["UserName"].ToString(),
-            //                        password = row["Password"].ToString(),
-            //                        first_name = row["Name"].ToString(),
-            //                        last_name = row["SurName"].ToString(),
-            //                        user_type = row["UserType"].ToString(),
-            //                        is_active = true,
-            //                        created_date = DateTime.Now
-            //                    };
-            //                    var userDb = db.users.Add(user);
-            //                    db.SaveChanges();
-            //                    // หา branch
-            //                    var faculty = faculties.FirstOrDefault(f =>
-            //                        f.faculty_name == row["Faculty"].ToString());
-            //                    var branch = branches.FirstOrDefault(b =>
-            //                        b.branch_name == row["Branch"].ToString() &&
-            //                        b.faculty_id == faculty.faculty_id);
+                using (var db = new ResearchDBEntities())
+                {
+                    using (var transaction = db.Database.BeginTransaction())
+                    {
+                        try
+                        {
+                            var faculties = db.facultys.ToList();
+                            var branches = db.branchs.ToList();
+                            foreach (DataRow row in dt.Rows)
+                            {
+                                // สร้าง user
+                                var user = new users
+                                {
+                                    username = row["UserName"].ToString(),
+                                    password = row["Password"].ToString(),
+                                    first_name = row["Name"].ToString(),
+                                    last_name = row["SurName"].ToString(),
+                                    user_type = row["UserType"].ToString(),
+                                    is_active = true,
+                                    created_date = DateTime.Now
+                                };
+                                var userDb = db.users.Add(user);
+                                db.SaveChanges();
+                                // หา branch
+                                var faculty = faculties.FirstOrDefault(f =>
+                                    f.faculty_name == row["Faculty"].ToString());
+                                var branch = branches.FirstOrDefault(b =>
+                                    b.branch_name == row["Branch"].ToString() &&
+                                    b.faculty_id == faculty.faculty_id);
 
-            //                    // สร้าง student หรือ teacher
-            //                    if (user.user_type == "STUDENT")
-            //                    {
-            //                        var student = new student
-            //                        {
-            //                            user_id = userDb.id,
-            //                            branch_id = branch.branch_id,
-            //                            faculty_id = faculty.faculty_id
-            //                        };
-            //                        db.students.Add(student);
-            //                    }
-            //                    else if (user.user_type == "TEACHER")
-            //                    {
-            //                        var teacher = new teacher
-            //                        {
-            //                            user_id = userDb.id,
-            //                            branch_id = branch.branch_id,
-            //                            faculty_id = faculty.faculty_id
-            //                        };
-            //                        db.teachers.Add(teacher);
-            //                    }
-            //                }
+                                // สร้าง student หรือ teacher
+                                if (user.user_type == "STUDENT")
+                                {
+                                    var student = new students
+                                    {
+                                        user_id = userDb.id,
+                                        branch_id = branch.branch_id,
+                                        faculty_id = faculty.faculty_id,
+                                        phone_number = row["PhoneNumber"].ToString()
+                                    };
+                                    db.students.Add(student);
+                                }
+                                else if (user.user_type == "TEACHER")
+                                {
+                                    var teacher = new teachers
+                                    {
+                                        user_id = userDb.id,
+                                        branch_id = branch.branch_id,
+                                        faculty_id = faculty.faculty_id,
+                                        phone_number = row["PhoneNumber"].ToString()
+                                    };
+                                    db.teachers.Add(teacher);
+                                }
+                            }
 
-            //                db.SaveChanges();
-            //                transaction.Commit();
+                            db.SaveChanges();
+                            transaction.Commit();
 
-            //                // Clear session และ reset UI
-            //                Session["NewSTD"] = null;
-            //                Gv_newSTD.DataSource = null;
-            //                Gv_newSTD.DataBind();
-            //                div_Btn_save.Visible = false;
+                            // Clear session และ reset UI
+                            Session["NewSTD"] = null;
+                            Gv_newSTD.DataSource = null;
+                            Gv_newSTD.DataBind();
+                            div_Btn_save.Visible = false;
 
-            //                ScriptManager.RegisterStartupScript(this, GetType(), "alertMessage",
-            //                    "Swal.fire('Success!', 'บันทึกข้อมูลสำเร็จ', 'success');", true);
-            //            }
-            //            catch (Exception ex)
-            //            {
-            //                transaction.Rollback();
-            //                throw ex;
-            //            }
-            //        }
-            //    }
-            //}
-            //catch (Exception ex)
-            //{
-            //    ScriptManager.RegisterStartupScript(this, GetType(), "alertMessage",
-            //        $"Swal.fire('Error!', 'เกิดข้อผิดพลาดในการบันทึกข้อมูล: {ex.Message}', 'error');", true);
-            //}
+                            ScriptManager.RegisterStartupScript(this, GetType(), "alertMessage",
+                                "Swal.fire('Success!', 'บันทึกข้อมูลสำเร็จ', 'success');", true);
+                        }
+                        catch (Exception ex)
+                        {
+                            transaction.Rollback();
+                            throw ex;
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                ScriptManager.RegisterStartupScript(this, GetType(), "alertMessage",
+                    $"Swal.fire('Error!', 'เกิดข้อผิดพลาดในการบันทึกข้อมูล: {ex.Message}', 'error');", true);
+            }
         }
 
         protected void Btn_Download_Click(object sender, EventArgs e)
@@ -226,9 +232,11 @@ namespace Research_Framework.Webpage
                     worksheet.Cells[1, 5].Value = "ประเภทผู้ใช้*";
                     worksheet.Cells[1, 6].Value = "คณะ*";
                     worksheet.Cells[1, 7].Value = "สาขา*";
+                    worksheet.Cells[1, 8].Value = "เบอร์มือถือ*";
+                    worksheet.Cells[1, 9].Value = "หมายเหตุ";
 
                     // จัดรูปแบบหัวตาราง
-                    using (var range = worksheet.Cells[1, 1, 1, 7])
+                    using (var range = worksheet.Cells[1, 1, 1, 9])
                     {
                         range.Style.Font.Bold = true;
                         range.Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
@@ -245,16 +253,24 @@ namespace Research_Framework.Webpage
                     worksheet.Column(5).Width = 15; // ประเภทผู้ใช้
                     worksheet.Column(6).Width = 25; // คณะ
                     worksheet.Column(7).Width = 25; // สาขา
+                    worksheet.Column(8).Width = 25; // เบอร์มือถือ
+                    worksheet.Column(9).Width = 25; // หมายเหตุ
 
+                    // ตั้งค่ารูปแบบเซลล์ในคอลัมน์รหัสผู้ใช้งาน รหัสผ่านและเบอร์มือถือเป็นข้อความ
+                    worksheet.Column(1).Style.Numberformat.Format = "@";
+                    worksheet.Column(2).Style.Numberformat.Format = "@";
+                    worksheet.Column(8).Style.Numberformat.Format = "@";
                     // สร้าง dropdown list สำหรับประเภทผู้ใช้
                     var userTypeValidation = worksheet.DataValidations.AddListValidation("E2:E1000");
                     userTypeValidation.Formula.Values.Add("STUDENT");
                     userTypeValidation.Formula.Values.Add("TEACHER");
 
+                    List<string> faculties;
+                    List<string> branches;
                     using (var db = new ResearchDBEntities())
                     {
                         // ดึงข้อมูลคณะ
-                        var faculties = db.facultys.Select(f => f.faculty_name).ToList();
+                        faculties = db.facultys.Select(f => f.faculty_name).ToList();
                         var facultyValidation = worksheet.DataValidations.AddListValidation("F2:F1000");
                         foreach (var faculty in faculties)
                         {
@@ -262,7 +278,7 @@ namespace Research_Framework.Webpage
                         }
 
                         // ดึงข้อมูลสาขา
-                        var branches = db.branchs.Select(f => f.branch_name).ToList();
+                        branches = db.branchs.Select(f => f.branch_name).ToList();
                         var branchesValidation = worksheet.DataValidations.AddListValidation("G2:G1000");
                         foreach (var branch in branches)
                         {
@@ -276,27 +292,20 @@ namespace Research_Framework.Webpage
                     worksheet.Cells[2, 3].Value = "สมชาย";
                     worksheet.Cells[2, 4].Value = "ใจดี";
                     worksheet.Cells[2, 5].Value = "STUDENT";
-
-                    // จัดรูปแบบแถวตัวอย่าง
-                    using (var range = worksheet.Cells[2, 1, 2, 7])
-                    {
-                        range.Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
-                        range.Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.LightYellow);
-                    }
-
-                    // เพิ่มคำอธิบาย
-                    worksheet.Cells[4, 1].Value = "หมายเหตุ:";
-                    worksheet.Cells[5, 1].Value = "1. ช่องที่มีเครื่องหมาย * จำเป็นต้องกรอกข้อมูล";
-                    worksheet.Cells[6, 1].Value = "2. รหัสผ่านต้องมีความยาวอย่างน้อย 8 ตัวอักษร ประกอบด้วยตัวอักษรพิมพ์ใหญ่ พิมพ์เล็ก ตัวเลข และอักขระพิเศษ";
-                    worksheet.Cells[7, 1].Value = "3. ประเภทผู้ใช้งานต้องเป็น STUDENT หรือ TEACHER เท่านั้น";
-                    worksheet.Cells[8, 1].Value = "4. กรุณาเลือกคณะและสาขาจาก dropdown list";
-
+                    worksheet.Cells[2, 6].Value = faculties.FirstOrDefault() ?? "";
+                    worksheet.Cells[2, 7].Value = branches.FirstOrDefault() ?? "";
+                    worksheet.Cells[2, 8].Value = "0812345678"; // ตัวอย่างเบอร์มือถือ
+                    worksheet.Cells[2, 9].Value = "1. ช่องที่มีเครื่องหมาย * จำเป็นต้องกรอกข้อมูล";
+                    worksheet.Cells[3, 9].Value = "2. รหัสผ่านต้องมีอย่างน้อย 8 ตัวอักษร ประกอบด้วยตัวพิมพ์ใหญ่ พิมพ์เล็ก ตัวเลข";
+                    worksheet.Cells[4, 9].Value = "3. ประเภทผู้ใช้ต้องเป็น STUDENT หรือ TEACHER เท่านั้น";
+                    worksheet.Cells[5, 9].Value = "4. กรุณาเลือกคณะและสาขาจาก dropdown list";
+                    worksheet.Cells[6, 9].Value = "5. กรอกเบอร์มือถือ 10 หลัก";
                     // ป้องกันการแก้ไขโครงสร้าง
                     worksheet.Protection.IsProtected = true;
                     worksheet.Protection.AllowAutoFilter = true;
                     worksheet.Protection.AllowSort = true;
 
-                    var dataRange = worksheet.Cells[2, 1, 1000, 7];
+                    var dataRange = worksheet.Cells[2, 1, 1000, 8];
                     dataRange.Style.Locked = false;
 
                     // ส่งไฟล์
@@ -332,7 +341,8 @@ namespace Research_Framework.Webpage
                     string.IsNullOrEmpty(worksheet.Cells[row, 4].Text) || // นามสกุล
                     string.IsNullOrEmpty(worksheet.Cells[row, 5].Text) || // ประเภทผู้ใช้
                     string.IsNullOrEmpty(worksheet.Cells[row, 6].Text) || // คณะ
-                    string.IsNullOrEmpty(worksheet.Cells[row, 7].Text))   // สาขา
+                    string.IsNullOrEmpty(worksheet.Cells[row, 7].Text) ||  // สาขา
+                    string.IsNullOrEmpty(worksheet.Cells[row, 8].Text))   // เบอร์มือถือ
                 {
                     errors.Add($"แถวที่ {row}: กรุณากรอกข้อมูลที่จำเป็นให้ครบถ้วน");
                     continue;
@@ -359,6 +369,16 @@ namespace Research_Framework.Webpage
                     if (db.users.Any(u => u.username == username))
                     {
                         errors.Add($"แถวที่ {row}: รหัสผู้ใช้ {username} มีในระบบแล้ว");
+                    }
+                }
+
+                // ตรวจสอบเบอร์มือถือ
+                string phoneNumber = worksheet.Cells[row, 8].Text;
+                if (!string.IsNullOrEmpty(phoneNumber))
+                {
+                    if (phoneNumber.Length != 10 || !phoneNumber.All(char.IsDigit))
+                    {
+                        errors.Add($"แถวที่ {row}: เบอร์มือถือต้องเป็นตัวเลข 10 หลักเท่านั้น");
                     }
                 }
 

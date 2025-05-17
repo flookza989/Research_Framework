@@ -47,6 +47,10 @@
                             <asp:Label ID="LabelBranch" runat="server" CssClass="labelContent" Text="สาขา"></asp:Label>
                             <asp:TextBox ID="Tb_branch" runat="server" CssClass="form-control textboxContent" placeholder="สาขา" Enabled="false"></asp:TextBox>
                         </div>
+                        <div class="col-6 mt-2">
+                            <asp:Label ID="LabelPhone" runat="server" CssClass="labelContent" Text="เบอร์มือถือ"></asp:Label>
+                            <asp:TextBox ID="Tb_phoneNumber" runat="server" CssClass="form-control textboxContent" placeholder="เบอร์มือถือ" TextMode="Phone"></asp:TextBox>
+                        </div>
                     </div>
                     <div class="text-end mt-3">
                         <asp:LinkButton ID="Btn_save" CssClass="buttonNormal btn" runat="server" OnClientClick="SaveProfile(); return false;">
@@ -105,10 +109,12 @@
                 return;
             }
             
+            var phoneNumber = $("#<%= Tb_phoneNumber.ClientID %>").val().trim();
             var profileData = {
                 Name: name,
                 LastName: lastName,
-                Image: null
+                Image: null,
+                PhoneNumber: phoneNumber
             };
 
             var fileInput = document.getElementById('fileUpload');

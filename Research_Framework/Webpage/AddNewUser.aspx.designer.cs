@@ -67,5 +67,10 @@ namespace Research_Framework.Webpage
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.GridView Gv_newSTD;
+        
+        /// <summary>
+        /// PhoneNumber column for GridView.
+        /// </summary>
+        protected global::System.Web.UI.WebControls.BoundField PhoneNumber;
     }
 }

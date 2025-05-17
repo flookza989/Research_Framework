@@ -38,6 +38,7 @@ namespace Research_Framework.Webpage
                         Tb_name.Value = user.first_name;
                         Tb_lname.Value = user.last_name;
                         Tb_username.Text = user.username;
+                        // Tb_phoneNumber.Text = user.phone_number; // Placeholder, will be adjusted based on user_type
 
                         // แสดงรูปโปรไฟล์
                         if (user.profile_img != null)
@@ -54,12 +55,14 @@ namespace Research_Framework.Webpage
                         // การจัดการแสดงคณะและสาขาตามประเภทผู้ใช้
                         if (user.user_type == "ADMIN")
                         {
-                            // ADMIN ไม่มีคณะและสาขา จึงซ่อนฟิลด์เหล่านี้
+                            // ADMIN ไม่มีคณะ สาขาและเบอร์โทรศัพท์ จึงซ่อนฟิลด์เหล่านี้
                             Tb_faculty.Visible = false;
                             Tb_branch.Visible = false;
-                            // ซ่อน Label คณะและสาขาด้วย
+                            Tb_phoneNumber.Visible = false;
+                            // ซ่อน Label คณะ สาขาและเบอร์โทรศัพท์ด้วย
                             LabelFaculty.Visible = false;
                             LabelBranch.Visible = false;
+                            LabelPhone.Visible = false;
                         }
                         else if (user.user_type == "STUDENT")
                         {
@@ -77,6 +80,7 @@ namespace Research_Framework.Webpage
                                         Tb_faculty.Text = faculty.faculty_name;
                                     }
                                 }
+                                Tb_phoneNumber.Text = student.phone_number;
                             }
                         }
                         else if (user.user_type == "TEACHER")
@@ -95,7 +99,16 @@ namespace Research_Framework.Webpage
                                         Tb_faculty.Text = faculty.faculty_name;
                                     }
                                 }
+                                Tb_phoneNumber.Text = teacher.phone_number;
                             }
+                        }
+                        else
+                        {
+                            // For other user types like ADMIN, hide the phone number field
+                            Tb_phoneNumber.Visible = false;
+                            // Optionally, hide the label as well if you have one specifically for phone number
+                            // Assuming a Label control with ID LabelPhoneNumber exists or you add one
+                            // LabelPhoneNumber.Visible = false; 
                         }
                     }
                 }
@@ -124,6 +137,24 @@ namespace Research_Framework.Webpage
                         if (!string.IsNullOrEmpty(profileData.Image))
                         {
                             user.profile_img = Convert.FromBase64String(profileData.Image);
+                        }
+
+                        // Save phone number based on user type
+                        if (user.user_type == "STUDENT")
+                        {
+                            var student = db.students.FirstOrDefault(s => s.user_id == userId);
+                            if (student != null)
+                            {
+                                student.phone_number = profileData.PhoneNumber;
+                            }
+                        }
+                        else if (user.user_type == "TEACHER")
+                        {
+                            var teacher = db.teachers.FirstOrDefault(t => t.user_id == userId);
+                            if (teacher != null)
+                            {
+                                teacher.phone_number = profileData.PhoneNumber;
+                            }
                         }
 
                         db.SaveChanges();
@@ -167,6 +198,7 @@ namespace Research_Framework.Webpage
             public string Name { get; set; }
             public string LastName { get; set; }
             public string Image { get; set; }
+            public string PhoneNumber { get; set; }
         }
     }
 }

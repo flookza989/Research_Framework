@@ -51,9 +51,32 @@
                             <asp:BoundField DataField="Password" HeaderText="รหัสผ่าน" />
                             <asp:BoundField DataField="Faculty" HeaderText="คณะ" />
                             <asp:BoundField DataField="Branch" HeaderText="สาขา" />
+                            <asp:BoundField DataField="PhoneNumber" HeaderText="เบอร์มือถือ" />
                         </Columns>
                     </asp:GridView>
                 </div>
+
+                <script type="text/javascript">
+                    document.addEventListener('DOMContentLoaded', function () {
+                        var fileUpload = document.getElementById('<%= FileUploadControl.ClientID %>');
+                        var uploadButton = document.getElementById('<%= Btn_upload.ClientID %>');
+
+                        // ซ่อนปุ่มอัพโหลดเมื่อโหลดหน้าครั้งแรกถ้าไม่มีไฟล์ถูกเลือก (กรณี IsPostBack=true)
+                        if (fileUpload && uploadButton) {
+                             if (fileUpload.files.length === 0) {
+                                uploadButton.style.display = 'none';
+                            }
+
+                            fileUpload.addEventListener('change', function () {
+                                if (this.files.length > 0) {
+                                    uploadButton.style.display = ''; // แสดงปุ่มเมื่อเลือกไฟล์
+                                } else {
+                                    uploadButton.style.display = 'none'; // ซ่อนปุ่มเมื่อยกเลิกการเลือกไฟล์
+                                }
+                            });
+                        }
+                    });
+                </script>
             </div>
         </div>
     </div>

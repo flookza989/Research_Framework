@@ -17,12 +17,16 @@ namespace Research_Framework.Webpage
                 string currentPage = System.IO.Path.GetFileName(Request.Url.AbsolutePath);
                 bool isLoginPage = currentPage.Equals("Login.aspx", StringComparison.OrdinalIgnoreCase);
 
+                // ตั้งค่าการมองเห็นเมนูใน Sidebar
+                navProfile.Visible = !isLoginPage;
                 navAddReserch.Visible = !isLoginPage;
                 navApprove.Visible = !isLoginPage;
                 navAddNewUser.Visible = !isLoginPage;
                 navMangeUser.Visible = !isLoginPage;
+                
+                // ตั้งค่าการมองเห็นปุ่มใน Navbar
                 BtnLogout.Visible = !isLoginPage;
-                navProfile.Visible = !isLoginPage;
+                NavProfileImage.Visible = !isLoginPage;
 
                 // กำหนด CSS class ให้กับ content container
                 if (isLoginPage)
@@ -71,6 +75,8 @@ namespace Research_Framework.Webpage
                     if (user != null)
                     {
                         var userType = user.user_type;
+                        // เมนูข้อมูลส่วนตัวแสดงเสมอสำหรับทุกคน
+                        navProfile.Visible = true;
                         navAddReserch.Visible = userType == "STUDENT";
                         navApprove.Visible = userType != "ADMIN";
                         navAddNewUser.Visible = userType == "ADMIN";
@@ -113,7 +119,11 @@ namespace Research_Framework.Webpage
                 navMangeUserLink.Attributes["class"] = "nav-link sidebarItem";
 
                 // กำหนด class active ให้กับเมนูที่ตรงกับหน้าปัจจุบัน
-                if (currentPage == "addreserch.aspx" && navAddReserch.Visible)
+                if (currentPage == "profile.aspx" && navProfile.Visible)
+                {
+                    navProfileLink.Attributes["class"] = "nav-link sidebarItem active";
+                }
+                else if (currentPage == "addreserch.aspx" && navAddReserch.Visible)
                 {
                     navAddReserchLink.Attributes["class"] = "nav-link sidebarItem active";
                 }

@@ -69,6 +69,15 @@ namespace Research_Framework.Webpage
         protected global::System.Web.UI.WebControls.TextBox Tb_username;
 
         /// <summary>
+        /// LabelFaculty control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label LabelFaculty;
+
+        /// <summary>
         /// Tb_faculty control.
         /// </summary>
         /// <remarks>
@@ -76,6 +85,15 @@ namespace Research_Framework.Webpage
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox Tb_faculty;
+
+        /// <summary>
+        /// LabelBranch control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label LabelBranch;
 
         /// <summary>
         /// Tb_branch control.

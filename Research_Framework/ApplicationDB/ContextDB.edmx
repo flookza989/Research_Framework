@@ -8,7 +8,6 @@
         <EntityType Name="branchs">
           <Key>
             <PropertyRef Name="branch_id" />
-            <PropertyRef Name="faculty_id" />
           </Key>
           <Property Name="branch_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="branch_name" Type="nvarchar" MaxLength="50" Nullable="false" />
@@ -127,13 +126,24 @@
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="ResearchDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="ResearchDBEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="branchs" EntityType="ResearchDBModel.branchs" />
+          <EntitySet Name="facultys" EntityType="ResearchDBModel.facultys" />
+          <EntitySet Name="master_process" EntityType="ResearchDBModel.master_process" />
+          <EntitySet Name="process_document" EntityType="ResearchDBModel.process_document" />
+          <EntitySet Name="research_groups" EntityType="ResearchDBModel.research_groups" />
+          <EntitySet Name="research_process" EntityType="ResearchDBModel.research_process" />
+          <EntitySet Name="researches" EntityType="ResearchDBModel.researches" />
+          <EntitySet Name="students" EntityType="ResearchDBModel.students" />
+          <EntitySet Name="teachers" EntityType="ResearchDBModel.teachers" />
+          <EntitySet Name="users" EntityType="ResearchDBModel.users" />
+        </EntityContainer>
         <EntityType Name="branchs">
           <Key>
             <PropertyRef Name="branch_id" />
-            <PropertyRef Name="faculty_id" />
           </Key>
           <Property Name="branch_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="branch_name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="branch_name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="faculty_id" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="facultys">
@@ -141,14 +151,14 @@
             <PropertyRef Name="faculty_id" />
           </Key>
           <Property Name="faculty_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="faculty_name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="faculty_name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="master_process">
           <Key>
             <PropertyRef Name="id" />
           </Key>
           <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="name" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="name" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
           <Property Name="sequence_no" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="process_document">
@@ -157,8 +167,8 @@
           </Key>
           <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="research_process_id" Type="Int32" Nullable="false" />
-          <Property Name="document_type" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="file_path" Type="String" MaxLength="500" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="document_type" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="file_path" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
           <Property Name="upload_date" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="upload_by" Type="Int32" Nullable="false" />
           <Property Name="document_status" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
@@ -180,7 +190,7 @@
           <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="research_id" Type="Int32" Nullable="false" />
           <Property Name="process_id" Type="Int32" Nullable="false" />
-          <Property Name="status" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="status" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="approved_by" Type="Int32" />
           <Property Name="approved_date" Type="DateTime" Precision="3" />
           <Property Name="comments" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
@@ -191,10 +201,10 @@
             <PropertyRef Name="id" />
           </Key>
           <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="name" Type="String" MaxLength="500" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="name" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
           <Property Name="description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="advisor_id" Type="Int32" Nullable="false" />
-          <Property Name="status" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="status" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="is_approved" Type="Boolean" Nullable="false" />
           <Property Name="approved_by" Type="Int32" />
           <Property Name="approved_date" Type="DateTime" Precision="3" />
@@ -223,28 +233,16 @@
             <PropertyRef Name="id" />
           </Key>
           <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="username" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="password" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="first_name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="last_name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="user_type" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="username" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="password" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="first_name" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="last_name" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="user_type" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
           <Property Name="is_active" Type="Boolean" Nullable="false" />
           <Property Name="created_date" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="last_login" Type="DateTime" Precision="3" />
           <Property Name="profile_img" Type="Binary" MaxLength="Max" FixedLength="false" />
         </EntityType>
-        <EntityContainer Name="ResearchDBEntities" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="branchs" EntityType="Self.branchs" />
-          <EntitySet Name="facultys" EntityType="Self.facultys" />
-          <EntitySet Name="master_process" EntityType="Self.master_process" />
-          <EntitySet Name="process_document" EntityType="Self.process_document" />
-          <EntitySet Name="research_groups" EntityType="Self.research_groups" />
-          <EntitySet Name="research_process" EntityType="Self.research_process" />
-          <EntitySet Name="researches" EntityType="Self.researches" />
-          <EntitySet Name="students" EntityType="Self.students" />
-          <EntitySet Name="teachers" EntityType="Self.teachers" />
-          <EntitySet Name="users" EntityType="Self.users" />
-        </EntityContainer>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -254,115 +252,115 @@
           <EntitySetMapping Name="branchs">
             <EntityTypeMapping TypeName="ResearchDBModel.branchs">
               <MappingFragment StoreEntitySet="branchs">
-                <ScalarProperty Name="branch_id" ColumnName="branch_id" />
-                <ScalarProperty Name="branch_name" ColumnName="branch_name" />
                 <ScalarProperty Name="faculty_id" ColumnName="faculty_id" />
+                <ScalarProperty Name="branch_name" ColumnName="branch_name" />
+                <ScalarProperty Name="branch_id" ColumnName="branch_id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="facultys">
             <EntityTypeMapping TypeName="ResearchDBModel.facultys">
               <MappingFragment StoreEntitySet="facultys">
-                <ScalarProperty Name="faculty_id" ColumnName="faculty_id" />
                 <ScalarProperty Name="faculty_name" ColumnName="faculty_name" />
+                <ScalarProperty Name="faculty_id" ColumnName="faculty_id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="master_process">
             <EntityTypeMapping TypeName="ResearchDBModel.master_process">
               <MappingFragment StoreEntitySet="master_process">
-                <ScalarProperty Name="id" ColumnName="id" />
-                <ScalarProperty Name="name" ColumnName="name" />
                 <ScalarProperty Name="sequence_no" ColumnName="sequence_no" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="process_document">
             <EntityTypeMapping TypeName="ResearchDBModel.process_document">
               <MappingFragment StoreEntitySet="process_document">
-                <ScalarProperty Name="id" ColumnName="id" />
-                <ScalarProperty Name="research_process_id" ColumnName="research_process_id" />
-                <ScalarProperty Name="document_type" ColumnName="document_type" />
-                <ScalarProperty Name="file_path" ColumnName="file_path" />
-                <ScalarProperty Name="upload_date" ColumnName="upload_date" />
-                <ScalarProperty Name="upload_by" ColumnName="upload_by" />
                 <ScalarProperty Name="document_status" ColumnName="document_status" />
+                <ScalarProperty Name="upload_by" ColumnName="upload_by" />
+                <ScalarProperty Name="upload_date" ColumnName="upload_date" />
+                <ScalarProperty Name="file_path" ColumnName="file_path" />
+                <ScalarProperty Name="document_type" ColumnName="document_type" />
+                <ScalarProperty Name="research_process_id" ColumnName="research_process_id" />
+                <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="research_groups">
             <EntityTypeMapping TypeName="ResearchDBModel.research_groups">
               <MappingFragment StoreEntitySet="research_groups">
-                <ScalarProperty Name="id" ColumnName="id" />
-                <ScalarProperty Name="research_id" ColumnName="research_id" />
-                <ScalarProperty Name="student_id" ColumnName="student_id" />
-                <ScalarProperty Name="created_date" ColumnName="created_date" />
                 <ScalarProperty Name="is_leader" ColumnName="is_leader" />
+                <ScalarProperty Name="created_date" ColumnName="created_date" />
+                <ScalarProperty Name="student_id" ColumnName="student_id" />
+                <ScalarProperty Name="research_id" ColumnName="research_id" />
+                <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="research_process">
             <EntityTypeMapping TypeName="ResearchDBModel.research_process">
               <MappingFragment StoreEntitySet="research_process">
-                <ScalarProperty Name="id" ColumnName="id" />
-                <ScalarProperty Name="research_id" ColumnName="research_id" />
-                <ScalarProperty Name="process_id" ColumnName="process_id" />
-                <ScalarProperty Name="status" ColumnName="status" />
-                <ScalarProperty Name="approved_by" ColumnName="approved_by" />
-                <ScalarProperty Name="approved_date" ColumnName="approved_date" />
-                <ScalarProperty Name="comments" ColumnName="comments" />
                 <ScalarProperty Name="create_date" ColumnName="create_date" />
+                <ScalarProperty Name="comments" ColumnName="comments" />
+                <ScalarProperty Name="approved_date" ColumnName="approved_date" />
+                <ScalarProperty Name="approved_by" ColumnName="approved_by" />
+                <ScalarProperty Name="status" ColumnName="status" />
+                <ScalarProperty Name="process_id" ColumnName="process_id" />
+                <ScalarProperty Name="research_id" ColumnName="research_id" />
+                <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="researches">
             <EntityTypeMapping TypeName="ResearchDBModel.researches">
               <MappingFragment StoreEntitySet="researches">
-                <ScalarProperty Name="id" ColumnName="id" />
-                <ScalarProperty Name="name" ColumnName="name" />
-                <ScalarProperty Name="description" ColumnName="description" />
-                <ScalarProperty Name="advisor_id" ColumnName="advisor_id" />
-                <ScalarProperty Name="status" ColumnName="status" />
-                <ScalarProperty Name="is_approved" ColumnName="is_approved" />
-                <ScalarProperty Name="approved_by" ColumnName="approved_by" />
-                <ScalarProperty Name="approved_date" ColumnName="approved_date" />
                 <ScalarProperty Name="created_date" ColumnName="created_date" />
+                <ScalarProperty Name="approved_date" ColumnName="approved_date" />
+                <ScalarProperty Name="approved_by" ColumnName="approved_by" />
+                <ScalarProperty Name="is_approved" ColumnName="is_approved" />
+                <ScalarProperty Name="status" ColumnName="status" />
+                <ScalarProperty Name="advisor_id" ColumnName="advisor_id" />
+                <ScalarProperty Name="description" ColumnName="description" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="students">
             <EntityTypeMapping TypeName="ResearchDBModel.students">
               <MappingFragment StoreEntitySet="students">
-                <ScalarProperty Name="id" ColumnName="id" />
-                <ScalarProperty Name="user_id" ColumnName="user_id" />
-                <ScalarProperty Name="faculty_id" ColumnName="faculty_id" />
                 <ScalarProperty Name="branch_id" ColumnName="branch_id" />
+                <ScalarProperty Name="faculty_id" ColumnName="faculty_id" />
+                <ScalarProperty Name="user_id" ColumnName="user_id" />
+                <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="teachers">
             <EntityTypeMapping TypeName="ResearchDBModel.teachers">
               <MappingFragment StoreEntitySet="teachers">
-                <ScalarProperty Name="id" ColumnName="id" />
-                <ScalarProperty Name="user_id" ColumnName="user_id" />
-                <ScalarProperty Name="faculty_id" ColumnName="faculty_id" />
                 <ScalarProperty Name="branch_id" ColumnName="branch_id" />
+                <ScalarProperty Name="faculty_id" ColumnName="faculty_id" />
+                <ScalarProperty Name="user_id" ColumnName="user_id" />
+                <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="users">
             <EntityTypeMapping TypeName="ResearchDBModel.users">
               <MappingFragment StoreEntitySet="users">
-                <ScalarProperty Name="id" ColumnName="id" />
-                <ScalarProperty Name="username" ColumnName="username" />
-                <ScalarProperty Name="password" ColumnName="password" />
-                <ScalarProperty Name="first_name" ColumnName="first_name" />
-                <ScalarProperty Name="last_name" ColumnName="last_name" />
-                <ScalarProperty Name="user_type" ColumnName="user_type" />
-                <ScalarProperty Name="is_active" ColumnName="is_active" />
-                <ScalarProperty Name="created_date" ColumnName="created_date" />
-                <ScalarProperty Name="last_login" ColumnName="last_login" />
                 <ScalarProperty Name="profile_img" ColumnName="profile_img" />
+                <ScalarProperty Name="last_login" ColumnName="last_login" />
+                <ScalarProperty Name="created_date" ColumnName="created_date" />
+                <ScalarProperty Name="is_active" ColumnName="is_active" />
+                <ScalarProperty Name="user_type" ColumnName="user_type" />
+                <ScalarProperty Name="last_name" ColumnName="last_name" />
+                <ScalarProperty Name="first_name" ColumnName="first_name" />
+                <ScalarProperty Name="password" ColumnName="password" />
+                <ScalarProperty Name="username" ColumnName="username" />
+                <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

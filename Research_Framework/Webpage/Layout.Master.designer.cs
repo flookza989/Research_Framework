@@ -51,15 +51,6 @@ namespace Research_Framework.Webpage
         protected global::System.Web.UI.WebControls.Label LbUsername;
 
         /// <summary>
-        /// navProfile control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlAnchor navProfile;
-
-        /// <summary>
         /// NavProfileImage control.
         /// </summary>
         /// <remarks>
@@ -85,6 +76,24 @@ namespace Research_Framework.Webpage
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl sidebarContainer;
+
+        /// <summary>
+        /// navProfile control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl navProfile;
+
+        /// <summary>
+        /// navProfileLink control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlAnchor navProfileLink;
 
         /// <summary>
         /// navAddReserch control.

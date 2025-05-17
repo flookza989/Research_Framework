@@ -51,8 +51,19 @@ namespace Research_Framework.Webpage
                             ProfileImage.ImageUrl = "~/Images/NewUser.png";
                         }
 
-                        if (user.user_type == "STUDENT")
+                        // การจัดการแสดงคณะและสาขาตามประเภทผู้ใช้
+                        if (user.user_type == "ADMIN")
                         {
+                            // ADMIN ไม่มีคณะและสาขา จึงซ่อนฟิลด์เหล่านี้
+                            Tb_faculty.Visible = false;
+                            Tb_branch.Visible = false;
+                            // ซ่อน Label คณะและสาขาด้วย
+                            LabelFaculty.Visible = false;
+                            LabelBranch.Visible = false;
+                        }
+                        else if (user.user_type == "STUDENT")
+                        {
+                            // สำหรับนักศึกษา แสดงข้อมูลคณะและสาขา
                             var student = db.students.FirstOrDefault(s => s.user_id == userId);
                             if (student != null)
                             {
@@ -60,7 +71,7 @@ namespace Research_Framework.Webpage
                                 if (branch != null)
                                 {
                                     Tb_branch.Text = branch.branch_name;
-                                    var faculty = db.facultys.Find(branch.faculty_id);
+                                    var faculty = db.facultys.Find(student.faculty_id);
                                     if (faculty != null)
                                     {
                                         Tb_faculty.Text = faculty.faculty_name;
@@ -68,16 +79,17 @@ namespace Research_Framework.Webpage
                                 }
                             }
                         }
-                        if (user.user_type == "TEACHER")
+                        else if (user.user_type == "TEACHER")
                         {
-                            var student = db.teachers.FirstOrDefault(s => s.user_id == userId);
-                            if (student != null)
+                            // สำหรับอาจารย์ แสดงข้อมูลคณะและสาขา
+                            var teacher = db.teachers.FirstOrDefault(s => s.user_id == userId);
+                            if (teacher != null)
                             {
-                                var branch = db.branchs.Find(student.branch_id);
+                                var branch = db.branchs.Find(teacher.branch_id);
                                 if (branch != null)
                                 {
                                     Tb_branch.Text = branch.branch_name;
-                                    var faculty = db.facultys.Find(branch.faculty_id);
+                                    var faculty = db.facultys.Find(teacher.faculty_id);
                                     if (faculty != null)
                                     {
                                         Tb_faculty.Text = faculty.faculty_name;

@@ -36,15 +36,15 @@
                             <input id="Tb_lname" type="text" runat="server" class="form-control textboxContent" placeholder="นามสกุล" onkeypress="return isThaiLanguage(event)"/>
                         </div>
                         <div class="col-6 mt-2">
-                            <asp:Label runat="server" CssClass="labelContent" Text="รหัสนักศึกษา"></asp:Label>
+                            <asp:Label runat="server" CssClass="labelContent" Text="ชื่อผู้ใช้"></asp:Label>
                             <asp:TextBox ID="Tb_username" runat="server" CssClass="form-control textboxContent" placeholder="รหัสนักศึกษา" Enabled="false"></asp:TextBox>
                         </div>
                         <div class="col-6 mt-2">
-                            <asp:Label runat="server" CssClass="labelContent" Text="คณะ"></asp:Label>
+                            <asp:Label ID="LabelFaculty" runat="server" CssClass="labelContent" Text="คณะ"></asp:Label>
                             <asp:TextBox ID="Tb_faculty" runat="server" CssClass="form-control textboxContent" placeholder="คณะ" Enabled="false"></asp:TextBox>
                         </div>
                         <div class="col-6 mt-2">
-                            <asp:Label runat="server" CssClass="labelContent" Text="สาขา"></asp:Label>
+                            <asp:Label ID="LabelBranch" runat="server" CssClass="labelContent" Text="สาขา"></asp:Label>
                             <asp:TextBox ID="Tb_branch" runat="server" CssClass="form-control textboxContent" placeholder="สาขา" Enabled="false"></asp:TextBox>
                         </div>
                     </div>

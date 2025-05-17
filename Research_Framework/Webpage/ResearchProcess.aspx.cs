@@ -30,11 +30,9 @@ namespace Research_Framework.Webpage
                 {
                     LoadResearchList();
                 }
-                else
-                {
-                    LoadResearchInfo();
-                    LoadProcesses();// โหลดข้อมูลงานวิจัยของนักศึกษา
-                }
+                
+                LoadResearchInfo(); // โหลดข้อมูลงานวิจัย (ทั้งกรณีนักศึกษาและอาจารย์)
+                LoadProcesses(); // โหลดข้อมูลขั้นตอนการวิจัย
             }
         }
 
@@ -411,133 +409,152 @@ namespace Research_Framework.Webpage
 
         private void LoadResearchInfo(int? specificResearchId = null)
         {
-            //try
-            //{
-            //    if (Session["UserID"] == null)
-            //    {
-            //        Response.Redirect("~/Webpage/Login.aspx");
-            //        return;
-            //    }
+            try
+            {
+                if (Session["UserID"] == null)
+                {
+                    Response.Redirect("~/Webpage/Login.aspx");
+                    return;
+                }
 
-            //    int currentUserId = Convert.ToInt32(Session["UserID"]);
+                int currentUserId = Convert.ToInt32(Session["UserID"]);
 
-            //    using (var db = new ResearchDBEntities())
-            //    {
-            //        var user = db.users.Find(currentUserId);
-            //        if (user == null) return;
+                using (var db = new ResearchDBEntities())
+                {
+                    var user = db.users.Find(currentUserId);
+                    if (user == null) return;
 
-            //        //research currentResearch = null;
+                    researches currentResearch = null;
 
-            //        // กรณีเป็นนักศึกษา
-            //        if (user.user_type == "STUDENT")
-            //        {
-            //            var student = db.students.FirstOrDefault(s => s.user_id == currentUserId);
-            //            if (student != null)
-            //            {
-            //                var researchGroup = db.research_groups
-            //                    .FirstOrDefault(rg => rg.student_id == student.id);
+                    // กรณีเป็นนักศึกษา
+                    if (user.user_type == "STUDENT")
+                    {
+                        var student = db.students.FirstOrDefault(s => s.user_id == currentUserId);
+                        if (student != null)
+                        {
+                            var researchGroup = db.research_groups
+                                .FirstOrDefault(rg => rg.student_id == student.id);
 
-            //                if (researchGroup != null)
-            //                {
-            //                    // ดึงข้อมูลงานวิจัยพร้อมข้อมูลที่เกี่ยวข้อง
-            //                    var query = (from r in db.researches
-            //                                        join u in db.users on r.advisor_id equals u.id
-            //                                        join t in db.teachers on u.id equals t.user_id
-            //                                        join f in db.facultys on t.faculty_id equals f.faculty_id
-            //                                        join b in db.branchs on t.branch_id equals b.branch_id
-            //                                        where r.id == researchGroup.research_id
-            //                                        select new
-            //                                        {
-            //                                            Research = r,
-            //                                            AdvisorName = u.first_name + " " + u.last_name,
-            //                                            Faculty = f.faculty_name,
-            //                                            Branch = b.branch_name,
-            //                                            IsLeader = researchGroup.is_leader
-            //                                        });
+                            if (researchGroup != null)
+                            {
+                                // ดึงข้อมูลงานวิจัยพร้อมข้อมูลที่เกี่ยวข้อง
+                                var research = db.researches.Find(researchGroup.research_id);
+                                
+                                if (research != null)
+                                {
+                                    // ดึงข้อมูลอาจารย์ที่ปรึกษา
+                                    var advisor = db.users.Find(research.advisor_id);
+                                    
+                                    if (advisor != null)
+                                    {
+                                        currentResearch = research;
+                                        
+                                        // แสดงชื่องานวิจัยและอาจารย์ที่ปรึกษา
+                                        TbResearchName.Text = research.name;
+                                        TbAdvisor.Text = $"อ.{advisor.first_name} {advisor.last_name}";
+                                        
+                                        // แสดงสถานะงานวิจัย
+                                        LbResearchStatus.Text = GetStatusText(research.status);
+                                        LbResearchStatus.CssClass = $"badge {GetStatusClass(research.status)}";
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    // กรณีเป็นอาจารย์
+                    else if (user.user_type == "TEACHER")
+                    {
+                        // กรณีระบุงานวิจัยเฉพาะ
+                        if (specificResearchId.HasValue)
+                        {
+                            var research = db.researches.Find(specificResearchId.Value);
+                            if (research != null && research.advisor_id == currentUserId)
+                            {
+                                currentResearch = research;
+                                
+                                // ดึงข้อมูลหัวหน้ากลุ่ม
+                                var leaderGroup = db.research_groups
+                                    .FirstOrDefault(rg => rg.research_id == research.id && rg.is_leader);
+                                    
+                                if (leaderGroup != null)
+                                {
+                                    var student = db.students.Find(leaderGroup.student_id);
+                                    if (student != null)
+                                    {
+                                        var leaderUser = db.users.Find(student.user_id);
+                                        if (leaderUser != null)
+                                        {
+                                            // แสดงชื่องานวิจัยและหัวหน้ากลุ่ม
+                                            TbResearchName.Text = research.name;
+                                            TbAdvisor.Text = $"หัวหน้ากลุ่ม: {leaderUser.first_name} {leaderUser.last_name} ({leaderUser.username})";
+                                            LbAdvisor.InnerText = "หัวหน้ากลุ่ม";
+                                            
+                                            // แสดงสถานะงานวิจัย
+                                            LbResearchStatus.Text = GetStatusText(research.status);
+                                            LbResearchStatus.CssClass = $"badge {GetStatusClass(research.status)}";
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        // กรณีไม่ได้ระบุงานวิจัยเฉพาะ แต่มีงานวิจัยที่เป็นที่ปรึกษา
+                        else
+                        {
+                            // ค้นหางานวิจัยล่าสุดที่เป็นที่ปรึกษา
+                            var research = db.researches
+                                .Where(r => r.advisor_id == currentUserId)
+                                .OrderByDescending(r => r.id)
+                                .FirstOrDefault();
+                                
+                            if (research != null)
+                            {
+                                currentResearch = research;
+                                
+                                // ดึงข้อมูลหัวหน้ากลุ่ม
+                                var leaderGroup = db.research_groups
+                                    .FirstOrDefault(rg => rg.research_id == research.id && rg.is_leader);
+                                    
+                                if (leaderGroup != null)
+                                {
+                                    var student = db.students.Find(leaderGroup.student_id);
+                                    if (student != null)
+                                    {
+                                        var leaderUser = db.users.Find(student.user_id);
+                                        if (leaderUser != null)
+                                        {
+                                            // แสดงชื่องานวิจัยและหัวหน้ากลุ่ม
+                                            TbResearchName.Text = research.name;
+                                            TbAdvisor.Text = $"หัวหน้ากลุ่ม: {leaderUser.first_name} {leaderUser.last_name} ({leaderUser.username})";
+                                            LbAdvisor.InnerText = "หัวหน้ากลุ่ม";
+                                            
+                                            // แสดงสถานะงานวิจัย
+                                            LbResearchStatus.Text = GetStatusText(research.status);
+                                            LbResearchStatus.CssClass = $"badge {GetStatusClass(research.status)}";
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
 
-            //                    if (specificResearchId.HasValue)
-            //                    {
-            //                        query = query.Where(r => r.Research.id == specificResearchId.Value);
-            //                    }
-
-            //                    var researchData = query.FirstOrDefault();
-
-            //                    if (researchData != null)
-            //                    {
-            //                        currentResearch = researchData.Research;
-
-            //                        // แสดงข้อมูลงานวิจัย
-            //                        TbResearchName.Text = currentResearch.name;
-            //                        TbAdvisor.Text = $"อ.{researchData.AdvisorName}";
-
-            //                        // แสดงสถานะงานวิจัย
-            //                        LbResearchStatus.Text = GetStatusText(currentResearch.status);
-            //                        LbResearchStatus.CssClass = $"badge {GetStatusColorClass(currentResearch.status)}";
-
-            //                        // ถ้าเป็นหัวหน้ากลุ่ม แสดง controls เพิ่มเติม
-            //                        bool isLeader = researchData.IsLeader;
-            //                    }
-            //                }
-            //            }
-            //        }
-            //        // กรณีเป็นอาจารย์
-            //        else if (user.user_type == "TEACHER")
-            //        {
-            //            var teacher = db.teachers.FirstOrDefault(t => t.user_id == currentUserId);
-            //            if (teacher != null)
-            //            {
-            //                var researchData = (from r in db.researches
-            //                                    where r.advisor_id == currentUserId
-            //                                    join rg in db.research_groups on r.id equals rg.research_id
-            //                                    join s in db.students on rg.student_id equals s.id
-            //                                    join u in db.users on s.user_id equals u.id
-            //                                    where rg.is_leader // ดึงเฉพาะหัวหน้ากลุ่ม
-            //                                    select new
-            //                                    {
-            //                                        Research = r,
-            //                                        LeaderName = u.first_name + " " + u.last_name,
-            //                                        StudentId = u.username
-            //                                    }).FirstOrDefault();
-
-            //                if (researchData != null)
-            //                {
-            //                    currentResearch = researchData.Research;
-
-            //                    // แสดงข้อมูลงานวิจัย
-            //                    TbResearchName.Text = currentResearch.name;
-            //                    TbAdvisor.Text = $"หัวหน้ากลุ่ม: {researchData.LeaderName} ({researchData.StudentId})";
-
-            //                    // แสดงสถานะงานวิจัย
-
-            //                    LbAdvisor.InnerText = "หัวหน้ากลุ่ม";
-            //                    LbResearchStatus.Text = GetStatusText(currentResearch.status);
-            //                    LbResearchStatus.CssClass = $"badge {GetStatusColorClass(currentResearch.status)}";
-
-            //                    // แสดง controls สำหรับอาจารย์
-            //                    // ApprovalPanel.Visible = true;
-            //                    // ฯลฯ
-            //                }
-            //            }
-            //        }
-
-            //        if (currentResearch != null)
-            //        {
-            //            // โหลดข้อมูลอื่นๆ ที่เกี่ยวข้อง เช่น กำหนดการ
-            //            LoadResearchSchedule(currentResearch.id);
-            //            // โหลดขั้นตอนการดำเนินงาน
-            //            LoadResearchProcesses(currentResearch.id);
-            //        }
-            //        else
-            //        {
-            //            // กรณีไม่พบข้อมูลงานวิจัย
-            //            ShowNoResearchMessage();
-            //        }
-            //    }
-            //}
-            //catch (Exception ex)
-            //{
-            //    ShowError($"เกิดข้อผิดพลาดในการโหลดข้อมูล: {ex.Message}");
-            //}
+                    if (currentResearch == null)
+                    {
+                        // กรณีไม่พบข้อมูลงานวิจัย
+                        TbResearchName.Text = "";
+                        TbAdvisor.Text = "";
+                        LbResearchStatus.Text = "";
+                        
+                        if (!IsPostBack)  // แสดงข้อความเตือนเฉพาะตอนโหลดหน้าแรก
+                        {
+                            ShowNoResearchMessage();
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                ShowError($"เกิดข้อผิดพลาดในการโหลดข้อมูล: {ex.Message}");
+            }
         }
 
         //private research GetCurrentResearch(int userId)
@@ -659,9 +676,6 @@ namespace Research_Framework.Webpage
                     DdlResearch.DataTextField = "DisplayText";
                     DdlResearch.DataValueField = "id";
                     DdlResearch.DataBind();
-
-                    // เพิ่มตัวเลือกเริ่มต้น
-                    DdlResearch.Items.Insert(0, new ListItem("-- เลือกงานวิจัย --", ""));
                 }
             }
             catch (Exception ex)
@@ -672,20 +686,20 @@ namespace Research_Framework.Webpage
 
         protected void DdlResearch_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (string.IsNullOrEmpty(DdlResearch.SelectedValue))
+            if (!string.IsNullOrEmpty(DdlResearch.SelectedValue))
             {
-                // ล้างข้อมูลเดิม
+                int researchId = Convert.ToInt32(DdlResearch.SelectedValue);
+                LoadResearchInfo(researchId);
+                LoadProcesses();
+            }
+            else
+            {
+                // กรณีเลือก "-- เลือกงานวิจัย --"
                 TbResearchName.Text = "";
                 TbAdvisor.Text = "";
                 RptProcesses.DataSource = null;
                 RptProcesses.DataBind();
-                return;
             }
-
-            int researchId = Convert.ToInt32(DdlResearch.SelectedValue);
-            LoadResearchInfo(researchId);
-            LoadProcesses();
-
         }
 
         private void LoadProcesses()
@@ -698,20 +712,40 @@ namespace Research_Framework.Webpage
                     int? selectedResearchId = null;
 
                     var user = db.users.Find(currentUserId);
+                    if (user == null) return;
+                    
                     if (user.user_type == "TEACHER")
                     {
+                        // กรณีเป็นอาจารย์ ตรวจสอบการเลือกจาก dropdown ก่อน
                         if (!string.IsNullOrEmpty(DdlResearch.SelectedValue))
                         {
                             selectedResearchId = Convert.ToInt32(DdlResearch.SelectedValue);
                         }
-                    }
-                    else
-                    {
-                        var student = db.students.FirstOrDefault(s => s.user_id == currentUserId);
-                        var researchGroup = db.research_groups.FirstOrDefault(rg => rg.student_id == student.id);
-                        if (researchGroup != null)
+                        else
                         {
-                            selectedResearchId = researchGroup.research_id;
+                            // ถ้าไม่ได้เลือก ให้ใช้งานวิจัยล่าสุด
+                            var research = db.researches
+                                .Where(r => r.advisor_id == currentUserId)
+                                .OrderByDescending(r => r.id)
+                                .FirstOrDefault();
+                                
+                            if (research != null)
+                            {
+                                selectedResearchId = research.id;
+                            }
+                        }
+                    }
+                    else if (user.user_type == "STUDENT")
+                    {
+                        // กรณีเป็นนักศึกษา ใช้งานวิจัยของตนเอง
+                        var student = db.students.FirstOrDefault(s => s.user_id == currentUserId);
+                        if (student != null)
+                        {
+                            var researchGroup = db.research_groups.FirstOrDefault(rg => rg.student_id == student.id);
+                            if (researchGroup != null)
+                            {
+                                selectedResearchId = researchGroup.research_id;
+                            }
                         }
                     }
 
@@ -722,7 +756,7 @@ namespace Research_Framework.Webpage
                         return;
                     }
 
-                    // แยกการคิวรีออกมาเป็นสองส่วน
+                    // โหลดขั้นตอนการดำเนินงานวิจัย
                     var processes = from mp in db.master_process
                                     join rp in db.research_process
                                     on new { ProcessId = mp.id, ResearchId = selectedResearchId.Value }
@@ -735,8 +769,8 @@ namespace Research_Framework.Webpage
                                         ProcessId = mp.id,
                                         ProcessName = mp.name,
                                         Status = rp != null ? rp.status : "PENDING",
-                                        Comments = rp.comments,
-                                        ApprovedDate = rp.approved_date,
+                                        Comments = rp != null ? rp.comments : "",
+                                        ApprovedDate = rp != null ? rp.approved_date : (DateTime?)null,
                                         ResearchProcessId = rp != null ? rp.id : (int?)null
                                     };
 

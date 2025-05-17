@@ -36,7 +36,7 @@
                 <div class="container-fluid d-flex justify-content-end">
                     <asp:Label ID="LbUsername" runat="server" class="text-white fw-bold fs-4 me-3" Text=""></asp:Label>
                     <a id="navProfile" runat="server" href="Profile.aspx">
-                        <asp:Image ID="NavProfileImage" runat="server" Style="width: 50px; border-radius: 50px;" />
+                        <asp:Image ID="NavProfileImage" runat="server" CssClass="navbar-profile-image" />
                     </a>
                     <asp:LinkButton ID="BtnLogout" runat="server" CssClass="logoutContent" OnClick="BtnLogout_Click">
                         <span class="fa-solid fa-right-from-bracket fa-xl ms-4 text-white logoutContent"></span>

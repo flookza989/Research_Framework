@@ -1,3 +1,18 @@
+/* Navbar Profile Image */
+.navbar-profile-image {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%; /* ใช้ 50% เพื่อให้เป็นวงกลมที่สมบูรณ์ */
+    object-fit: cover; /* ทำให้รูปไม่บิดเบี้ยวเมื่อถูกตัด */
+    border: 2px solid white; /* เพิ่มขอบสีขาวเพื่อให้เด่นชัดบนพื้นหลังสีเข้ม */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* เพิ่มเงาเล็กน้อย */
+    transition: transform 0.2s ease; /* เพิ่มการเคลื่อนไหวเมื่อ hover */
+}
+
+.navbar-profile-image:hover {
+    transform: scale(1.1); /* ขยายเล็กน้อยเมื่อ hover */
+}
+
 @font-face {
     font-family: 'sukhumvitset';
     src: url('../../Font/SukhumvitSet.ttf') format('truetype');

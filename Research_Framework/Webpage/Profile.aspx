@@ -234,6 +234,29 @@
             return passwordRegex.test(password);
         }
 
+        // ฟังก์ชันสำหรับตรวจสอบการป้อนภาษาไทย
+        function isThaiLanguage(event) {
+            var keyCode = event.keyCode || event.which;
+            
+            // อนุญาตให้ใช้ปุ่ม Backspace, Delete, Arrow keys, Space
+            if (keyCode == 8 || keyCode == 46 || keyCode == 37 || keyCode == 39 || keyCode == 32) {
+                return true;
+            }
+            
+            // ช่วงรหัสภาษาไทย (Unicode: 0E00-0E7F)
+            if (keyCode >= 0x0E00 && keyCode <= 0x0E7F) {
+                return true;
+            }
+            
+            // อนุญาตให้ใช้ตัวอักษรภาษาอังกฤษด้วย
+            if ((keyCode >= 65 && keyCode <= 90) || (keyCode >= 97 && keyCode <= 122)) {
+                return true;
+            }
+
+            // เพิ่มค่า return false สำหรับกรณีอื่นๆ
+            return false;
+        }
+
         function uploadImage(files) {
             if (files.length === 0) {
                 Swal.fire({

@@ -11,7 +11,7 @@ namespace Research_Framework.Webpage
 {
 
 
-    public partial class AddReserch
+    public partial class MangeUser
     {
 
         /// <summary>
@@ -24,121 +24,139 @@ namespace Research_Framework.Webpage
         protected global::System.Web.UI.ScriptManager ScriptManager1;
 
         /// <summary>
-        /// LtPageTitle control.
+        /// TbSearch control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Literal LtPageTitle;
+        protected global::System.Web.UI.WebControls.TextBox TbSearch;
 
         /// <summary>
-        /// UpdateProgress1 control.
+        /// BtnSearch control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UpdateProgress UpdateProgress1;
+        protected global::System.Web.UI.WebControls.Button BtnSearch;
 
         /// <summary>
-        /// LbResearchStatus control.
+        /// UpdatePanel1 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label LbResearchStatus;
+        protected global::System.Web.UI.UpdatePanel UpdatePanel1;
 
         /// <summary>
-        /// Tb_reserch control.
+        /// GvUser control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox Tb_reserch;
+        protected global::System.Web.UI.WebControls.GridView GvUser;
 
         /// <summary>
-        /// RfvResearchName control.
+        /// UpdatePanelEdit control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator RfvResearchName;
+        protected global::System.Web.UI.UpdatePanel UpdatePanelEdit;
 
         /// <summary>
-        /// Tb_description control.
+        /// HfUserId control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox Tb_description;
+        protected global::System.Web.UI.WebControls.HiddenField HfUserId;
 
         /// <summary>
-        /// HdnAdvisorId control.
+        /// TbEditName control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.HiddenField HdnAdvisorId;
+        protected global::System.Web.UI.WebControls.TextBox TbEditName;
 
         /// <summary>
-        /// ImgAdvisor control.
+        /// RfvName control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Image ImgAdvisor;
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator RfvName;
 
         /// <summary>
-        /// LtAdvisorName control.
+        /// TbEditLname control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl LtAdvisorName;
+        protected global::System.Web.UI.WebControls.TextBox TbEditLname;
 
         /// <summary>
-        /// LtAdvisorDepartment control.
+        /// RfvLname control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl LtAdvisorDepartment;
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator RfvLname;
 
         /// <summary>
-        /// btnSelectTeacher control.
+        /// TbEditUsername control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlButton btnSelectTeacher;
+        protected global::System.Web.UI.WebControls.TextBox TbEditUsername;
 
         /// <summary>
-        /// BtnAddMember control.
+        /// RfvUsername control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlButton BtnAddMember;
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator RfvUsername;
 
         /// <summary>
-        /// Dgv_std control.
+        /// TbEditPassword control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.GridView Dgv_std;
+        protected global::System.Web.UI.WebControls.TextBox TbEditPassword;
+
+        /// <summary>
+        /// DdlEditFaculty control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList DdlEditFaculty;
+
+        /// <summary>
+        /// DdlEditBranch control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList DdlEditBranch;
 
         /// <summary>
         /// BtnSave control.
@@ -147,6 +165,6 @@ namespace Research_Framework.Webpage
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton BtnSave;
+        protected global::System.Web.UI.WebControls.Button BtnSave;
     }
 }

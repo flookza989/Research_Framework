@@ -12,20 +12,9 @@ namespace Research_Framework.ApplicationDB
     using System;
     using System.Collections.Generic;
     
-    public partial class View_research
+    public partial class facultys
     {
-        public int research_id { get; set; }
-        public string research_name { get; set; }
-        public int teacher_id { get; set; }
-        public string username { get; set; }
-        public string password { get; set; }
-        public string name { get; set; }
-        public string lname { get; set; }
-        public string permission { get; set; }
         public int faculty_id { get; set; }
         public string faculty_name { get; set; }
-        public int branch_id { get; set; }
-        public string branch_name { get; set; }
-        public bool approve { get; set; }
     }
 }

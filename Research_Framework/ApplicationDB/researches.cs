@@ -12,10 +12,16 @@ namespace Research_Framework.ApplicationDB
     using System;
     using System.Collections.Generic;
     
-    public partial class branch
+    public partial class researches
     {
-        public int branch_id { get; set; }
-        public string branch_name { get; set; }
-        public int faculty_id { get; set; }
+        public int id { get; set; }
+        public string name { get; set; }
+        public string description { get; set; }
+        public int advisor_id { get; set; }
+        public string status { get; set; }
+        public bool is_approved { get; set; }
+        public Nullable<int> approved_by { get; set; }
+        public Nullable<System.DateTime> approved_date { get; set; }
+        public System.DateTime created_date { get; set; }
     }
 }

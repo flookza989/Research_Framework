@@ -12,9 +12,11 @@ namespace Research_Framework.ApplicationDB
     using System;
     using System.Collections.Generic;
     
-    public partial class faculty
+    public partial class students
     {
+        public int id { get; set; }
+        public int user_id { get; set; }
         public int faculty_id { get; set; }
-        public string faculty_name { get; set; }
+        public int branch_id { get; set; }
     }
 }

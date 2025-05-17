@@ -25,17 +25,15 @@ namespace Research_Framework.ApplicationDB
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<branch> branches { get; set; }
-        public virtual DbSet<faculty> faculties { get; set; }
-        public virtual DbSet<log> logs { get; set; }
-        public virtual DbSet<process> processes { get; set; }
-        public virtual DbSet<process_path> process_path { get; set; }
-        public virtual DbSet<research> researches { get; set; }
-        public virtual DbSet<research_member> research_member { get; set; }
-        public virtual DbSet<user> users { get; set; }
-        public virtual DbSet<View_process> View_process { get; set; }
-        public virtual DbSet<View_research> View_research { get; set; }
-        public virtual DbSet<View_research_member> View_research_member { get; set; }
-        public virtual DbSet<View_user> View_user { get; set; }
+        public virtual DbSet<branchs> branchs { get; set; }
+        public virtual DbSet<facultys> facultys { get; set; }
+        public virtual DbSet<master_process> master_process { get; set; }
+        public virtual DbSet<process_document> process_document { get; set; }
+        public virtual DbSet<research_groups> research_groups { get; set; }
+        public virtual DbSet<research_process> research_process { get; set; }
+        public virtual DbSet<researches> researches { get; set; }
+        public virtual DbSet<students> students { get; set; }
+        public virtual DbSet<teachers> teachers { get; set; }
+        public virtual DbSet<users> users { get; set; }
     }
 }

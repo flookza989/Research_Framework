@@ -4,19 +4,17 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="d677de23764a4749bd9978658bc79eff" Name="Diagram1">
-        <EntityTypeShape EntityType="ResearchDBModel.branch" Width="1.5" PointX="0.75" PointY="0.75" />
-        <EntityTypeShape EntityType="ResearchDBModel.faculty" Width="1.5" PointX="2.75" PointY="0.75" />
-        <EntityTypeShape EntityType="ResearchDBModel.log" Width="1.5" PointX="0.75" PointY="3.75" />
-        <EntityTypeShape EntityType="ResearchDBModel.process" Width="1.5" PointX="2.75" PointY="3.75" />
-        <EntityTypeShape EntityType="ResearchDBModel.process_path" Width="1.5" PointX="4.75" PointY="0.75" />
-        <EntityTypeShape EntityType="ResearchDBModel.research" Width="1.5" PointX="4.75" PointY="3.75" />
-        <EntityTypeShape EntityType="ResearchDBModel.research_member" Width="1.5" PointX="6.75" PointY="0.75" />
-        <EntityTypeShape EntityType="ResearchDBModel.user" Width="1.5" PointX="0.75" PointY="6.75" />
-        <EntityTypeShape EntityType="ResearchDBModel.View_process" Width="1.5" PointX="2.75" PointY="6.75" />
-        <EntityTypeShape EntityType="ResearchDBModel.View_research" Width="1.5" PointX="6.75" PointY="3.75" />
-        <EntityTypeShape EntityType="ResearchDBModel.View_research_member" Width="1.5" PointX="8.75" PointY="0.75" />
-        <EntityTypeShape EntityType="ResearchDBModel.View_user" Width="1.5" PointX="4.75" PointY="8.75" />
+      <Diagram DiagramId="1c9e9829da0e4951a015bbe918decde5" Name="Diagram1">
+        <EntityTypeShape EntityType="ResearchDBModel.branchs" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ResearchDBModel.facultys" Width="1.5" PointX="2.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ResearchDBModel.master_process" Width="1.5" PointX="0.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ResearchDBModel.process_document" Width="1.5" PointX="2.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ResearchDBModel.research_groups" Width="1.5" PointX="4.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ResearchDBModel.research_process" Width="1.5" PointX="4.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ResearchDBModel.researches" Width="1.5" PointX="6.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ResearchDBModel.students" Width="1.5" PointX="6.75" PointY="4.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ResearchDBModel.teachers" Width="1.5" PointX="0.75" PointY="7.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ResearchDBModel.users" Width="1.5" PointX="2.75" PointY="7.75" IsExpanded="true" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

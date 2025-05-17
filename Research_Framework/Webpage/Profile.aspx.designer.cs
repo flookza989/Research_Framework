@@ -15,6 +15,15 @@ namespace Research_Framework.Webpage
     {
 
         /// <summary>
+        /// ScriptManager1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.ScriptManager ScriptManager1;
+
+        /// <summary>
         /// ProfileImage control.
         /// </summary>
         /// <remarks>
@@ -39,7 +48,7 @@ namespace Research_Framework.Webpage
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox Tb_name;
+        protected global::System.Web.UI.HtmlControls.HtmlInputText Tb_name;
 
         /// <summary>
         /// Tb_lname control.
@@ -48,7 +57,7 @@ namespace Research_Framework.Webpage
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox Tb_lname;
+        protected global::System.Web.UI.HtmlControls.HtmlInputText Tb_lname;
 
         /// <summary>
         /// Tb_username control.
@@ -58,15 +67,6 @@ namespace Research_Framework.Webpage
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox Tb_username;
-
-        /// <summary>
-        /// Tb_password control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox Tb_password;
 
         /// <summary>
         /// Tb_faculty control.
@@ -94,5 +94,41 @@ namespace Research_Framework.Webpage
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.LinkButton Btn_save;
+
+        /// <summary>
+        /// Tb_currentPassword control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlInputPassword Tb_currentPassword;
+
+        /// <summary>
+        /// Tb_newPassword control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlInputPassword Tb_newPassword;
+
+        /// <summary>
+        /// Tb_confirmPassword control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlInputPassword Tb_confirmPassword;
+
+        /// <summary>
+        /// Btn_changePassword control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton Btn_changePassword;
     }
 }

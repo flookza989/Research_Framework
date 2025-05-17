@@ -1,41 +1,20 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Login.aspx.cs" Inherits="Research_Framework.Webpage.Login" %>
+<%@ Page Title="เข้าสู่ระบบ" Language="C#" MasterPageFile="~/Webpage/Layout.Master" AutoEventWireup="true" CodeBehind="Login.aspx.cs" Inherits="Research_Framework.Webpage.Login" %>
 
-<!DOCTYPE html>
-
-<html lang="en">
-<head runat="server">
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Login</title>
-
-    <!-- CSS -->
-    <link rel="stylesheet" href="../Content/bootstrap-sweetalert/sweetalert.min.css">
-    <link rel="stylesheet" href="../Content/bootstrap/css/bootstrap.min.css">
-    <link rel="stylesheet" href="../Content/font-awesome/css/all.min.css">
-    <link rel="stylesheet" href="../Content/css/Site.css">
-</head>
-<body class="bgLogin">
-    <form id="form1" runat="server">
-        <div class="containerLogin">
-            <div class="contentHead">
-                <label>ระบบจัดการวิจัย</label>
-            </div>
-            <div class="contentBody">
-                <div class="text-start">
-                    <label class="labelContent">รหัสนักศึกษา</label>
-                    <asp:TextBox ID="Tb_user" runat="server"  class="form-control textboxContent" placeholder="รหัสนักศึกษา" required="true"></asp:TextBox>
-                </div>
-                <div class="mt-2 text-start">
-                    <label class="labelContent">รหัสผ่าน</label>
-                    <asp:TextBox ID="Tb_pass" runat="server"  class="form-control textboxContent" TextMode="Password" placeholder="รหัสผ่าน" required="true"></asp:TextBox>
-                </div>
-                <asp:Button ID="Btn_login" runat="server" class="btn buttonNormal mt-2 w-100" Text="เข้าสู่ระบบ" OnClick="Btn_login_Click" />
-            </div>
+<asp:Content ID="Content1" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
+    <div class="containerLogin container">
+        <div class="contentHead text-center">
+            <h2 class="mb-2 mt-2">ระบบจัดการวิทยานิพนธ์</h2>
         </div>
-
-        <!-- JavaScript -->
-        <script src="../Content/bootstrap-sweetalert/sweetalert.min.js"></script>
-        <script src="../Content/bootstrap/js/bootstrap.bundle.min.js"></script>
-    </form>
-</body>
-</html>
+        <div class="contentBody">
+            <div class="form-group">
+                <label class="form-label">ชื่อผู้ใช้</label>
+                <asp:TextBox ID="Tb_user" runat="server" CssClass="form-control" placeholder="กรุณากรอกชื่อผู้ใช้" required="true"></asp:TextBox>
+            </div>
+            <div class="form-group mt-3">
+                <label class="form-label">รหัสผ่าน</label>
+                <asp:TextBox ID="Tb_pass" runat="server" CssClass="form-control" TextMode="Password" placeholder="กรุณากรอกรหัสผ่าน" required="true"></asp:TextBox>
+            </div>
+            <asp:Button ID="Btn_login" runat="server" CssClass="btn btn-primary w-100 mt-4 buttonNormal" Text="เข้าสู่ระบบ" OnClick="Btn_login_Click" />
+        </div>
+    </div>
+</asp:Content>

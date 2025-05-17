@@ -12,15 +12,17 @@ namespace Research_Framework.ApplicationDB
     using System;
     using System.Collections.Generic;
     
-    public partial class user
+    public partial class users
     {
-        public int user_id { get; set; }
+        public int id { get; set; }
         public string username { get; set; }
         public string password { get; set; }
-        public string name { get; set; }
-        public string lname { get; set; }
-        public int faculty_id { get; set; }
-        public int branch_id { get; set; }
-        public string permission { get; set; }
+        public string first_name { get; set; }
+        public string last_name { get; set; }
+        public string user_type { get; set; }
+        public bool is_active { get; set; }
+        public System.DateTime created_date { get; set; }
+        public Nullable<System.DateTime> last_login { get; set; }
+        public byte[] profile_img { get; set; }
     }
 }

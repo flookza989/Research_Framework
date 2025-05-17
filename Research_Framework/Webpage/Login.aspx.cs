@@ -1,10 +1,7 @@
-﻿using Research_Framework.ApplicationDB;
+using Research_Framework.ApplicationDB;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.UI;
-using System.Web.UI.WebControls;
 
 namespace Research_Framework.Webpage
 {
@@ -12,30 +9,82 @@ namespace Research_Framework.Webpage
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            Session.RemoveAll();
+            // ถ้ามี Session อยู่แล้วให้ redirect ไปหน้า Profile
+            if (Session["UserID"] != null)
+            {
+                Response.Redirect("~/Webpage/Profile.aspx", false);
+                Context.ApplicationInstance.CompleteRequest();
+                return;
+            }
         }
 
         protected void Btn_login_Click(object sender, EventArgs e)
         {
-            using(var _db = new ResearchDBEntities())
+            try
             {
-                string user = Tb_user.Text.Trim();
-                string pass = Tb_pass.Text.Trim();
+                string username = Tb_user.Text.Trim();
+                string password = Tb_pass.Text.Trim();
 
-                View_user getUser = _db.View_user.FirstOrDefault(c => c.username == user && c.password == pass);
-
-                if(getUser == null)
+                // ตรวจสอบว่ากรอกข้อมูลครบหรือไม่
+                if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
                 {
-                    // User not found, show sweet alert
-                    string script = "swal('พบข้อผิดพลาด', 'รหัสนักศึกษา หรือ รหัสผ่านไม่ถูกต้อง', 'error');";
-                    ScriptManager.RegisterStartupScript(this, GetType(), "SweetAlert", script, true);
+                    ScriptManager.RegisterStartupScript(this, GetType(), "alertMessage",
+                        "Swal.fire('แจ้งเตือน!', 'กรุณากรอกข้อมูลให้ครบถ้วน', 'warning');", true);
                     return;
                 }
 
-                Application["fullName"] = $"{getUser.name} {getUser.lname}";
-                Application["userID"] = getUser;
+                using (ResearchDBEntities db = new ResearchDBEntities())
+                {
+                    // ค้นหาผู้ใช้ในฐานข้อมูล
+                    var user = db.users
+                        .FirstOrDefault(u => u.username == username && 
+                                           u.password == password && 
+                                           u.is_active == true);
 
-                Response.Redirect("Profile.aspx");
+                    if (user != null)
+                    {
+                        // อัพเดท last_login
+                        user.last_login = DateTime.Now;
+                        db.SaveChanges();
+
+                        // บันทึกข้อมูลลงใน Session
+                        Session["UserID"] = user.id;
+                        Session["Username"] = user.username;
+                        Session["UserType"] = user.user_type;
+                        Session["FullName"] = user.first_name + " " + user.last_name;
+                        Session["UserType"] = user.user_type;
+
+                        if (user.user_type == "STUDENT")
+                        {
+                            // ดึงข้อมูลนักศึกษา
+                            var student = db.students.FirstOrDefault(s => s.user_id == user.id);
+                            Session["StudentID"] = student.id;
+                        }
+                        else if (user.user_type == "TEACHER")
+                        {
+                            // ดึงข้อมูลอาจารย์
+                            var teacher = db.teachers.FirstOrDefault(t => t.user_id == user.id);
+                            Session["TeacherID"] = teacher.id;
+                        }
+
+                        Response.Redirect("~/Webpage/Profile.aspx", false);
+                        Context.ApplicationInstance.CompleteRequest();
+                        return;
+                    }
+                    else
+                    {
+                        // แจ้งเตือนเมื่อ login ไม่สำเร็จ
+                        ScriptManager.RegisterStartupScript(this, GetType(), "alertMessage",
+                            "Swal.fire('แจ้งเตือน!', 'ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง หรือบัญชีถูกระงับ', 'error');", true);
+                        Tb_pass.Text = string.Empty;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                // จัดการกรณีเกิด error
+                ScriptManager.RegisterStartupScript(this, GetType(), "alertMessage",
+                    $"Swal.fire('Error!', 'เกิดข้อผิดพลาด: {ex.Message}', 'error');", true);
             }
         }
     }

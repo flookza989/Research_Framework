@@ -12,11 +12,15 @@ namespace Research_Framework.ApplicationDB
     using System;
     using System.Collections.Generic;
     
-    public partial class log
+    public partial class research_process
     {
         public int id { get; set; }
-        public Nullable<int> user_id { get; set; }
-        public string log_name { get; set; }
-        public Nullable<System.DateTime> log_time { get; set; }
+        public int research_id { get; set; }
+        public int process_id { get; set; }
+        public string status { get; set; }
+        public Nullable<int> approved_by { get; set; }
+        public Nullable<System.DateTime> approved_date { get; set; }
+        public string comments { get; set; }
+        public System.DateTime create_date { get; set; }
     }
 }

@@ -12,10 +12,10 @@ namespace Research_Framework.ApplicationDB
     using System;
     using System.Collections.Generic;
     
-    public partial class research_member
+    public partial class master_process
     {
-        public int member_id { get; set; }
-        public int user_id { get; set; }
-        public int research_id { get; set; }
+        public int id { get; set; }
+        public string name { get; set; }
+        public int sequence_no { get; set; }
     }
 }

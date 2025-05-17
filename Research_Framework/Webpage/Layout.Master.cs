@@ -14,29 +14,95 @@ namespace Research_Framework.Webpage
         {
             if (!IsPostBack)
             {
-                string currentUrl = Request.Url.AbsolutePath;
+                string currentPage = System.IO.Path.GetFileName(Request.Url.AbsolutePath);
+                bool isLoginPage = currentPage.Equals("Login.aspx", StringComparison.OrdinalIgnoreCase);
 
-                switch (currentUrl)
+                navAddReserch.Visible = !isLoginPage;
+                navApprove.Visible = !isLoginPage;
+                navAddNewUser.Visible = !isLoginPage;
+                navMangeUser.Visible = !isLoginPage;
+                BtnLogout.Visible = !isLoginPage;
+                navProfile.Visible = !isLoginPage;
+
+                mainContent.Attributes["class"] = isLoginPage ? "content-full" : "content";
+
+                if (!isLoginPage && Session["UserID"] == null)
                 {
-                    case "/Webpage/AddReserch.aspx":
-                        break;
-                    case "/Webpage/Approve.aspx":
-                        break;
+                    Response.Redirect("~/Webpage/Login.aspx");
                 }
 
-                if (Application["userID"] == null)
-                    return;
-
-                View_user getUser = (View_user)Application["userID"];
-                Lb_name.Text = $"{getUser.name} {getUser.lname}";
-
-                if(getUser.permission != "student")
+                if (Session["UserID"] != null)
                 {
-                    navAdd.Visible = false;
+                    LoadUserInfo();
                 }
             }
+        }
 
-            
+        private void LoadUserInfo()
+        {
+            try
+            {
+                int userId = Convert.ToInt32(Session["UserID"]);
+                using (var db = new ResearchDBEntities())
+                {
+                    var user = db.users.Find(userId);
+                    if (user != null)
+                    {
+                        var userType = user.user_type;
+                        navAddReserch.Visible = userType == "STUDENT";
+                        navApprove.Visible = userType != "ADMIN";
+                        navAddNewUser.Visible = userType == "ADMIN";
+                        navMangeUser.Visible = userType == "ADMIN";
+
+                        // แสดงชื่อผู้ใช้
+                        LbUsername.Text = $"{user.first_name} {user.last_name}";
+
+                        // แสดงรูปโปรไฟล์
+                        if (user.profile_img != null)
+                        {
+                            string base64Image = Convert.ToBase64String(user.profile_img);
+                            NavProfileImage.ImageUrl = $"data:image/jpeg;base64,{base64Image}";
+                        }
+                        else
+                        {
+                            NavProfileImage.ImageUrl = "~/Images/NewUser.png";
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                // จัดการข้อผิดพลาด
+                Console.WriteLine($"Error loading user info: {ex.Message}");
+            }
+        }
+
+        protected void BtnLogout_Click(object sender, EventArgs e)
+        {
+            // ล้าง Session ทั้งหมด
+            Session.Clear();
+            Session.Abandon();
+
+            // ลบ Cookie ที่เกี่ยวข้อง (ถ้ามี)
+            if (Request.Cookies["UserSettings"] != null)
+            {
+                Response.Cookies["UserSettings"].Expires = DateTime.Now.AddDays(-1);
+            }
+
+            // แสดง SweetAlert2 แล้วค่อย Redirect
+            string script = @"
+        Swal.fire({
+            title: 'ออกจากระบบสำเร็จ',
+            text: 'กำลังนำท่านไปยังหน้าเข้าสู่ระบบ',
+            icon: 'success',
+            timer: 2000,
+            showConfirmButton: false
+        }).then(function() {
+            window.location = 'Login.aspx';
+        });";
+
+            ScriptManager.RegisterStartupScript(this, GetType(),
+                "logout", script, true);
         }
     }
 }

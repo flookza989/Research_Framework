@@ -12,9 +12,14 @@ namespace Research_Framework.ApplicationDB
     using System;
     using System.Collections.Generic;
     
-    public partial class process
+    public partial class process_document
     {
-        public int process_id { get; set; }
-        public string processResearch { get; set; }
+        public int id { get; set; }
+        public int research_process_id { get; set; }
+        public string document_type { get; set; }
+        public string file_path { get; set; }
+        public System.DateTime upload_date { get; set; }
+        public int upload_by { get; set; }
+        public string document_status { get; set; }
     }
 }

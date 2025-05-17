@@ -22,7 +22,7 @@
             </div>
             <div class="contentBody">
                 <div class="text-start">
-                    <label class="labelContent">รหัสนักศึกษา</label>
+                    <label class="labelContent">ผู้ใช้งาน</label>
                     <asp:TextBox ID="Tb_user" runat="server"  class="form-control textboxContent" placeholder="รหัสนักศึกษา" required="true"></asp:TextBox>
                 </div>
                 <div class="mt-2 text-start">

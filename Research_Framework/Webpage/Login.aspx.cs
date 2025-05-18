@@ -52,24 +52,42 @@ namespace Research_Framework.Webpage
                         Session["Username"] = user.username;
                         Session["UserType"] = user.user_type;
                         Session["FullName"] = user.first_name + " " + user.last_name;
-                        Session["UserType"] = user.user_type;
 
                         if (user.user_type == "STUDENT")
                         {
                             // ดึงข้อมูลนักศึกษา
                             var student = db.students.FirstOrDefault(s => s.user_id == user.id);
-                            Session["StudentID"] = student.id;
+                            if (student != null)
+                            {
+                                Session["StudentID"] = student.id;
+                            }
+                            
+                            // ถ้าเป็นนักศึกษาให้ไปหน้า AddResearch
+                            Response.Redirect("~/Webpage/AddResearch.aspx", false);
+                            Context.ApplicationInstance.CompleteRequest();
+                            return;
                         }
                         else if (user.user_type == "TEACHER")
                         {
                             // ดึงข้อมูลอาจารย์
                             var teacher = db.teachers.FirstOrDefault(t => t.user_id == user.id);
-                            Session["TeacherID"] = teacher.id;
+                            if (teacher != null)
+                            {
+                                Session["TeacherID"] = teacher.id;
+                            }
+                            
+                            // ถ้าเป็นอาจารย์ให้ไปหน้า ResearchList
+                            Response.Redirect("~/Webpage/ResearchList.aspx", false);
+                            Context.ApplicationInstance.CompleteRequest();
+                            return;
                         }
-
-                        Response.Redirect("~/Webpage/Profile.aspx", false);
-                        Context.ApplicationInstance.CompleteRequest();
-                        return;
+                        else
+                        {
+                            // ถ้าเป็น Admin ให้ไปหน้า Profile ตามเดิม
+                            Response.Redirect("~/Webpage/Profile.aspx", false);
+                            Context.ApplicationInstance.CompleteRequest();
+                            return;
+                        }
                     }
                     else
                     {

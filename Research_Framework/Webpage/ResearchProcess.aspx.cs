@@ -21,17 +21,15 @@ namespace Research_Framework.Webpage
                     return;
                 }
 
-                string userType = Session["UserType"]?.ToString();
-
                 // แสดง/ซ่อน dropdown ตามประเภทผู้ใช้
-                researchSelector.Visible = (userType == "TEACHER");
+                researchSelector.Visible = IsTeacher();
 
                 // ตรวจสอบว่ามีการส่ง parameter id มาหรือไม่
                 int selectedResearchId = 0;
                 if (Request.QueryString["id"] != null && int.TryParse(Request.QueryString["id"], out selectedResearchId))
                 {
                     // กรณีมีการส่ง id มา ใช้ id ที่ส่งมา
-                    if (userType == "TEACHER")
+                    if (IsTeacher())
                     {
                         LoadResearchList();
                         // เลือก research ตาม id ที่ส่งมา
@@ -44,7 +42,7 @@ namespace Research_Framework.Webpage
                 else
                 {
                     // กรณีไม่มีการส่ง id มา ทำงานปกติ
-                    if (userType == "TEACHER")
+                    if (IsTeacher())
                     {
                         LoadResearchList();
                     }
@@ -777,48 +775,87 @@ namespace Research_Framework.Webpage
 
                     // โหลดขั้นตอนการดำเนินงานวิจัย
                     var processes = from mp in db.master_process
-                                    join rp in db.research_process
-                                    on new { ProcessId = mp.id, ResearchId = selectedResearchId.Value }
-                                    equals new { ProcessId = rp.process_id, ResearchId = rp.research_id }
-                                    into rpGroup
-                                    from rp in rpGroup.DefaultIfEmpty()
-                                    orderby mp.sequence_no
-                                    select new
-                                    {
-                                        ProcessId = mp.id,
-                                        ProcessName = mp.name,
-                                        Status = rp != null ? rp.status : "PENDING",
-                                        Comments = rp != null ? rp.comments : "",
-                                        ApprovedDate = rp != null ? rp.approved_date : (DateTime?)null,
-                                        ResearchProcessId = rp != null ? rp.id : (int?)null
-                                    };
+                                     join rp in db.research_process
+                                     on new { ProcessId = mp.id, ResearchId = selectedResearchId.Value }
+                                     equals new { ProcessId = rp.process_id, ResearchId = rp.research_id }
+                                     into rpGroup
+                                     from rp in rpGroup.DefaultIfEmpty()
+                                     orderby mp.sequence_no
+                                     select new
+                                     {
+                                         ProcessId = mp.id,
+                                         ProcessName = mp.name,
+                                         Status = rp != null ? rp.status : "PENDING",
+                                         Comments = rp != null ? rp.comments : "",
+                                         ApprovedDate = rp != null ? rp.approved_date : (DateTime?)null,
+                                         ResearchProcessId = rp != null ? rp.id : (int?)null,
+                                         SequenceNo = mp.sequence_no
+                                     };
 
                     // ดึงข้อมูลมาก่อน
                     var processResults = processes.ToList();
 
-                    // แปลงข้อมูลและจัดการ Path.GetFileName หลังจากดึงข้อมูลแล้ว
-                    var processViewModels = processResults.Select(p => new ProcessViewModel
+                    // ตรวจสอบว่ามีขั้นตอนก่อนหน้าที่ยังไม่ได้รับการอนุมัติหรือไม่
+                    bool showAllProcesses = true;
+                    int lastApprovedSequence = 0;
+
+                    // ไม่แสดงขั้นตอนหลังจากขั้นตอนที่ยังไม่ได้รับการอนุมัติ (ทั้งอาจารย์และนักศึกษา)
                     {
-                        ProcessId = p.ProcessId,
-                        ProcessName = p.ProcessName,
-                        Status = p.Status,
-                        Comments = p.Comments,
-                        ApprovedDate = p.ApprovedDate,
-                        Documents = p.ResearchProcessId.HasValue ?
-                            db.process_document
-                                .Where(pd => pd.research_process_id == p.ResearchProcessId)
-                                .ToList() // ดึงข้อมูลมาก่อน
-                                .Select(pd => new DocumentViewModel
-                                {
-                                    Id = pd.id,
-                                    FileName = System.IO.Path.GetFileName(pd.file_path), // ใช้ Path.GetFileName หลังจากดึงข้อมูลแล้ว
-                                    FilePath = pd.file_path,
-                                    UploadDate = pd.upload_date,
-                                    Status = pd.document_status ?? "PENDING"
-                                })
-                                .ToList()
-                            : new List<DocumentViewModel>()
-                    }).ToList();
+                        // ค้นหาขั้นตอนล่าสุดที่ได้รับการอนุมัติ
+                        foreach (var process in processResults.OrderBy(p => p.SequenceNo))
+                        {
+                            if (process.Status == "APPROVED")
+                            {
+                                lastApprovedSequence = process.SequenceNo;
+                            }
+                            else if (process.Status != "APPROVED" && process.SequenceNo > 1) // ถ้าไม่ใช่ขั้นตอนแรกและยังไม่ได้รับการอนุมัติ
+                            {
+                                // พบขั้นตอนที่ยังไม่ได้รับการอนุมัติ
+                                showAllProcesses = false;
+                                break;
+                            }
+                        }
+                    }
+
+                    // แปลงข้อมูลและจัดการ Path.GetFileName หลังจากดึงข้อมูลแล้ว
+                    var processViewModels = new List<ProcessViewModel>();
+
+                    // กรองข้อมูลตามเงื่อนไข
+                    foreach (var process in processResults.OrderBy(p => p.SequenceNo))
+                    {
+                        // ตรวจสอบว่าควรจะแสดงขั้นตอนนี้หรือไม่
+                        if (!showAllProcesses && process.SequenceNo > lastApprovedSequence + 1)
+                        {
+                            // ถ้าไม่ควรแสดง ให้ข้ามไป
+                            continue;
+                        }
+
+                        // แปลงข้อมูลสำหรับแสดงผล
+                        var processViewModel = new ProcessViewModel
+                        {
+                            ProcessId = process.ProcessId,
+                            ProcessName = process.ProcessName,
+                            Status = process.Status,
+                            Comments = process.Comments,
+                            ApprovedDate = process.ApprovedDate,
+                            Documents = process.ResearchProcessId.HasValue ?
+                                db.process_document
+                                    .Where(pd => pd.research_process_id == process.ResearchProcessId)
+                                    .ToList() // ดึงข้อมูลมาก่อน
+                                    .Select(pd => new DocumentViewModel
+                                    {
+                                        Id = pd.id,
+                                        FileName = System.IO.Path.GetFileName(pd.file_path), // ใช้ Path.GetFileName หลังจากดึงข้อมูลแล้ว
+                                        FilePath = pd.file_path,
+                                        UploadDate = pd.upload_date,
+                                        Status = pd.document_status ?? "PENDING"
+                                    })
+                                    .ToList()
+                                : new List<DocumentViewModel>()
+                        };
+                        
+                        processViewModels.Add(processViewModel);
+                    }
 
                     RptProcesses.DataSource = processViewModels;
                     RptProcesses.DataBind();

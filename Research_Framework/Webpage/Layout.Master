@@ -65,7 +65,7 @@
                         <hr />
                     </li>
                     <li id="navApprove" runat="server" class="nav-item">
-                        <a id="navApproveLink" runat="server" class="nav-link sidebarItem" onclick="activateButton(this)" href="ResearchProcess.aspx">อนุมัติ</a>
+                        <a id="navApproveLink" runat="server" class="nav-link sidebarItem" onclick="activateButton(this)" href="ResearchProcess.aspx">ขั้นตอนการดำเนินงาน</a>
                         <hr />
                     </li>
                     <li id="navAddNewUser" runat="server" class="nav-item">

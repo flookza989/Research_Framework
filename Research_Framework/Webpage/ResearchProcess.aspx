@@ -93,7 +93,7 @@
                                             </div>
 
                                             <!-- ส่วนของอาจารย์ -->
-                                            <div class="teacher-actions" runat="server" visible='<%# IsTeacher() %>'>
+                                            <div class="teacher-actions" runat="server" visible='<%# IsTeacher() && IsDocumentPending(Eval("Status")) %>'>
                                                 <div class="input-group">
                                                     <asp:FileUpload ID="FileUploadFeedback" runat="server" CssClass="form-control" />
                                                     <asp:TextBox ID="TbFeedback" runat="server" CssClass="form-control"
@@ -112,7 +112,7 @@
                             </div>
 
                             <!-- ส่วนการอนุมัติ (สำหรับอาจารย์) -->
-                            <div class="approval-section mt-3" runat="server" id="ApprovalSection" visible='<%# IsTeacher() %>'>
+                            <div class="approval-section mt-3" runat="server" id="ApprovalSection" visible='<%# IsTeacher() && IsWaitingApproval(Eval("Status")) %>'>
                                 <asp:TextBox ID="TbComments" runat="server" CssClass="form-control textboxContent mb-2"
                                     TextMode="MultiLine" Rows="2" placeholder="ความคิดเห็น"></asp:TextBox>
 

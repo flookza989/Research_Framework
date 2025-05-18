@@ -616,6 +616,20 @@ namespace Research_Framework.Webpage
             return status != "APPROVED" && status != "REJECTED";
         }
 
+        protected bool IsDocumentPending(object statusObj)
+        {
+            if (statusObj == null) return false;
+            string status = statusObj.ToString().ToUpper();
+            return status == "PENDING";
+        }
+
+        protected bool IsWaitingApproval(object statusObj)
+        {
+            if (statusObj == null) return false;
+            string status = statusObj.ToString();
+            return status == "WAITING_APPROVAL";
+        }
+
         protected bool IsTeacher()
         {
             if (Session["UserType"] == null) return false;

@@ -635,6 +635,7 @@
     <Content Include="Webpage\Login.aspx" />
     <Content Include="Webpage\MangeUser.aspx" />
     <Content Include="Webpage\Profile.aspx" />
+    <Content Include="Webpage\ResearchList.aspx" />
     <Content Include="Webpage\ResearchProcess.aspx" />
   </ItemGroup>
   <ItemGroup>
@@ -749,6 +750,13 @@
     </Compile>
     <Compile Include="Webpage\Profile.aspx.designer.cs">
       <DependentUpon>Profile.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Webpage\ResearchList.aspx.cs">
+      <DependentUpon>ResearchList.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Webpage\ResearchList.aspx.designer.cs">
+      <DependentUpon>ResearchList.aspx</DependentUpon>
     </Compile>
     <Compile Include="Webpage\ResearchProcess.aspx.cs">
       <DependentUpon>ResearchProcess.aspx</DependentUpon>

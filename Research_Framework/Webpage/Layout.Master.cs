@@ -20,6 +20,7 @@ namespace Research_Framework.Webpage
                 // ตั้งค่าการมองเห็นเมนูใน Sidebar
                 navProfile.Visible = !isLoginPage;
                 navAddReserch.Visible = !isLoginPage;
+                navResearchList.Visible = !isLoginPage;
                 navApprove.Visible = !isLoginPage;
                 navAddNewUser.Visible = !isLoginPage;
                 navMangeUser.Visible = !isLoginPage;
@@ -79,6 +80,7 @@ namespace Research_Framework.Webpage
                         // เมนูข้อมูลส่วนตัวแสดงเสมอสำหรับทุกคน
                         navProfile.Visible = true;
                         navAddReserch.Visible = userType == "STUDENT";
+                        navResearchList.Visible = userType == "TEACHER";
                         navApprove.Visible = userType != "ADMIN";
                         navAddNewUser.Visible = userType == "ADMIN";
                         navMangeUser.Visible = userType == "ADMIN";
@@ -117,6 +119,7 @@ namespace Research_Framework.Webpage
                 // ลบ class active จากเมนูทั้งหมดก่อน
                 navProfileLink.Attributes["class"] = "nav-link sidebarItem";
                 navAddReserchLink.Attributes["class"] = "nav-link sidebarItem";
+                navResearchListLink.Attributes["class"] = "nav-link sidebarItem";
                 navApproveLink.Attributes["class"] = "nav-link sidebarItem";
                 navAddNewUserLink.Attributes["class"] = "nav-link sidebarItem";
                 navMangeUserLink.Attributes["class"] = "nav-link sidebarItem";
@@ -130,6 +133,10 @@ namespace Research_Framework.Webpage
                 else if (currentPage == "addresearch.aspx" && navAddReserch.Visible)
                 {
                     navAddReserchLink.Attributes["class"] = "nav-link sidebarItem active";
+                }
+                else if (currentPage == "researchlist.aspx" && navResearchList.Visible)
+                {
+                    navResearchListLink.Attributes["class"] = "nav-link sidebarItem active";
                 }
                 else if ((currentPage == "researchprocess.aspx" || currentPage == "approve.aspx") && navApprove.Visible)
                 {

@@ -109,7 +109,8 @@
                 return;
             }
             
-            var phoneNumber = $("#<%= Tb_phoneNumber.ClientID %>").val().trim();
+            var phoneNumberElement = $("#<%= Tb_phoneNumber.ClientID %>");
+            var phoneNumber = phoneNumberElement.length > 0 ? phoneNumberElement.val().trim() : "";
             var profileData = {
                 Name: name,
                 LastName: lastName,

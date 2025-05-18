@@ -60,6 +60,10 @@
                         <a id="navAddReserchLink" runat="server" class="nav-link sidebarItem" onclick="activateButton(this)" href="AddResearch.aspx">วิทยานิพนธ์</a>
                         <hr />
                     </li>
+                    <li id="navResearchList" runat="server" class="nav-item">
+                        <a id="navResearchListLink" runat="server" class="nav-link sidebarItem" onclick="activateButton(this)" href="ResearchList.aspx">รายการวิทยานิพนธ์</a>
+                        <hr />
+                    </li>
                     <li id="navApprove" runat="server" class="nav-item">
                         <a id="navApproveLink" runat="server" class="nav-link sidebarItem" onclick="activateButton(this)" href="ResearchProcess.aspx">อนุมัติ</a>
                         <hr />

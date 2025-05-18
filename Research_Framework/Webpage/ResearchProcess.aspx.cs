@@ -26,9 +26,28 @@ namespace Research_Framework.Webpage
                 // แสดง/ซ่อน dropdown ตามประเภทผู้ใช้
                 researchSelector.Visible = (userType == "TEACHER");
 
-                if (userType == "TEACHER")
+                // ตรวจสอบว่ามีการส่ง parameter id มาหรือไม่
+                int selectedResearchId = 0;
+                if (Request.QueryString["id"] != null && int.TryParse(Request.QueryString["id"], out selectedResearchId))
                 {
-                    LoadResearchList();
+                    // กรณีมีการส่ง id มา ใช้ id ที่ส่งมา
+                    if (userType == "TEACHER")
+                    {
+                        LoadResearchList();
+                        // เลือก research ตาม id ที่ส่งมา
+                        if (DdlResearch.Items.FindByValue(selectedResearchId.ToString()) != null)
+                        {
+                            DdlResearch.SelectedValue = selectedResearchId.ToString();
+                        }
+                    }
+                }
+                else
+                {
+                    // กรณีไม่มีการส่ง id มา ทำงานปกติ
+                    if (userType == "TEACHER")
+                    {
+                        LoadResearchList();
+                    }
                 }
                 
                 LoadResearchInfo(); // โหลดข้อมูลงานวิจัย (ทั้งกรณีนักศึกษาและอาจารย์)

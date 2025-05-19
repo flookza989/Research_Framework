@@ -623,6 +623,13 @@ namespace Research_Framework.Webpage
             return status == "PENDING";
         }
 
+    protected bool IsDocumentApproved(object statusObj)
+    {
+        if (statusObj == null) return false;
+        string status = statusObj.ToString().ToUpper();
+        return status == "APPROVED";
+    }
+        
         protected bool IsWaitingApproval(object statusObj)
         {
             if (statusObj == null) return false;
@@ -868,6 +875,7 @@ namespace Research_Framework.Webpage
                                 : new List<DocumentViewModel>()
                         };
                         
+                        processViewModel.ProcessStatus = process.Status;
                         processViewModels.Add(processViewModel);
                     }
 
@@ -890,7 +898,29 @@ namespace Research_Framework.Webpage
 
                 if (documentRepeater != null && processData != null)
                 {
+                    // เก็บสถานะของกระบวนการ
+                    string processStatus = processData.Status;
+                    bool isProcessApproved = processStatus.ToUpper() == "APPROVED";
+                    
+                    // ใส่ข้อมูลเอกสาร
                     documentRepeater.DataSource = processData.Documents;
+                    
+                    // ผูก event ในการจัดการการแสดงผล TeacherActions
+                    documentRepeater.ItemDataBound += (s, args) => {
+                        if (args.Item.ItemType == ListItemType.Item || args.Item.ItemType == ListItemType.AlternatingItem)
+                        {
+                            // เข้าถึง TeacherActions control
+                            var teacherActions = args.Item.FindControl("TeacherActions") as System.Web.UI.HtmlControls.HtmlGenericControl;
+                            
+                            // ในกรณีที่กระบวนการได้รับการอนุมัติแล้ว ให้ซ่อน TeacherActions
+                            if (teacherActions != null && isProcessApproved)
+                            {
+                                teacherActions.Visible = false;
+                            }
+                        }
+                    };
+                    
+                    // แสดงข้อมูล
                     documentRepeater.DataBind();
                 }
             }
@@ -1039,6 +1069,7 @@ namespace Research_Framework.Webpage
         public int ProcessId { get; set; }
         public string ProcessName { get; set; }
         public string Status { get; set; }
+        public string ProcessStatus { get; set; }  // เพิ่มโพรเพอรตี้ใหม่
         public string Comments { get; set; }
         public DateTime? ApprovedDate { get; set; }
         public List<DocumentViewModel> Documents { get; set; }

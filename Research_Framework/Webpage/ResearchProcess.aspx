@@ -90,10 +90,12 @@
                                                 <span class='<%# GetDocumentStatusClass(Eval("Status").ToString()) %>'>
                                                     <%# GetDocumentStatusText(Eval("Status").ToString()) %>
                                                 </span>
+                                                <!-- For Debugging -->
+                                                <small class="text-muted ms-2">Status: <%# Eval("Status") %></small>
                                             </div>
 
                                             <!-- ส่วนของอาจารย์ -->
-                                            <div class="teacher-actions" runat="server" visible='<%# IsTeacher() && IsDocumentPending(Eval("Status")) %>'>
+                                            <div ID="TeacherActions" class="teacher-actions" runat="server" visible='<%# IsTeacher() && IsDocumentPending(Eval("Status")) %>'>
                                                 <div class="input-group">
                                                     <asp:FileUpload ID="FileUploadFeedback" runat="server" CssClass="form-control" />
                                                     <asp:TextBox ID="TbFeedback" runat="server" CssClass="form-control"

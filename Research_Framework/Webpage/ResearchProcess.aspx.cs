@@ -108,14 +108,65 @@ namespace Research_Framework.Webpage
                         return;
                     }
 
+                    // อัพเดทสถานะของ process เป็น APPROVED
                     process.status = "APPROVED";
                     process.approved_by = Convert.ToInt32(Session["UserID"]);
                     process.approved_date = DateTime.Now;
                     process.comments = comments;
 
+                    // ตรวจสอบว่าเป็น process สุดท้ายหรือไม่
+                    var maxProcessId = db.master_process.Max(mp => mp.id); // หา ID สูงสุดของ master_process
+                    var maxSequence = db.master_process.Max(mp => mp.sequence_no); // หรือใช้ sequence_no สูงสุด
+
+                    // ตรวจสอบว่าทุก process ถูกอนุมัติหมดแล้ว
+                    bool isLastProcess = processId == maxProcessId; // เป็น process สุดท้ายตาม ID
+                    
+                    // ตรวจสอบว่าทุก process ถูกอนุมัติแล้วหรือไม่
+                    bool allProcessesApproved = true;
+                    
+                    // ถ้าเป็น process สุดท้าย ให้ตรวจสอบว่าทุก process ก่อนหน้าได้รับการอนุมัติแล้ว
+                    if (isLastProcess)
+                    {
+                        // ตรวจสอบว่าทุก process ได้รับการอนุมัติแล้ว
+                        var processes = db.research_process
+                            .Where(p => p.research_id == researchId)
+                            .ToList();
+                            
+                        // นับจำนวน master process ทั้งหมด
+                        int totalMasterProcesses = db.master_process.Count();
+                        
+                        // ตรวจสอบว่ามีทุก process และทุก process ถูกอนุมัติแล้ว
+                        if (processes.Count == totalMasterProcesses)
+                        {
+                            // ตรวจสอบว่าทุก process ถูกอนุมัติแล้ว
+                            allProcessesApproved = processes.All(p => p.status == "APPROVED");
+                        }
+                        else
+                        {
+                            allProcessesApproved = false; // ยังมี process ที่ยังไม่ได้ทำ
+                        }
+                        
+                        // ถ้าทุก process ได้รับการอนุมัติแล้ว ให้อัพเดทสถานะของงานวิจัยเป็น APPROVED
+                        if (allProcessesApproved)
+                        {
+                            // อัพเดทสถานะของงานวิจัย
+                            var research = db.researches.Find(researchId);
+                            if (research != null)
+                            {
+                                research.status = "APPROVED"; // อัพเดทสถานะของงานวิจัยเป็น APPROVED
+                                research.is_approved = true;
+                                research.approved_date = DateTime.Now;
+                                research.approved_by = Convert.ToInt32(Session["UserID"]);
+                            }
+                        }
+                    }
+
                     db.SaveChanges();
-                    ShowSuccess("อนุมัติเรียบร้อยแล้ว");
+                    string successMessage = allProcessesApproved && isLastProcess ? 
+                        "อนุมัติขั้นตอนสุดท้ายและงานวิจัยเรียบร้อยแล้ว" : "อนุมัติเรียบร้อยแล้ว";
+                    ShowSuccess(successMessage);
                     LoadProcesses();
+                    LoadResearchInfo(researchId); // โหลดข้อมูลงานวิจัยใหม่เพื่อแสดงสถานะที่อัพเดท
                 }
             }
             catch (Exception ex)

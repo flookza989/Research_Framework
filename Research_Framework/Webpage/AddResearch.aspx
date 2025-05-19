@@ -254,9 +254,16 @@
         });
 
         function showMemberModal() {
+            // เคลียร์ค่าค้นหาและโชว์หน้าต่าง modal
             $('#studentSearch').val('');
+            $('#studentSearch').prop('disabled', false); // เปิดใช้งานช่องค้นหา
             showLoading('#studentList');
-            searchStudents('');
+            
+            // เรียกใช้ฟังก์ชันค้นหาสมาชิก
+            setTimeout(function() {
+                searchStudents('');
+            }, 300); // รอสักครู่ก่อนเรียกค้นหา
+            
             memberModal.show();
         }
 
@@ -295,10 +302,19 @@
                 contentType: 'application/json; charset=utf-8',
                 dataType: 'json',
                 success: function (response) {
-                    renderStudentList(response.d);
+                    if (response.d && response.d.error) {
+                        // ถ้ามีข้อผิดพลาด
+                        showError('#studentList', response.d.message || 'เกิดข้อผิดพลาดในการค้นหา');
+                        console.error('Search error:', response.d.message);
+                    } else {
+                        // ถ้าสำเร็จ
+                        console.log('Search results:', response.d);
+                        renderStudentList(response.d);
+                    }
                 },
-                error: function () {
-                    showError('#studentList', 'เกิดข้อผิดพลาดในการค้นหา');
+                error: function (jqXHR, textStatus, errorThrown) {
+                    console.error('AJAX error:', textStatus, errorThrown);
+                    showError('#studentList', 'เกิดข้อผิดพลาดในการค้นหา - กรุณาลองใหม่อีกครั้ง');
                 }
             });
         }
@@ -331,29 +347,46 @@
         }
 
         function renderStudentList(students) {
+            console.log('Rendering student list:', students);
+            
+            // ตรวจสอบว่า students เป็น array หรือไม่
+            if (!Array.isArray(students)) {
+                console.error('Expected array but got:', typeof students);
+                $('#studentList').html(getEmptyTemplate('ข้อมูลไม่ถูกต้อง กรุณาลองใหม่อีกครั้ง'));
+                return;
+            }
+            
             if (students.length === 0) {
                 $('#studentList').html(getEmptyTemplate('ไม่พบข้อมูลนักศึกษา'));
                 return;
             }
 
-            const html = students.map(student => `
+            const html = students.map(student => {
+                // ตรวจสอบว่ามีข้อมูลที่จำเป็นหรือไม่
+                if (!student || !student.id) {
+                    console.error('Invalid student data:', student);
+                    return '';
+                }
+                
+                return `
                 <div class="col-md-6">
                     <div class="card member-card h-100" onclick="addStudent(${student.id})">
                         <div class="card-body d-flex align-items-center">
-                            <img src="${student.imageUrl}" 
+                            <img src="${student.imageUrl || '../Images/NewUser.png'}" 
                                 class="rounded-circle me-3" width="64" height="64" 
-                                alt="${student.name}"
-                                onerror="this.src='../Images/default-profile.png'">
+                                alt="${student.name || 'รูปนักศึกษา'}"
+                                onerror="this.src='../Images/NewUser.png'">
                             <div>
-                                <h6 class="card-title mb-1">${student.name}</h6>
-                                <p class="card-text small text-muted mb-1">${student.studentId}</p>
-                                <p class="card-text small text-muted mb-0">${student.department}</p>
+                                <h6 class="card-title mb-1">${student.name || 'ไม่ระบุชื่อ'}</h6>
+                                <p class="card-text small text-muted mb-1">${student.studentId || 'ไม่ระบุรหัสนักศึกษา'}</p>
+                                <p class="card-text small text-muted mb-0">${student.department || 'ไม่ระบุสาขา'}</p>
                                 <div class="text-primary mt-2">คลิกเพื่อเลือก</div>
                             </div>
                         </div>
                     </div>
                 </div>
-            `).join('');
+                `;
+            }).join('');
 
             $('#studentList').html(html);
         }

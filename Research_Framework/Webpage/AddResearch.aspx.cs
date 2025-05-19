@@ -336,67 +336,127 @@ namespace Research_Framework.Webpage
             {
                 using (var db = new ResearchDBEntities())
                 {
-                    // ดึงรายการนักศึกษาที่มีงานวิจัยแล้ว
+                    int currentUserId = Convert.ToInt32(HttpContext.Current.Session["UserID"]);
+                    int currentStudentId = 0;
+                    int researchId = 0;
+                    
+                    // ค้นหา student_id ของผู้ใช้ปัจจุบัน
+                    var currentStudent = db.students.FirstOrDefault(s => s.user_id == currentUserId);
+                    if (currentStudent != null)
+                    {
+                        currentStudentId = currentStudent.id;
+                        
+                        // ค้นหา research_id ของผู้ใช้ปัจจุบัน
+                        var researchGroup = db.research_groups.FirstOrDefault(rg => rg.student_id == currentStudentId);
+                        if (researchGroup != null)
+                        {
+                            researchId = researchGroup.research_id;
+                        }
+                    }
+                    
+                    // ดึงรายการนักศึกษาที่มีงานวิจัยแล้ว (รวมถึงนักศึกษาที่อยู่ในงานวิจัยปัจจุบัน)
                     var studentsWithResearch = db.research_groups
+                        .Where(rg => rg.research_id != researchId) // ไม่รวมงานวิจัยปัจจุบัน
+                        .Select(rg => rg.student_id)
+                        .Distinct()
+                        .ToList();
+                    
+                    // นักศึกษาที่อยู่ในงานวิจัยปัจจุบันแล้ว
+                    var currentGroupMembers = db.research_groups
+                        .Where(rg => rg.research_id == researchId)
                         .Select(rg => rg.student_id)
                         .Distinct()
                         .ToList();
 
-                    // ดึงรายการนักศึกษาที่ยังไม่มีงานวิจัย
-                    var query = from u in db.users
-                                join s in db.students on u.id equals s.user_id
-                                join b in db.branchs on s.branch_id equals b.branch_id
-                                join f in db.facultys on s.faculty_id equals f.faculty_id
-                                where u.user_type == "STUDENT"
-                                && u.is_active
-                                && !studentsWithResearch.Contains(s.id) // เพิ่มเงื่อนไขนี้
-                                select new
-                                {
-                                    id = u.id,
-                                    studentId = u.username,
-                                    name = u.first_name + " " + u.last_name,
-                                    department = b.branch_name,
-                                    faculty = f.faculty_name,
-                                    imageUrl = u.profile_img
-                                };
+                    // SQL ดึงนักศึกษาที่ยังไม่มีงานวิจัย หรือยังไม่อยู่ในกลุ่มปัจจุบัน
+                    string sqlQuery = @"
+                    SELECT u.id, u.username as studentId, 
+                           u.first_name + ' ' + u.last_name as name, 
+                           b.branch_name as department, 
+                           f.faculty_name as faculty,
+                           u.profile_img as imageUrl
+                    FROM users u
+                    JOIN students s ON u.id = s.user_id
+                    JOIN branchs b ON s.branch_id = b.branch_id
+                    JOIN facultys f ON s.faculty_id = f.faculty_id
+                    WHERE u.user_type = 'STUDENT' AND u.is_active = 1
+                    AND s.id NOT IN (
+                        SELECT DISTINCT student_id 
+                        FROM research_groups 
+                        WHERE student_id NOT IN ({0})
+                    )";
 
-                    // กรองตามคำค้นหา
+                    // เพิ่มพารามิเตอร์สำหรับ currentGroupMembers
+                    var parameters = new List<object>();
+                    string inClause = currentGroupMembers.Count > 0 
+                        ? string.Join(",", currentGroupMembers) 
+                        : "0"; // ถ้าไม่มีสมาชิกในกลุ่มปัจจุบัน ใช้ 0 เพื่อป้องกัน SQL error
+                    
+                    sqlQuery = string.Format(sqlQuery, inClause);
+
+                    // เพิ่มเงื่อนไขค้นหา
                     if (!string.IsNullOrEmpty(searchText))
                     {
-                        searchText = searchText.ToLower();
-                        query = query.Where(s =>
-                            s.studentId.ToLower().Contains(searchText) ||
-                            s.name.ToLower().Contains(searchText) ||
-                            s.department.ToLower().Contains(searchText) ||
-                            s.faculty.ToLower().Contains(searchText)
-                        );
+                        sqlQuery += @" AND (
+                            u.username LIKE @searchText OR
+                            u.first_name + ' ' + u.last_name LIKE @searchText OR
+                            b.branch_name LIKE @searchText OR
+                            f.faculty_name LIKE @searchText
+                        )";
+                        parameters.Add(new SqlParameter("@searchText", "%" + searchText + "%"));
                     }
 
-                    var students = query
-                        .OrderBy(s => s.name)
-                        .Take(50)
-                        .ToList()
-                        .Select(s => new
-                        {
-                            s.id,
-                            s.studentId,
-                            s.name,
-                            s.department,
-                            s.faculty,
-                            imageUrl = s.imageUrl != null
-                                ? $"data:image/jpeg;base64,{Convert.ToBase64String(s.imageUrl)}"
-                                : VirtualPathUtility.ToAbsolute("~/Images/NewUser.png")
-                        });
+                    sqlQuery += " ORDER BY name";
 
-                    return students;
+                    // ใช้ SQL query โดยตรง
+                    var students = db.Database.SqlQuery<StudentSearchResult>(
+                        sqlQuery,
+                        parameters.ToArray()
+                    ).Take(50).ToList();
+
+                    // แปลงข้อมูลรูปภาพ
+                    var results = students.Select(s => new {
+                        id = s.id,
+                        studentId = s.studentId,
+                        name = s.name,
+                        department = s.department,
+                        faculty = s.faculty,
+                        imageUrl = s.imageUrl != null
+                            ? $"data:image/jpeg;base64,{Convert.ToBase64String(s.imageUrl)}"
+                            : VirtualPathUtility.ToAbsolute("~/Images/NewUser.png")
+                    });
+
+                    return results;
                 }
             }
             catch (Exception ex)
             {
-                // Log error
+                // Log error แบบละเอียด
                 System.Diagnostics.Debug.WriteLine($"Error in SearchStudents: {ex.Message}");
-                return new List<object>();
+                System.Diagnostics.Debug.WriteLine($"Stack Trace: {ex.StackTrace}");
+                
+                if (ex.InnerException != null)
+                {
+                    System.Diagnostics.Debug.WriteLine($"Inner Exception: {ex.InnerException.Message}");
+                }
+                
+                // สร้างการตอบกลับที่มีข้อความข้อผิดพลาด
+                return new { 
+                    error = true, 
+                    message = "เกิดข้อผิดพลาดในการค้นหานักศึกษา: " + ex.Message 
+                };
             }
+        }
+        
+        // คลาสสำหรับรับผลลัพธ์จาก SQL query
+        public class StudentSearchResult
+        {
+            public int id { get; set; }
+            public string studentId { get; set; }
+            public string name { get; set; }
+            public string department { get; set; }
+            public string faculty { get; set; }
+            public byte[] imageUrl { get; set; }
         }
 
         [WebMethod]

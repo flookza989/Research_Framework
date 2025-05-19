@@ -406,10 +406,8 @@ namespace Research_Framework.Webpage
 
         private void ShowNoResearchMessage()
         {
-            string userType = Session["UserType"]?.ToString();
-            string message = userType == "STUDENT"
-                ? "คุณยังไม่มีงานวิจัย กรุณาสร้างงานวิจัยใหม่"
-                : "ไม่พบงานวิจัยที่รับเป็นที่ปรึกษา";
+            // กรณีเป็นนักศึกษา ให้แสดงข้อความและนำทางไปยังหน้าสร้างงานวิจัยใหม่
+            string message = "คุณยังไม่มีงานวิจัย กรุณาสร้างงานวิจัยใหม่";
 
             ScriptManager.RegisterStartupScript(this, GetType(), "noResearch",
                 $"Swal.fire({{ " +
@@ -561,7 +559,7 @@ namespace Research_Framework.Webpage
                         TbAdvisor.Text = "";
                         LbResearchStatus.Text = "";
                         
-                        if (!IsPostBack)  // แสดงข้อความเตือนเฉพาะตอนโหลดหน้าแรก
+                        if (!IsPostBack && user.user_type == "STUDENT")  // แสดงข้อความเตือนเฉพาะนักศึกษาเท่านั้น
                         {
                             ShowNoResearchMessage();
                         }
